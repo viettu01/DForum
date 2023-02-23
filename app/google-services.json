@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "50461307820",
+    "project_id": "dforum-146ac",
+    "storage_bucket": "dforum-146ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50461307820:android:91febfa426cee3ba12c009",
+        "android_client_info": {
+          "package_name": "com.tuplv.dforum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50461307820-e8lngei1m21qngcgd40v7clo6u89ikld.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tuplv.dforum",
+            "certificate_hash": "9feb4eb2240ed8b4e3dd2cd275ea60957cdd9c83"
+          }
+        },
+        {
+          "client_id": "50461307820-2rs7nenbm40vd0inhr6qt6niv5rfjqf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs7jSMpRkRFJ4W7hMYf5xIAT-YvUEu3Fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50461307820-2rs7nenbm40vd0inhr6qt6niv5rfjqf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
