@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,11 +17,11 @@
         android:textAlignment="center"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="24dp"
-        android:layout_above="@+id/linear_login"
+        android:layout_above="@+id/linear_register"
         android:text="Đăng ký tài khoản DForum" />
 
     <LinearLayout
-        android:id="@id/linear_login"
+        android:id="@id/linear_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -56,6 +56,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="error email"
+            android:textColor="@color/error_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Mật khẩu"
             android:textColor="@color/black"
@@ -80,6 +87,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="error password"
+            android:textColor="@color/error_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Nhập lại mật khẩu"
             android:textColor="@color/black"
@@ -90,7 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
-
             <EditText
                 android:id="@+id/edtRegisterPasswordSecond"
                 android:layout_width="match_parent"
@@ -101,6 +114,13 @@
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="error password second"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/error_color" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
@@ -110,7 +130,6 @@
             android:text="Đăng ký tài khoản"
             android:textAllCaps="false"
             android:textSize="16dp" />
-
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

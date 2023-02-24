@@ -3,8 +3,11 @@ package com.tuplv.dforum.authentication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,16 +17,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tuplv.dforum.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    TextView tvRegister;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getViews();
+
         // khởi tạo xác thực firebase
         mAuth = FirebaseAuth.getInstance();
+    }
+    private void getViews(){
+        tvRegister = findViewById(R.id.tvRegister);
+        tvRegister.setOnClickListener(this);
     }
     public void login(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
@@ -44,5 +54,22 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tvRegister:
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                this.finish();
+                startActivity(intent);
+                break;
+//            case R.id.btnLogin:
+//                email = txtEmail.getText().toString();
+//                password = txtPassword.getText().toString();
+//                if (!email.isEmpty() || !password.isEmpty()) {
+//                    signInID(email, password);
+//                }
+//                break;
+        }
     }
 }

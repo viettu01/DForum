@@ -78,4 +78,8 @@ dependencies {
 
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // Scalable Size Unit (Support for different screen sizes)
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
 }
