@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mnuHome"
+        android:icon="@drawable/ic_house_solid_24"
+        android:title="@string/trang_chu" />
+
+    <item
+        android:id="@+id/mnuAddPosts"
+        android:icon="@drawable/ic_plus_solid_24"
+        android:title="@string/them_bai_viet" />
+    <item
+        android:id="@+id/mnuProfile"
+        android:icon="@drawable/ic_user_solid_24"
+        android:title="@string/trang_ca_nhan" />
+
+    <item
+        android:id="@+id/mnuAdmin"
+        android:icon="@drawable/ic_screwdriver_wrench_solid_24"
+        android:title="@string/admin" />
+</menu>

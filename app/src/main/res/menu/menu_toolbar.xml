@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mnuSearch"
+        android:icon="@drawable/ic_search_solid_24"
+        android:title="@string/tim_kiem"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/mnuNotify"
+        android:icon="@drawable/ic_bell_solid_24"
+        android:title="@string/thong_bao"
+        app:showAsAction="ifRoom" />
+</menu>
