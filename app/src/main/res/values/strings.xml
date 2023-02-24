@@ -3,7 +3,7 @@
     <string name="trang_chu">Trang chủ</string>
     <string name="them_bai_viet">Thêm bài viết</string>
     <string name="trang_ca_nhan">Trang cá nhân</string>
-    <string name="admin">Admin</string>
+    <string name="admin">Quản trị</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tim_kiem">Tìm kiếm</string>
