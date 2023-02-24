@@ -3,10 +3,16 @@ package com.tuplv.dforum.authentication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +25,9 @@ import com.tuplv.dforum.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView tvRegister;
+    TextView tvRegister ,tvForgotPassword;
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +38,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // khởi tạo xác thực firebase
         mAuth = FirebaseAuth.getInstance();
     }
-    private void getViews(){
+
+    private void getViews() {
         tvRegister = findViewById(R.id.tvRegister);
         tvRegister.setOnClickListener(this);
+
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        tvForgotPassword.setOnClickListener(this);
     }
-    public void login(String email, String password){
+
+    public void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -55,6 +67,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
+
+    // Xử lý quên mật khẩu
+    private void dialogForgotPassword() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_forgot_password);
+        dialog.setCanceledOnTouchOutside(false);
+
+        //ánh xạ
+        Button btnForgotPassword = dialog.findViewById(R.id.btnForgotPassword);
+        Button btnCancel = dialog.findViewById(R.id.btnCancel);
+        EditText edtEmailResetPassword = dialog.findViewById(R.id.edtEmailResetPassword);
+
+        btnForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String emailResetPassword = edtEmailResetPassword.getText().toString().trim();
+                if (!emailResetPassword.isEmpty()) {
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    auth.sendPasswordResetEmail(emailResetPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Kiểm tra email để hoàn tất đặt lại mật khẩu mới", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -62,6 +114,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 this.finish();
                 startActivity(intent);
+                break;
+            case R.id.tvForgotPassword:
+                dialogForgotPassword();
                 break;
 //            case R.id.btnLogin:
 //                email = txtEmail.getText().toString();

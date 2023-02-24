@@ -14,6 +14,7 @@
     <!-- màu báo lỗi-->
     <color name="error_color">#FF0000</color>
 
-    <!-- màu vàng-->
     <color name="yellow_color">#F4C023</color>
+    <color name="gray_color">#D6D6D6</color>
+
 </resources>

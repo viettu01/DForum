@@ -7,6 +7,15 @@
     android:background="@color/main_color"
     tools:context=".authentication.LoginActivity">
 
+    <ImageView
+        android:id="@+id/ic_back_arrow_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        app:srcCompat="@drawable/ic_back_arrow" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +23,7 @@
         android:textSize="@dimen/_20sdp"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="@dimen/_15sdp"
         android:layout_above="@+id/linear_login"
         android:text="Đăng nhập DForum" />
 
@@ -23,17 +32,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="@dimen/_48sdp"
         android:background="@drawable/layout_radius"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="@dimen/_16sdp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="@dimen/_13sdp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -53,10 +62,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="Mật khẩu"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="@dimen/_13sdp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_password"
@@ -80,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="Quên mật khẩu ?"
             android:textColor="@color/black"
             android:textStyle="bold" />
@@ -89,16 +98,16 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:backgroundTint="@color/main_color"
             android:text="Đăng nhập"
             android:textAllCaps="false"
-            android:textSize="16dp" />
+            android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
