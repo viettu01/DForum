@@ -9,8 +9,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
 
@@ -19,9 +24,12 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     private Toolbar tbMain;
+    private AutoCompleteTextView atctvSearch;
+    private LinearLayout llSearch;
+    private AppBarLayout abl;
+    private ImageView imgCloseSearch;
     private long outApp;
     Toast outToast;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +93,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        imgCloseSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llSearch.setVisibility(View.GONE);
+                abl.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void init() {
         tbMain = findViewById(R.id.tbMain);
         viewPager = findViewById(R.id.viewPager);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
+        atctvSearch = findViewById(R.id.atctvSearch);
+        llSearch = findViewById(R.id.llSearch);
+        abl = findViewById(R.id.abl);
+        imgCloseSearch = findViewById(R.id.imgCloseSearch);
     }
 
     @Override
@@ -100,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         } else {
-            outToast = Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
-            outToast.show();
+            Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT).show();
         }
         outApp = System.currentTimeMillis();
     }
@@ -112,9 +130,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+        switch (item.getItemId()) {
+            case R.id.mnuSearch:
+                llSearch.setVisibility(View.VISIBLE);
+                abl.setVisibility(View.GONE);
+                break;
+            case R.id.mnuNotify:
+                Toast.makeText(this, "Thông báo", Toast.LENGTH_SHORT).show();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

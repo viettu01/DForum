@@ -84,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String passwordRegister= edtRegisterPassword.getText().toString().trim();
+                String passwordRegister = edtRegisterPassword.getText().toString().trim();
                 checkPasswordStrong(passwordRegister);
             }
 
@@ -103,8 +103,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String confirmPasswordRegister = edtRegisterConfirmPassword.getText().toString().trim();
-                String passwordRegister= edtRegisterPassword.getText().toString().trim();
-                checkConfirmPassword(passwordRegister,confirmPasswordRegister);
+                String passwordRegister = edtRegisterPassword.getText().toString().trim();
+                checkConfirmPassword(passwordRegister, confirmPasswordRegister);
             }
 
             @Override
@@ -132,7 +132,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     // Đăng ký tài khoản với firebase
     public void registerAccount() {
-
         String email = edtRegisterEmail.getText().toString().trim();
         String password = edtRegisterPassword.getText().toString().trim();
 
@@ -159,7 +158,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Intent intentMain = new Intent(RegisterActivity.this, MainActivity.class);
                             startActivity(intentMain);
                             finish();
-
                         } else {
                             Toast.makeText(RegisterActivity.this, "Đăng ký tài khoản thất bại, vui lòng thử lại sau !",
                                     Toast.LENGTH_SHORT).show();
@@ -174,41 +172,38 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @SuppressLint("SetTextI18n")
-    private boolean checkPasswordStrong(String password){
-        Pattern chuHoa =Pattern.compile("[A-Z]");
-        Pattern chuThuong =Pattern.compile("[a-z]");
-        Pattern chuSo =Pattern.compile("[0-9]");
-        Pattern kyTu =Pattern.compile("[,.!@+#$&]");
+    private boolean checkPasswordStrong(String password) {
+        Pattern chuHoa = Pattern.compile("[A-Z]");
+        Pattern chuThuong = Pattern.compile("[a-z]");
+        Pattern chuSo = Pattern.compile("[0-9]");
+        Pattern kyTu = Pattern.compile("[,.!@+#$&]");
 
-        if(password.length()<=8 || !kyTu.matcher(password).find() || !chuHoa.matcher(password).find() || !chuThuong.matcher(password).find() || !chuSo.matcher(password).find()){
+        if (password.length() <= 8 || !kyTu.matcher(password).find() || !chuHoa.matcher(password).find() || !chuThuong.matcher(password).find() || !chuSo.matcher(password).find()) {
             tvErrorPassword.setText("Mật khẩu phải có 8 ký tự đủ chữ hoa, chữ thường, chữ số và ký tự đặc biệt!");
             tvErrorPassword.setVisibility(View.VISIBLE);
             return false;
-        }else {
+        } else {
             tvErrorPassword.setVisibility(View.GONE);
             return true;
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private boolean checkEmail(String emailRegister){
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailRegister).matches()){
+    private boolean checkEmail(String emailRegister) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailRegister).matches()) {
             tvErrorEmail.setText("Không phải địa chỉ email");
             tvErrorEmail.setVisibility(View.VISIBLE);
             return false;
-        }else{
+        } else {
             tvErrorEmail.setVisibility(View.GONE);
             return true;
         }
     }
 
-    private boolean checkConfirmPassword(String password, String confirmPassword){
-        if (password.equals(confirmPassword))
-            return false;
-        else {
-            return true;
-        }
+    private boolean checkConfirmPassword(String password, String confirmPassword) {
+        return !password.equals(confirmPassword);
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -220,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String confirmPassword = edtRegisterConfirmPassword.getText().toString().trim();
 
                 // thỏa mãn đồng thời 3 điều kiện thì cho phép tạo tài khoản
-                if(checkEmail(email) && checkPasswordStrong(password) && checkConfirmPassword(password,confirmPassword)){
+                if (checkEmail(email) && checkPasswordStrong(password) && checkConfirmPassword(password, confirmPassword)) {
                     registerAccount();
                 }
                 break;
