@@ -38,12 +38,24 @@
         android:orientation="vertical"
         android:padding="@dimen/_16sdp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error_color"
+                android:textSize="@dimen/_13sdp" />
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -68,13 +80,25 @@
             android:text="error email"
             android:textColor="@color/error_color" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Mật khẩu"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp" />
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mật khẩu"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error_color"
+                android:textSize="@dimen/_13sdp" />
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -100,13 +124,25 @@
             android:text="error password"
             android:textColor="@color/error_color" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Nhập lại mật khẩu"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp" />
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nhập lại mật khẩu"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error_color"
+                android:textSize="@dimen/_13sdp" />
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -114,7 +150,7 @@
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
             <EditText
-                android:id="@+id/edtRegisterPasswordSecond"
+                android:id="@+id/edtRegisterConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contextClickable="false"
@@ -124,10 +160,10 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/tvErrorPasswordSecond"
+            android:id="@+id/tvErrorConfirmPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="error password second"
+            android:text="error confirm password"
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/error_color" />
 

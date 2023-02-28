@@ -9,11 +9,12 @@ public class Accounts {
     private String password;
     private String role;
     private String status;
+    private String startDate;
 
     public Accounts() {
     }
 
-    public Accounts(String accountId, String nickName, String story, String avatarUrl, String email, String password, String role, String status) {
+    public Accounts(String accountId, String nickName, String story, String avatarUrl, String email, String password, String role, String status, String startDate) {
         this.accountId = accountId;
         this.nickName = nickName;
         this.story = story;
@@ -22,6 +23,7 @@ public class Accounts {
         this.password = password;
         this.role = role;
         this.status = status;
+        this.startDate = startDate;
     }
 
     public String getAccountId() {
@@ -87,4 +89,7 @@ public class Accounts {
     public void setStatus(String status) {
         this.status = status;
     }
+    public String getStartDate() {return startDate;}
+
+    public void setStartDate(String startDate) {this.startDate = startDate;}
 }

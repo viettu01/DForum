@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ import com.tuplv.dforum.R;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView tvRegister ,tvForgotPassword;
+
+    ImageView ic_back_arrow_login;
     private FirebaseAuth mAuth;
 
     @Override
@@ -45,6 +48,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         tvForgotPassword.setOnClickListener(this);
+
+        ic_back_arrow_login = findViewById(R.id.ic_back_arrow_login);
+        ic_back_arrow_login.setOnClickListener(this);
     }
 
     public void login(String email, String password) {
@@ -112,11 +118,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.tvRegister:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                this.finish();
                 startActivity(intent);
                 break;
             case R.id.tvForgotPassword:
                 dialogForgotPassword();
+                break;
+            case R.id.ic_back_arrow_login:
+                this.finish();
                 break;
 //            case R.id.btnLogin:
 //                email = txtEmail.getText().toString();
