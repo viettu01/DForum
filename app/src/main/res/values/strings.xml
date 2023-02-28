@@ -9,4 +9,13 @@
     <string name="tim_kiem">Tìm kiếm</string>
     <string name="thong_bao">Thông báo</string>
     <string name="tìm_kiem">Tìm kiếm</string>
+    <string name="kiem_duyet_bai_dang">Kiểm duyệt bài đăng</string>
+    <string name="them_dien_dan">Thêm diễn dàn</string>
+    <string name="dang_bai_viet">Đăng bài viết</string>
+    <string name="tao_bai_viet_moi">Tạo bài viết mới</string>
+    <string name="chuyen_muc">Chuyên mục</string>
+    <string name="the_loai">Thể loại</string>
+    <string name="tieu_de">Tiêu đề</string>
+    <string name="noi_dung">Nội dung</string>
+    <string name="ban_muon_chia_se_gi">Bạn muốn chia sẻ gì?</string>
 </resources>
