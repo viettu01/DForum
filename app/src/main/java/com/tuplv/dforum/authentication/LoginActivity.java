@@ -36,13 +36,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getViews();
+        init();
 
         // khởi tạo xác thực firebase
         mAuth = FirebaseAuth.getInstance();
     }
 
-    private void getViews() {
+    private void init() {
         tvRegister = findViewById(R.id.tvRegister);
         tvRegister.setOnClickListener(this);
 

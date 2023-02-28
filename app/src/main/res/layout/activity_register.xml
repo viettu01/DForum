@@ -78,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="error email"
+            android:visibility="gone"
             android:textColor="@color/error_color" />
 
         <LinearLayout
@@ -122,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="error password"
+            android:visibility="gone"
             android:textColor="@color/error_color" />
 
         <LinearLayout
@@ -165,6 +167,7 @@
             android:layout_height="wrap_content"
             android:text="error confirm password"
             android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
             android:textColor="@color/error_color" />
 
         <Button
