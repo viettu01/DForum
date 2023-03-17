@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/mnuSearch"
-        android:icon="@drawable/ic_search_solid_24"
+        android:icon="@drawable/ic_search_white_24"
         android:title="@string/tim_kiem"
-        app:showAsAction="always" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
     <item
         android:id="@+id/mnuNotify"
-        android:icon="@drawable/ic_bell_solid_24"
+        android:icon="@drawable/ic_notifications_white_24"
         android:title="@string/thong_bao"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 </menu>

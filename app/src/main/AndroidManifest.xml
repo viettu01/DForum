@@ -23,6 +23,9 @@
 <!--            </intent-filter>-->
         </activity>
         <activity
+            android:name=".activity.AddForumActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

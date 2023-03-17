@@ -1,35 +1,33 @@
 package com.tuplv.dforum;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.ActionProvider;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.AppBarLayout;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     private Toolbar tbMain;
-    private AutoCompleteTextView atctvSearch;
-    private LinearLayout llSearch;
-    private AppBarLayout abl;
-    private ImageView imgCloseSearch;
     private long outApp;
-    Toast outToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-
         setSupportActionBar(tbMain);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -71,55 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.mnuHome:
-                        viewPager.setCurrentItem(0);
-                        break;
-                    case R.id.mnuAddPosts:
-                        viewPager.setCurrentItem(1);
-                        break;
-                    case R.id.mnuProfile:
-                        viewPager.setCurrentItem(2);
-                        break;
-                    case R.id.mnuAdmin:
-                        viewPager.setCurrentItem(3);
-                        break;
-                    default:
-                }
-                return true;
-            }
-        });
-        imgCloseSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                llSearch.setVisibility(View.GONE);
-                abl.setVisibility(View.VISIBLE);
-            }
-        });
+        bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
     }
 
     private void init() {
         tbMain = findViewById(R.id.tbMain);
         viewPager = findViewById(R.id.viewPager);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
-        atctvSearch = findViewById(R.id.atctvSearch);
-        llSearch = findViewById(R.id.llSearch);
-        abl = findViewById(R.id.abl);
-        imgCloseSearch = findViewById(R.id.imgCloseSearch);
     }
 
     @Override
     public void onBackPressed() {
+        Toast outToast = Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
         if (outApp + 2000 > System.currentTimeMillis()) {
             outToast.cancel();
             super.onBackPressed();
             return;
         } else {
-            Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT).show();
+            outToast.show();
         }
         outApp = System.currentTimeMillis();
     }
@@ -127,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -135,13 +102,46 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mnuSearch:
-                llSearch.setVisibility(View.VISIBLE);
-                abl.setVisibility(View.GONE);
+                SearchView searchView = (SearchView) item.getActionView();
+                searchView.setQueryHint("Tìm kiếm ...");
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        // Do something when the search button is pressed
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        // Do something when the search text changes
+                        return true;
+                    }
+                });
                 break;
             case R.id.mnuNotify:
                 Toast.makeText(this, "Thông báo", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mnuHome:
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.mnuAddPosts:
+                viewPager.setCurrentItem(1);
+                break;
+            case R.id.mnuProfile:
+                viewPager.setCurrentItem(2);
+                break;
+            case R.id.mnuAdmin:
+                viewPager.setCurrentItem(3);
+                break;
+        }
+        return true;
     }
 }

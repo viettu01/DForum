@@ -21,7 +21,7 @@
             android:gravity="center"
             android:text="@string/tao_bai_viet_moi"
             android:textColor="@color/black"
-            android:textSize="@dimen/_24sdp"
+            android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -42,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:text="@string/chuyen_muc"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_13sdp" />
 
                 <Spinner
@@ -62,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:text="@string/the_loai"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_13sdp" />
 
                 <Spinner
@@ -76,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/tieu_de"
+            android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
 
         <EditText
@@ -91,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/noi_dung"
+            android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
 
         <EditText
@@ -111,6 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_radius_10"
-        android:text="@string/dang_bai_viet" />
+        android:text="@string/dang_bai_viet"
+        android:textSize="@dimen/_15sdp" />
 
 </RelativeLayout>

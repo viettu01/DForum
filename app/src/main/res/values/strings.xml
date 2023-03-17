@@ -18,4 +18,10 @@
     <string name="tieu_de">Tiêu đề</string>
     <string name="noi_dung">Nội dung</string>
     <string name="ban_muon_chia_se_gi">Bạn muốn chia sẻ gì?</string>
+    <string name="tao_dien_dan_moi">Tạo diễn đàn mới</string>
+    <string name="ten_dien_dan">Tên diễn đàn</string>
+    <string name="dien_dan">Diễn đàn?</string>
+    <string name="tao_dien_dan">Tạo diễn đàn</string>
+    <string name="mo_ta_dien_dan">Mô tả diễn đàn</string>
+    <string name="mo_ta">Mô tả?</string>
 </resources>

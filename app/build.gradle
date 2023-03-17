@@ -24,6 +24,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -79,4 +80,8 @@ dependencies {
     // Scalable Size Unit (Support for different screen sizes)
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    //RichTextEditor
+//    implementation 'com.github.irshulx:rte-toolkit:1.1.8'
+//    implementation 'com.1gravity:android-rteditor:1.7.8'
 }

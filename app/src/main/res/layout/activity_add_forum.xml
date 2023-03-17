@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbAddNewForum"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/tao_dien_dan_moi"
+        app:titleTextColor="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tvNameForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:text="@string/ten_dien_dan"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp" />
+
+        <EditText
+            android:id="@+id/edtContentForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNameForum"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/edit_text_radius_5"
+            android:gravity="top"
+            android:hint="@string/dien_dan"
+            android:inputType="textMultiLine"
+            android:textColorHint="@color/gray_color" />
+
+        <TextView
+            android:id="@+id/tvDesForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtContentForum"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:text="@string/mo_ta_dien_dan"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp" />
+
+        <EditText
+            android:id="@+id/edtDesForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnAddForum"
+            android:layout_below="@id/tvDesForum"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/edit_text_radius_5"
+            android:gravity="top"
+            android:hint="@string/mo_ta"
+            android:inputType="textMultiLine"
+            android:textColorHint="@color/gray_color" />
+
+        <Button
+            android:id="@+id/btnAddForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_radius_10"
+            android:text="@string/tao_dien_dan"
+            android:textSize="@dimen/_15sdp" />
+    </RelativeLayout>
+</LinearLayout>

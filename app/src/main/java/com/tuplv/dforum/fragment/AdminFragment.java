@@ -1,17 +1,18 @@
 package com.tuplv.dforum.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.AddForumActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
 
@@ -34,7 +35,7 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
         btnAddForum = view.findViewById(R.id.btnAddForum);
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint("NonConstantResourceId, CommitTransaction")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -42,7 +43,7 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(view.getContext(), "Kiểm duyệt", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnAddForum:
-                Toast.makeText(view.getContext(), "Thêm diễn đàn", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), AddForumActivity.class));
                 break;
         }
     }

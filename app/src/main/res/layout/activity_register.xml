@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_10sdp"
-        app:srcCompat="@drawable/ic_back_arrow" />
+        app:srcCompat="@drawable/ic_arrow_back_white_24" />
 
     <TextView
         android:layout_width="match_parent"
