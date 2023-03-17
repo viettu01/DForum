@@ -11,6 +11,17 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/main_color</item>
+
+        <!--        font mặc định-->
+        <item name="android:fontFamily">@font/helvetica_neue_regular</item>
+
+        <!--        màu chữ mặc định-->
+        <item name="android:textColor">@color/black</item>
+
         <!-- Customize your theme here. -->
+    </style>
+    <style name="ToolbarTitleStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

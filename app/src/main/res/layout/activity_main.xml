@@ -20,6 +20,7 @@
             android:background="@color/main_color"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="DForum"
+            app:titleTextAppearance="@style/ToolbarTitleStyle"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 

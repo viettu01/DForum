@@ -89,8 +89,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="@dimen/_13sdp"
-            android:text="Quên mật khẩu ?"
-            android:textColor="@color/black" />
+            android:text="Quên mật khẩu ?" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -109,8 +108,7 @@
             android:text="Tạo tài khoản mới"
             android:layout_marginTop="@dimen/_10sdp"
             android:textAlignment="center"
-            android:textSize="@dimen/_13sdp"
-            android:textColor="@color/black" />
+            android:textSize="@dimen/_13sdp" />
 
     </LinearLayout>
 

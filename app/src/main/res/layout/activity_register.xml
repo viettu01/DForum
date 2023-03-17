@@ -57,7 +57,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email"
-                android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp" />
 
             <TextView
@@ -102,7 +101,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mật khẩu"
-                android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp" />
 
             <TextView
@@ -148,7 +146,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nhập lại mật khẩu"
-                android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp" />
 
             <TextView
