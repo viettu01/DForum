@@ -24,4 +24,13 @@
     <string name="tao_dien_dan">Tạo diễn đàn</string>
     <string name="mo_ta_dien_dan">Mô tả diễn đàn</string>
     <string name="mo_ta">Mô tả?</string>
+    <string name="tat_ca">Tất cả</string>
+    <string name="xem_them">Xem thêm</string>
+    <string name="hoi_dap">Hỏi đáp</string>
+    <string name="chia_se_kien_thuc">Chia sẻ kiến thức</string>
+    <string name="luot_xem">Lượt xem</string>
+    <string name="nguyen_van_a">Nguyễn Văn A</string>
+    <string name="tieu_de_bai_viet">Tiêu đề bài viết</string>
+    <string name="viet_binh_luan">Viết bình luận...</string>
+    <string name="lorem">Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem</string>
 </resources>
