@@ -1,72 +1,140 @@
 package com.tuplv.dforum.service;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.tuplv.dforum.MainActivity;
+import com.tuplv.dforum.authentication.LoginActivity;
+import com.tuplv.dforum.authentication.RegisterActivity;
+import com.tuplv.dforum.model.Accounts;
+
+import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class AccountService {
 
-    // kiểm tra độ mạnh mật khẩu
-    @SuppressLint("SetTextI18n")
-    public boolean checkPasswordStrong(TextView tvErrorPassword, String password){
-        Pattern chuHoa =Pattern.compile("[A-Z]");
-        Pattern chuThuong =Pattern.compile("[a-z]");
-        Pattern chuSo =Pattern.compile("[0-9]");
-        Pattern kyTu =Pattern.compile("[,.!@+#$&]");
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        if(password.length()<=8 || !kyTu.matcher(password).find() || !chuHoa.matcher(password).find() || !chuThuong.matcher(password).find() || !chuSo.matcher(password).find()){
-            tvErrorPassword.setText("Mật khẩu phải có 8 ký tự đủ chữ hoa, chữ thường, chữ số và ký tự đặc biệt !");
-            tvErrorPassword.setVisibility(View.VISIBLE);
-            return false;
-        }else {
-            tvErrorPassword.setVisibility(View.GONE);
-            return true;
+    // khai báo firebase
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference();
+    private final Context context;
+
+    public AccountService(Context context) {
+        this.context = context;
+    }
+
+    // Gửi email xác minh tài khoản
+    public void sentEmailVerification(FirebaseUser user) {
+        if (user != null) {
+            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Kiểm tra Email của bạn để xác minh tài khoản", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 
-    // kiểm tra định dạng email
-    @SuppressLint("SetTextI18n")
-    public boolean checkEmail(TextView tvErrorEmail, String emailRegister){
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailRegister).matches()){
-            tvErrorEmail.setText("Không phải địa chỉ email !");
-            tvErrorEmail.setVisibility(View.VISIBLE);
-            return false;
-        }else{
-            tvErrorEmail.setVisibility(View.GONE);
-            return true;
-        }
+    // Đăng ký tài khoản với firebase
+    public void registerAccount(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            sentEmailVerification(user);
+
+                            Date startDate = new Date();
+                            long accountId = startDate.getTime();
+
+                            // tạo một đối tượng account
+                            Accounts accounts = new Accounts(accountId, "user" + accountId, "null", "null", email, password, "user", "enable");
+
+                            // gọi hàm thêm dữ liệu vào firebase
+                            assert user != null;
+                            reference.child("Accounts").child(user.getUid()).setValue(accounts);
+
+                            // Chuyển trang
+                            context.startActivity(new Intent(context, LoginActivity.class));
+                            ((Activity) context).finish();
+
+                        } else {
+                            Toast.makeText(context, "Email đã được sử dụng !",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
-    // kiểm tra mật khẩu và xác nhận mật khẩu
-    @SuppressLint("SetTextI18n")
-    public boolean checkConfirmPassword(TextView tvErrorConfirmPassword, String password, String confirmPassword){
-        if(!password.equals(confirmPassword)){
-            tvErrorConfirmPassword.setText("Mật khẩu không trùng khớp !");
-            tvErrorConfirmPassword.setVisibility(View.VISIBLE);
-            return false;
-        }else{
-            tvErrorConfirmPassword.setVisibility(View.GONE);
-            return true;
-        }
+    public void login(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            // kiểm tra email đã xác minh hay chưa
+                            if (user != null) {
+                                boolean emailVerified = user.isEmailVerified();
+                                if (emailVerified) {
+                                    context.startActivity(new Intent(context, MainActivity.class));
+                                    ((Activity) context).finish();
+                                } else
+                                    Toast.makeText(context, "Để đăng nhập hãy xác minh Email trước", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
-    @SuppressLint("SetTextI18n")
-    public boolean checkEmptyRegister(TextView tvEmail, TextView tvPassword, TextView tvConfirmPassword, String email, String password, String confirmPassword){
-        if(email.isEmpty()){
-            tvEmail.setText("Không được để trống");
-            tvEmail.setVisibility(View.VISIBLE);
-        }
-        if(password.isEmpty()){
-            tvPassword.setText("Không được để trống");
-            tvPassword.setVisibility(View.VISIBLE);
-        }
-        if(confirmPassword.isEmpty()){
-            tvConfirmPassword.setText("Không được để trống");
-            tvConfirmPassword.setVisibility(View.VISIBLE);
-        }
-        return !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty();
+    public void changePasswordToFirebaseAuthentication(String newPassword){
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    // Đổi mật khẩu
+    public void changePasswordToFirebaseRealtime(String newPassword) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        String uid = user.getUid();
+
+        // Tạo một HashMap chứa thuộc tính muốn cập nhật và giá trị mới
+        HashMap<String, Object> updatePassword = new HashMap<>();
+        updatePassword.put("password", newPassword);
+
+        // Sử dụng phương thức updateChildren() để cập nhật thuộc tính cảu Account
+        reference.child("Accounts").child(uid).updateChildren(updatePassword);
     }
 }

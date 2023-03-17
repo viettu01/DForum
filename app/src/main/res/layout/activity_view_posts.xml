@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ViewPostsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbViewPosts"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="Bài viết"
+        app:titleTextColor="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_10sdp">
+
+        <ScrollView
+            android:id="@+id/svViewPosts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgAvatar"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvNamePoster"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:text="@string/nguyen_van_a"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/tvDatePost"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="17/03/2023 16:54"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTitlePost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:text="@string/tieu_de_bai_viet"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvContentPosts"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/noi_dung"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/gray_color" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/white"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_radius_5"
+                android:hint="@string/viet_binh_luan"
+                android:paddingStart="@dimen/_10sdp"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageView
+                android:id="@+id/imgSendComment"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/ic_send_black_24" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
