@@ -10,14 +10,25 @@
 
     <ImageView
         android:id="@+id/ic_back_arrow_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_10sdp"
         app:srcCompat="@drawable/ic_arrow_back_white_24" />
 
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_below="@+id/ic_back_arrow_register"
+        android:background="@mipmap/ic_launcher" />
+
     <TextView
+        android:id="@+id/app_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -25,15 +36,14 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:layout_marginBottom="@dimen/_15sdp"
-        android:layout_above="@+id/linear_register"
+        android:layout_below="@+id/app_logo"
         android:text="Đăng ký tài khoản DForum" />
 
     <LinearLayout
-        android:id="@id/linear_register"
+        android:id="@+id/linear_register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="@dimen/_48sdp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_name"
         android:background="@drawable/layout_radius"
         android:orientation="vertical"
         android:padding="@dimen/_16sdp">
@@ -49,6 +59,7 @@
                 android:text="Email"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +71,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:endIconMode="clear_text">
 
             <EditText
@@ -78,8 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="error email"
-            android:visibility="gone"
-            android:textColor="@color/error_color" />
+            android:textColor="@color/error_color"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -93,6 +104,7 @@
                 android:text="Mật khẩu"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,8 +135,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="error password"
-            android:visibility="gone"
-            android:textColor="@color/error_color" />
+            android:textColor="@color/error_color"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -138,6 +150,7 @@
                 android:text="Nhập lại mật khẩu"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,6 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
+
             <EditText
                 android:id="@+id/edtRegisterConfirmPassword"
                 android:layout_width="match_parent"
@@ -165,17 +179,17 @@
             android:id="@+id/tvErrorConfirmPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="error confirm password"
             android:layout_marginTop="@dimen/_5sdp"
-            android:visibility="gone"
-            android:textColor="@color/error_color" />
+            android:text="error confirm password"
+            android:textColor="@color/error_color"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:backgroundTint="@color/main_color"
+            android:background="@drawable/button_radius_10"
             android:text="Đăng ký tài khoản"
             android:textAllCaps="false"
             android:textSize="@dimen/_13sdp" />

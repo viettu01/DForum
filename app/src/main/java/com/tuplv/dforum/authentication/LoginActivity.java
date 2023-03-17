@@ -3,17 +3,24 @@ package com.tuplv.dforum.authentication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,24 +29,32 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.tuplv.dforum.MainActivity;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.service.AccountService;
+
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView tvRegister ,tvForgotPassword;
-
+    TextView tvRegister, tvForgotPassword;
+    Button btnLogin;
+    EditText edtLoginEmail, edtLoginPassword;
     ImageView ic_back_arrow_login;
-    private FirebaseAuth mAuth;
+    private String email, password;
+    private AccountService accountService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Ánh xạ
         init();
 
-        // khởi tạo xác thực firebase
-        mAuth = FirebaseAuth.getInstance();
+        accountService = new AccountService(this);
     }
 
     private void init() {
@@ -51,27 +66,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         ic_back_arrow_login = findViewById(R.id.ic_back_arrow_login);
         ic_back_arrow_login.setOnClickListener(this);
+
+        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(this);
+
+        edtLoginEmail = findViewById(R.id.edtLoginEmail);
+        edtLoginPassword = findViewById(R.id.edtLoginPassword);
     }
 
-    public void login(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
-                        }
-                    }
-                });
+    private void getText() {
+        email = edtLoginEmail.getText().toString().trim();
+        password = edtLoginPassword.getText().toString().trim();
     }
 
     // Xử lý quên mật khẩu
@@ -79,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_forgot_password);
+
+        // Không cho thoát khi bấm ra ngoài màn hình
         dialog.setCanceledOnTouchOutside(false);
 
         //ánh xạ
@@ -97,10 +104,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Kiểm tra email để hoàn tất đặt lại mật khẩu mới", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
                             }
                         }
                     });
-                }
+                } else
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập Email để tiếp tục", Toast.LENGTH_SHORT).show();
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -113,12 +122,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         dialog.show();
     }
 
+    // Kiểm tra trống và đăng nhập
+    private void login() {
+        getText();
+        if (!email.isEmpty() || !password.isEmpty()) {
+            accountService.login(email, password);
+        } else
+            Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvRegister:
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.tvForgotPassword:
                 dialogForgotPassword();
@@ -126,13 +144,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.ic_back_arrow_login:
                 this.finish();
                 break;
-//            case R.id.btnLogin:
-//                email = txtEmail.getText().toString();
-//                password = txtPassword.getText().toString();
-//                if (!email.isEmpty() || !password.isEmpty()) {
-//                    signInID(email, password);
-//                }
-//                break;
+            case R.id.btnLogin:
+                login();
+                break;
         }
     }
 }

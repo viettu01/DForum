@@ -1,63 +1,43 @@
 package com.tuplv.dforum.authentication;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.tuplv.dforum.MainActivity;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.model.Accounts;
 import com.tuplv.dforum.service.AccountService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Pattern;
 
+@SuppressLint("SetTextI18n")
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     TextView tvErrorEmail, tvErrorPassword, tvErrorConfirmPassword;
     EditText edtRegisterEmail, edtRegisterPassword, edtRegisterConfirmPassword;
     Button btnRegister;
     ImageView ic_back_arrow_register;
-    private FirebaseAuth mAuth;
+    private String email, password, confirmPassword;
     private AccountService accountService;
-
-    // khai báo firebase
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         // ánh xạ
         init();
         // khai báo account service
-        accountService = new AccountService();
-
-        // khởi tạo xác thực firebase
-        mAuth = FirebaseAuth.getInstance();
+        accountService = new AccountService(this);
     }
 
     private void init() {
@@ -74,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edtRegisterConfirmPassword = findViewById(R.id.edtRegisterConfirmPassword);
         edtRegisterConfirmPassword.addTextChangedListener(this);
 
-
         btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(this);
 
@@ -82,46 +61,81 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         ic_back_arrow_register.setOnClickListener(this);
     }
 
-    // Đăng ký tài khoản với firebase
-    public void registerAccount() {
+    // Lấy giá trị người dùng nhập trên view
+    private void getText(){
+        email = edtRegisterEmail.getText().toString().trim();
+        password = edtRegisterPassword.getText().toString().trim();
+        confirmPassword = edtRegisterConfirmPassword.getText().toString().trim();
+    }
 
-        String email = edtRegisterEmail.getText().toString().trim();
-        String password = edtRegisterPassword.getText().toString().trim();
+    // kiểm tra độ mạnh mật khẩu
+    private boolean checkPasswordStrength() {
+        Pattern chuHoa = Pattern.compile("[A-Z]");
+        Pattern chuThuong = Pattern.compile("[a-z]");
+        Pattern chuSo = Pattern.compile("[0-9]");
+        Pattern kyTu = Pattern.compile("[,.!@+#$&]");
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+        if (password.length() <= 8
+                || !kyTu.matcher(password).find()
+                || !chuHoa.matcher(password).find()
+                || !chuThuong.matcher(password).find()
+                || !chuSo.matcher(password).find()) {
+            tvErrorPassword.setText("Mật khẩu phải có 8 ký tự đủ chữ hoa, chữ thường, chữ số và ký tự đặc biệt !");
+            tvErrorPassword.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            tvErrorPassword.setVisibility(View.GONE);
+            return true;
+        }
+    }
 
-                            Date startDate = new Date();
-                            long accountId = startDate.getTime();
+    // kiểm tra định dạng email
+    private boolean checkEmail() {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tvErrorEmail.setText("Không phải địa chỉ email !");
+            tvErrorEmail.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            tvErrorEmail.setVisibility(View.GONE);
+            return true;
+        }
+    }
 
-                            System.out.println(startDate);
+    // kiểm tra mật khẩu và xác nhận mật khẩu
+    private boolean checkConfirmPassword() {
+        if (!password.equals(confirmPassword)) {
+            tvErrorConfirmPassword.setText("Mật khẩu không trùng khớp !");
+            tvErrorConfirmPassword.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            tvErrorConfirmPassword.setVisibility(View.GONE);
+            return true;
+        }
+    }
 
-                            // thông báo đăng ký tài khỏa thành công
-                            Toast.makeText(RegisterActivity.this, "Đăng ký tài khoản thành công !",
-                                    Toast.LENGTH_SHORT).show();
+    private boolean checkEmptyRegister() {
+        if (email.isEmpty()) {
+            tvErrorEmail.setText("Không được để trống");
+            tvErrorEmail.setVisibility(View.VISIBLE);
+        }
+        if (password.isEmpty()) {
+            tvErrorPassword.setText("Không được để trống");
+            tvErrorPassword.setVisibility(View.VISIBLE);
+        }
+        if (confirmPassword.isEmpty()) {
+            tvErrorConfirmPassword.setText("Không được để trống");
+            tvErrorConfirmPassword.setVisibility(View.VISIBLE);
+        }
+        return !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty();
+    }
 
-                            // tạo một đối tượng account
-                            Accounts accounts = new Accounts(accountId, "user"+ accountId, "story", "avatarUrl", email, password, "user", "enable");
-
-                            // gọi hàm thêm dữ liệu vào firebase
-                            assert user != null;
-                            reference.child("Accounts").child(user.getUid()).setValue(accounts);
-
-                            // chuyển đến trang chủ
-                            Intent intentMain = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intentMain);
-                            finish();
-
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Đăng ký tài khoản thất bại, vui lòng thử lại sau !",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    private void register(){
+        getText();
+        if (checkEmptyRegister()) {
+            if (checkEmail() && checkPasswordStrength() && checkConfirmPassword()) {
+                accountService.registerAccount(email,password);
+            }
+        }
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -129,24 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnRegister:
-
-
-                registerAccount();
-
-
-                // lấy giá trị người dùng nhập để kiểm tra
-                String email = edtRegisterEmail.getText().toString().trim();
-                String password = edtRegisterPassword.getText().toString().trim();
-                String confirmPassword = edtRegisterConfirmPassword.getText().toString().trim();
-
-                if (accountService.checkEmptyRegister(tvErrorEmail, tvErrorPassword, tvErrorConfirmPassword, email, password, confirmPassword)) {
-                    // thỏa mãn đồng thời 3 điều kiện thì cho phép tạo tài khoản
-                    if (accountService.checkEmail(tvErrorEmail, email)
-                            && accountService.checkPasswordStrong(tvErrorPassword, password)
-                            && accountService.checkConfirmPassword(tvErrorConfirmPassword, password, confirmPassword)) {
-//                        registerAccount();
-                    }
-                }
+                register();
                 break;
             case R.id.ic_back_arrow_register:
                 this.finish();
@@ -161,20 +158,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        String passwordRegister = edtRegisterPassword.getText().toString().trim();
-        String confirmPasswordRegister = edtRegisterConfirmPassword.getText().toString().trim();
+        getText();
 
         if (charSequence == edtRegisterEmail.getText()) {
-            String emailRegister = edtRegisterEmail.getText().toString().trim();
-            accountService.checkEmail(tvErrorEmail, emailRegister);
+            checkEmail();
         }
         if (charSequence == edtRegisterPassword.getText()) {
-            accountService.checkPasswordStrong(tvErrorPassword, passwordRegister);
-            if (!confirmPasswordRegister.isEmpty())
-                accountService.checkConfirmPassword(tvErrorConfirmPassword, passwordRegister, confirmPasswordRegister);
+            checkPasswordStrength();
+            if (!confirmPassword.isEmpty())
+                checkConfirmPassword();
         }
         if (charSequence == edtRegisterConfirmPassword.getText()) {
-            accountService.checkConfirmPassword(tvErrorConfirmPassword, passwordRegister, confirmPasswordRegister);
+            checkConfirmPassword();
         }
     }
 
