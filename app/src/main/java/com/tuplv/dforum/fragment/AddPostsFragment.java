@@ -15,7 +15,7 @@ import com.tuplv.dforum.R;
 
 public class AddPostsFragment extends Fragment {
 
-    Spinner spnCategory, spnType;
+    Spinner spnCategory, spnForum;
     EditText edtTitlePost, edtContentPost;
     Button btnAddPost;
 
@@ -31,7 +31,7 @@ public class AddPostsFragment extends Fragment {
 
     private void init(View view) {
         spnCategory = view.findViewById(R.id.spnCategory);
-        spnType = view.findViewById(R.id.spnType);
+        spnForum = view.findViewById(R.id.spnForum);
         edtTitlePost = view.findViewById(R.id.edtTitlePost);
         edtContentPost = view.findViewById(R.id.edtContentPost);
         btnAddPost = view.findViewById(R.id.btnAddPost);

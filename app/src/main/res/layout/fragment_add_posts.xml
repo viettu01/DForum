@@ -60,11 +60,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:text="@string/the_loai"
+                    android:text="@string/dien_dan"
                     android:textSize="@dimen/_13sdp" />
 
                 <Spinner
-                    android:id="@+id/spnType"
+                    android:id="@+id/spnForum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -83,7 +83,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/edit_text_radius_5"
-            android:inputType="text" />
+            android:hint="@string/tieu_de_bai_viet_"
+            android:inputType="text"
+            android:textColorHint="@color/gray_color"
+            tools:ignore="Autofill" />
 
         <TextView
             android:layout_width="match_parent"
