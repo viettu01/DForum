@@ -1,13 +1,8 @@
 package com.tuplv.dforum.service;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.util.Patterns;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,21 +16,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.MainActivity;
 import com.tuplv.dforum.authentication.LoginActivity;
-import com.tuplv.dforum.authentication.RegisterActivity;
 import com.tuplv.dforum.model.Accounts;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class AccountService {
 
-    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     // khai báo firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference();
-    private final Context context;
+    Context context;
 
     public AccountService(Context context) {
         this.context = context;
@@ -111,7 +104,7 @@ public class AccountService {
                 });
     }
 
-    public void changePasswordToFirebaseAuthentication(String newPassword){
+    public void changePasswordToFirebaseAuthentication(String newPassword) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -136,5 +129,11 @@ public class AccountService {
 
         // Sử dụng phương thức updateChildren() để cập nhật thuộc tính cảu Account
         reference.child("Accounts").child(uid).updateChildren(updatePassword);
+    }
+
+    public void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show();
+        context.startActivity(new Intent(context, LoginActivity.class));
     }
 }

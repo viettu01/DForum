@@ -67,6 +67,7 @@
                         android:textSize="@dimen/_11sdp" />
 
                     <Button
+                        android:id="@+id/btnLogout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_2sdp"
@@ -96,12 +97,11 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:layout_marginRight="@dimen/_8sdp"
-                        tools:src="@drawable/envelope_solid" />
+                        android:background="@drawable/envelope_solid" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -118,12 +118,11 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:layout_marginRight="@dimen/_8sdp"
-                        tools:src="@drawable/clock_solid" />
+                        android:background="@drawable/clock_solid" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
