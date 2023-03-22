@@ -47,7 +47,6 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="center"
             android:text="@string/hoi_dap"
-            android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -69,7 +68,6 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:gravity="center"
             android:text="@string/chia_se_kien_thuc"
-            android:textColor="@color/black"
             android:textSize="@dimen/_15sdp" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/ten_dien_dan"
-            android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
 
         <EditText
@@ -49,7 +48,6 @@
             android:layout_below="@id/edtContentForum"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/mo_ta_dien_dan"
-            android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
 
         <EditText
@@ -72,6 +70,7 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/button_radius_10"
             android:text="@string/tao_dien_dan"
+            android:textAllCaps="false"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>
 </LinearLayout>
