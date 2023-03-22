@@ -57,16 +57,14 @@
                             android:layout_height="0dp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:text="@string/nguyen_van_a"
-                            android:textColor="@color/black" />
+                            android:text="@string/nguyen_van_a" />
 
                         <TextView
                             android:id="@+id/tvDatePost"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="17/03/2023 16:54"
-                            android:textColor="@color/black" />
+                            android:text="17/03/2023 16:54" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -76,7 +74,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:text="@string/tieu_de_bai_viet"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
@@ -86,7 +83,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="@string/noi_dung"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp" />
 
                 <View

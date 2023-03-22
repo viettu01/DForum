@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/tieu_de"
-        android:textColor="@color/black"
         android:textSize="@dimen/_15sdp" />
 
     <ImageView
@@ -32,6 +31,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="100"
-        android:textColor="@color/black"
         android:textSize="@dimen/_14sdp" />
 </LinearLayout>
