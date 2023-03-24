@@ -30,7 +30,7 @@
             android:textSize="@dimen/_13sdp" />
 
         <EditText
-            android:id="@+id/edtContentForum"
+            android:id="@+id/edtNameForum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvNameForum"
@@ -45,7 +45,7 @@
             android:id="@+id/tvDesForum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edtContentForum"
+            android:layout_below="@id/edtNameForum"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/mo_ta_dien_dan"
             android:textSize="@dimen/_13sdp" />
