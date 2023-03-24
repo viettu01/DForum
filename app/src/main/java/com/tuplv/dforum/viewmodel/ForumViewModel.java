@@ -1,6 +1,6 @@
-package com.tuplv.dforum.service;
+package com.tuplv.dforum.viewmodel;
 
-import static com.tuplv.dforum.constant.Constant.TABLE_FORUM;
+import static com.tuplv.dforum.until.Constant.TABLE_FORUM;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -20,13 +20,13 @@ import com.tuplv.dforum.model.Forum;
 
 import java.util.List;
 
-public class ForumService {
+public class ForumViewModel {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     //Khởi tạo DatabaseReference
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Context context;
 
-    public ForumService(Context context) {
+    public ForumViewModel(Context context) {
         this.context = context;
         FirebaseApp.initializeApp(context);
     }

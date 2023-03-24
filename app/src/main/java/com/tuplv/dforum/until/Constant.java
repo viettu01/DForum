@@ -1,4 +1,4 @@
-package com.tuplv.dforum.constant;
+package com.tuplv.dforum.until;
 
 public class Constant {
     public static final String STATUS_ENABLE = "ENABLE";

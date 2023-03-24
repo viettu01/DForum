@@ -1,41 +1,27 @@
-package com.tuplv.dforum.authentication;
+package com.tuplv.dforum.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.tuplv.dforum.MainActivity;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.service.AccountService;
-
-import java.util.HashMap;
+import com.tuplv.dforum.viewmodel.AccountViewModel;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText edtLoginEmail, edtLoginPassword;
     ImageView ic_back_arrow_login;
     private String email, password;
-    private AccountService accountService;
+    private AccountViewModel accountViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         init();
 
-        accountService = new AccountService(this);
+        accountViewModel = new AccountViewModel(this);
     }
 
     private void init() {
@@ -125,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void login() {
         getText();
         if (!email.isEmpty() || !password.isEmpty()) {
-            accountService.login(email, password);
+            accountViewModel.login(email, password);
         } else
             Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
     }

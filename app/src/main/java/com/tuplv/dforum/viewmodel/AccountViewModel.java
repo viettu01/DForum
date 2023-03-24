@@ -1,4 +1,4 @@
-package com.tuplv.dforum.service;
+package com.tuplv.dforum.viewmodel;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,14 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.tuplv.dforum.MainActivity;
-import com.tuplv.dforum.authentication.LoginActivity;
+import com.tuplv.dforum.view.activity.MainActivity;
+import com.tuplv.dforum.view.activity.LoginActivity;
 import com.tuplv.dforum.model.Accounts;
 
 import java.util.Date;
 import java.util.HashMap;
 
-public class AccountService {
+public class AccountViewModel {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -30,7 +30,7 @@ public class AccountService {
     DatabaseReference reference = database.getReference();
     Context context;
 
-    public AccountService(Context context) {
+    public AccountViewModel(Context context) {
         this.context = context;
     }
 

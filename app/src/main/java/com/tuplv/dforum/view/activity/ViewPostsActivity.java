@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

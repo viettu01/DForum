@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_color"
     android:orientation="vertical"
-    tools:context=".authentication.RegisterActivity">
+    tools:context=".view.activity.RegisterActivity">
 
     <ImageView
         android:id="@+id/ic_back_arrow_register"

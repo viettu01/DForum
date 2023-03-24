@@ -1,7 +1,6 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.view.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +11,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.model.Forum;
-import com.tuplv.dforum.service.ForumService;
+import com.tuplv.dforum.viewmodel.ForumViewModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AddForumActivity extends AppCompatActivity {
@@ -23,7 +21,7 @@ public class AddForumActivity extends AppCompatActivity {
     EditText edtNameForum, edtDesForum;
     Button btnAddForum;
     Toolbar tbAddNewForum;
-    ForumService forumService;
+    ForumViewModel forumViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,7 @@ public class AddForumActivity extends AppCompatActivity {
         edtDesForum = findViewById(R.id.edtDesForum);
         btnAddForum = findViewById(R.id.btnAddForum);
         tbAddNewForum = findViewById(R.id.tbAddNewForum);
-        forumService = new ForumService(this);
+        forumViewModel = new ForumViewModel(this);
 
         btnAddForum.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +57,7 @@ public class AddForumActivity extends AppCompatActivity {
 //                finish();
 
                 List<Forum> forums = new ArrayList<>();
-                forumService.findAll(forums);
+                forumViewModel.findAll(forums);
 
                 Toast.makeText(AddForumActivity.this, "size" + String.valueOf(forums.size()), Toast.LENGTH_SHORT).show();
             }

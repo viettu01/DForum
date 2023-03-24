@@ -1,7 +1,6 @@
-package com.tuplv.dforum.fragment;
+package com.tuplv.dforum.view.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,12 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.service.AccountService;
+import com.tuplv.dforum.viewmodel.AccountViewModel;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     Button btnLogout;
-    private  AccountService accountService;
+    private AccountViewModel accountViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         init(view);
 
-        accountService = new AccountService(getContext());
+        accountViewModel = new AccountViewModel(getContext());
 
         return view;
     }
@@ -40,7 +39,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogout:
-                accountService.logout();
+                accountViewModel.logout();
                 break;
         }
     }

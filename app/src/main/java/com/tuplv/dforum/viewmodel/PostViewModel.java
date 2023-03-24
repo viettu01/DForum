@@ -1,4 +1,4 @@
-package com.tuplv.dforum.service;
+package com.tuplv.dforum.viewmodel;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class PostService {
+public class PostViewModel {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     // khai báo firebase
@@ -15,7 +15,7 @@ public class PostService {
 
     Context context;
 
-    public PostService(Context context) {
+    public PostViewModel(Context context) {
         this.context = context;
     }
 

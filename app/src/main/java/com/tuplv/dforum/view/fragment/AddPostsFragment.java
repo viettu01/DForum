@@ -1,4 +1,4 @@
-package com.tuplv.dforum.fragment;
+package com.tuplv.dforum.view.fragment;
 
 import android.os.Bundle;
 

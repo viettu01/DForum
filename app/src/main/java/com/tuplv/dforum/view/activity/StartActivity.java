@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.tuplv.dforum.MainActivity;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.service.AccountService;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/gray_color"
-    tools:context=".fragment.ProfileFragment">
+    tools:context=".view.fragment.ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"

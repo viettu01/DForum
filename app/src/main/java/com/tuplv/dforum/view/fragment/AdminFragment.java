@@ -1,4 +1,4 @@
-package com.tuplv.dforum.fragment;
+package com.tuplv.dforum.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.AddForumActivity;
+import com.tuplv.dforum.view.activity.AddForumActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
 
