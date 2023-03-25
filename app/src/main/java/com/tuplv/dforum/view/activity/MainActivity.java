@@ -47,12 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
                         break;
                     case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.mnuAddPosts).setChecked(true);
-                        break;
-                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
                         break;
-                    case 3:
+                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
                         break;
                 }
@@ -127,14 +124,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.mnuHome:
                 viewPager.setCurrentItem(0);
                 break;
-            case R.id.mnuAddPosts:
+            case R.id.mnuProfile:
                 viewPager.setCurrentItem(1);
                 break;
-            case R.id.mnuProfile:
-                viewPager.setCurrentItem(2);
-                break;
             case R.id.mnuAdmin:
-                viewPager.setCurrentItem(3);
+                viewPager.setCurrentItem(2);
                 break;
         }
         return true;

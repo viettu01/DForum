@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/_15sdp"
-    tools:context=".view.fragment.AddPostsFragment">
+    tools:context=".view.activity.AddPostsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbAddPost"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/dang_bai"
+        app:titleTextColor="@android:color/white"/>
 
     <LinearLayout
         android:id="@+id/llAddPost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btnAddPost"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:gravity="center"
-            android:text="@string/tao_bai_viet_moi"
-            android:textSize="@dimen/_20sdp"
-            android:textStyle="bold" />
+        android:layout_below="@id/tbAddPost"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,22 +103,10 @@
             android:id="@+id/edtContentPost"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/edit_text_radius_5"
             android:gravity="top"
             android:hint="@string/ban_muon_chia_se_gi"
             android:inputType="textMultiLine"
             android:textColorHint="@color/gray_color" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnAddPost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_radius_10"
-        android:text="@string/dang_bai_viet"
-        android:textAllCaps="false"
-        android:textSize="@dimen/_15sdp" />
-
 </RelativeLayout>

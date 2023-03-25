@@ -6,10 +6,6 @@
         android:title="@string/trang_chu" />
 
     <item
-        android:id="@+id/mnuAddPosts"
-        android:icon="@drawable/ic_plus_solid_24"
-        android:title="@string/them_bai_viet" />
-    <item
         android:id="@+id/mnuProfile"
         android:icon="@drawable/ic_user_solid_24"
         android:title="@string/trang_ca_nhan" />

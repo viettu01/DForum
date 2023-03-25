@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.tuplv.dforum.view.fragment.AddPostsFragment;
 import com.tuplv.dforum.view.fragment.AdminFragment;
 import com.tuplv.dforum.view.fragment.HomeFragment;
 import com.tuplv.dforum.view.fragment.ProfileFragment;
@@ -20,10 +19,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 1:
-                return new AddPostsFragment();
-            case 2:
                 return new ProfileFragment();
-            case 3:
+            case 2:
                 return new AdminFragment();
             default:
                 return new HomeFragment();

@@ -40,6 +40,9 @@
 <!--            </intent-filter>-->
         </activity>
         <activity
+            android:name=".view.activity.AddPostsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.AddForumActivity"
             android:exported="false" />
         <activity
