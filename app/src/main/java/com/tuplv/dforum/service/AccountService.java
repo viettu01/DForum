@@ -1,4 +1,4 @@
-package com.tuplv.dforum.viewmodel;
+package com.tuplv.dforum.service;
 
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
@@ -18,20 +18,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.model.Accounts;
-import com.tuplv.dforum.view.activity.LoginActivity;
-import com.tuplv.dforum.view.activity.MainActivity;
+import com.tuplv.dforum.activity.LoginActivity;
+import com.tuplv.dforum.activity.MainActivity;
 
 import java.util.Date;
 import java.util.HashMap;
 
-public class AccountViewModel extends ViewModel {
+public class AccountService extends ViewModel {
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference reference = database.getReference();
 
     Context context;
 
-    public AccountViewModel(Context context) {
+    public AccountService(Context context) {
         this.context = context;
     }
 

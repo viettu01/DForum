@@ -1,13 +1,13 @@
-package com.tuplv.dforum.view.adapter;
+package com.tuplv.dforum.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.tuplv.dforum.view.fragment.AdminFragment;
-import com.tuplv.dforum.view.fragment.HomeFragment;
-import com.tuplv.dforum.view.fragment.ProfileFragment;
+import com.tuplv.dforum.fragment.AdminFragment;
+import com.tuplv.dforum.fragment.HomeFragment;
+import com.tuplv.dforum.fragment.ProfileFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(FragmentManager fm) {

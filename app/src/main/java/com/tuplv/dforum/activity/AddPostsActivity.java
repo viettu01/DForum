@@ -1,4 +1,4 @@
-package com.tuplv.dforum.view.activity;
+package com.tuplv.dforum.activity;
 
 import android.os.Bundle;
 import android.view.Menu;

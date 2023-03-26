@@ -1,4 +1,4 @@
-package com.tuplv.dforum.view.fragment;
+package com.tuplv.dforum.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.view.activity.AddPostsActivity;
+import com.tuplv.dforum.activity.AddPostsActivity;
 
 public class HomeFragment extends Fragment {
 

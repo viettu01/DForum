@@ -1,4 +1,4 @@
-package com.tuplv.dforum.view.activity;
+package com.tuplv.dforum.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.viewmodel.AccountViewModel;
+import com.tuplv.dforum.service.AccountService;
 
 import java.util.regex.Pattern;
 
@@ -26,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button btnRegister;
     ImageView ic_back_arrow_register;
     private String email, password, confirmPassword;
-    private AccountViewModel accountViewModel;
+    private AccountService accountService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         // ánh xạ
         init();
         // khai báo account service
-        accountViewModel = new AccountViewModel(this);
+        accountService = new AccountService(this);
     }
 
     private void init() {
@@ -131,7 +131,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         getText();
         if (checkEmptyRegister()) {
             if (checkEmail() && checkPasswordStrength() && checkConfirmPassword()) {
-                accountViewModel.registerAccount(email,password);
+                accountService.registerAccount(email,password);
             }
         }
     }

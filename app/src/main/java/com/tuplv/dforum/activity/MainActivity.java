@@ -1,4 +1,4 @@
-package com.tuplv.dforum.view.activity;
+package com.tuplv.dforum.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.view.adapter.ViewPagerAdapter;
+import com.tuplv.dforum.adapter.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

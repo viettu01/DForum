@@ -1,4 +1,4 @@
-package com.tuplv.dforum.view.adapter;
+package com.tuplv.dforum.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

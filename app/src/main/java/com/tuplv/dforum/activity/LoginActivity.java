@@ -1,4 +1,4 @@
-package com.tuplv.dforum.view.activity;
+package com.tuplv.dforum.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.viewmodel.AccountViewModel;
+import com.tuplv.dforum.service.AccountService;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText edtLoginEmail, edtLoginPassword;
     ImageView ic_back_arrow_login;
     private String email, password;
-    private AccountViewModel accountViewModel;
+    private AccountService accountService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         init();
 
-        accountViewModel = new AccountViewModel(this);
+        accountService = new AccountService(this);
     }
 
     private void init() {
@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void login() {
         getText();
         if (!email.isEmpty() || !password.isEmpty()) {
-            accountViewModel.login(email, password);
+            accountService.login(email, password);
         } else
             Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
     }
