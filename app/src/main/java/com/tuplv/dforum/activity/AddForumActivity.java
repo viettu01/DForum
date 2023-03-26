@@ -55,11 +55,6 @@ public class AddForumActivity extends AppCompatActivity {
 //                forum.setDescription(edtDesForum.getText().toString());
 //                forumService.create(forum);
 //                finish();
-
-                List<Forum> forums = new ArrayList<>();
-                forumService.findAll(forums);
-
-                Toast.makeText(AddForumActivity.this, "size" + String.valueOf(forums.size()), Toast.LENGTH_SHORT).show();
             }
         });
     }

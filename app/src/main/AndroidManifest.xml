@@ -43,7 +43,7 @@
             android:name=".activity.AddPostsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddForumActivity"
+            android:name=".activity.ListForumActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

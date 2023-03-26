@@ -1,6 +1,6 @@
 package com.tuplv.dforum.service;
 
-import static com.tuplv.dforum.until.Constant.TABLE_FORUM;
+import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -32,7 +32,7 @@ public class ForumService {
     }
 
     public void create(Forum forum) {
-        reference.child(TABLE_FORUM).child(String.valueOf(forum.getForumId())).setValue(forum)
+        reference.child(OBJ_FORUM).child(String.valueOf(forum.getForumId())).setValue(forum)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -45,7 +45,7 @@ public class ForumService {
     }
 
     public void findAll(List<Forum> forums) {
-        reference.child(TABLE_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
