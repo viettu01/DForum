@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.adapter.ForumAdapter;
 import com.tuplv.dforum.model.Forum;
-import com.tuplv.dforum.service.ForumService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,7 @@ public class ListForumActivity extends AppCompatActivity {
     ForumAdapter forumAdapter;
     List<Forum> forums;
 
-    ForumService forumService;
-
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +40,6 @@ public class ListForumActivity extends AppCompatActivity {
         init();
         setSupportActionBar(tbListForum);
 
-        forumService = new ForumService(this);
-
         tbListForum.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,11 +47,19 @@ public class ListForumActivity extends AppCompatActivity {
             }
         });
 
+        loadDataToView();
+    }
+
+    private void init() {
+        tbListForum = findViewById(R.id.tbListForum);
+        rvListForum = findViewById(R.id.rvListForum);
+    }
+
+    private void loadDataToView() {
         forums = new ArrayList<>();
-        forumAdapter = new ForumAdapter(this, R.layout.item_list_forum, forums);
+        forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_list_forum, forums);
         rvListForum.setAdapter(forumAdapter);
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvListForum.setLayoutManager(staggeredGridLayoutManager);
+        rvListForum.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -72,11 +76,5 @@ public class ListForumActivity extends AppCompatActivity {
                 Toast.makeText(ListForumActivity.this, "Fail", Toast.LENGTH_SHORT).show();
             }
         });
-
-    }
-
-    private void init() {
-        tbListForum = findViewById(R.id.tbListForum);
-        rvListForum = findViewById(R.id.rvListForum);
     }
 }

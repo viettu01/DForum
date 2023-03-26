@@ -5,6 +5,7 @@
     android:layout_margin="@dimen/_5sdp"
     android:elevation="@dimen/_2sdp"
     android:orientation="horizontal"
+    android:background="@drawable/background_radius_border_white_10"
     android:padding="@dimen/_5sdp">
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="@string/tieu_de"
-        android:textSize="@dimen/_12sdp" />
+        android:textSize="@dimen/_14sdp" />
 
     <LinearLayout
         android:layout_width="wrap_content"

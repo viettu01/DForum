@@ -46,6 +46,9 @@
             android:name=".activity.ListForumActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.AddForumActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="true">
         </activity>
