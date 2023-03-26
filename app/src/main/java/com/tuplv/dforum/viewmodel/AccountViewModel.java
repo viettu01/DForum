@@ -1,11 +1,14 @@
 package com.tuplv.dforum.viewmodel;
 
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,20 +17,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.tuplv.dforum.view.activity.MainActivity;
-import com.tuplv.dforum.view.activity.LoginActivity;
 import com.tuplv.dforum.model.Accounts;
+import com.tuplv.dforum.view.activity.LoginActivity;
+import com.tuplv.dforum.view.activity.MainActivity;
 
 import java.util.Date;
 import java.util.HashMap;
 
-public class AccountViewModel {
+public class AccountViewModel extends ViewModel {
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final DatabaseReference reference = database.getReference();
 
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    // khai báo firebase
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
     Context context;
 
     public AccountViewModel(Context context) {
@@ -35,18 +36,20 @@ public class AccountViewModel {
     }
 
     // Gửi email xác minh tài khoản
-    public void sentEmailVerification(FirebaseUser user) {
+    public void sendEmailVerification(FirebaseUser user) {
         if (user != null) {
-            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "Kiểm tra Email của bạn để xác minh tài khoản", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(context, "Kiểm tra email của bạn để xác minh tài khoản", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
+
 
     // Đăng ký tài khoản với firebase
     public void registerAccount(String email, String password) {
@@ -56,13 +59,13 @@ public class AccountViewModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            sentEmailVerification(user);
+                            sendEmailVerification(user);
 
                             Date startDate = new Date();
                             long accountId = startDate.getTime();
 
                             // tạo một đối tượng account
-                            Accounts accounts = new Accounts(accountId, "user" + accountId, "null", "null", email, password, "user", "enable");
+                            Accounts accounts = new Accounts(accountId, "user" + accountId, "null", "null", email, password, "user", STATUS_ENABLE);
 
                             // gọi hàm thêm dữ liệu vào firebase
                             assert user != null;
@@ -136,4 +139,5 @@ public class AccountViewModel {
         Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show();
         context.startActivity(new Intent(context, LoginActivity.class));
     }
+
 }
