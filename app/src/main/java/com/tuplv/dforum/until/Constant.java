@@ -5,4 +5,6 @@ public class Constant {
     public static final String STATUS_DISABLE = "DISABLE";
 
     public static final String OBJ_FORUM = "Forums";
+
+    public static final String ROLE_USER = "USER";
 }

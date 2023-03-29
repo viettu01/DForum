@@ -1,8 +1,5 @@
 package com.tuplv.dforum.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -17,11 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.service.AccountService;
+
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,7 +35,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText edtLoginEmail, edtLoginPassword;
     ImageView ic_back_arrow_login;
     private String email, password;
-    private AccountService accountService;
+
+    //firebase
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference reference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         init();
-
-        accountService = new AccountService(this);
     }
 
     private void init() {
@@ -62,6 +69,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void getText() {
         email = edtLoginEmail.getText().toString().trim();
         password = edtLoginPassword.getText().toString().trim();
+    }
+
+    public void login(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            // kiểm tra email đã xác minh hay chưa
+                            if (user != null) {
+                                boolean emailVerified = user.isEmailVerified();
+                                if (emailVerified) {
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                } else
+                                    Toast.makeText(LoginActivity.this, "Để đăng nhập hãy xác minh Email trước", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void changePasswordToFirebaseAuthentication(String newPassword) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    // Đổi mật khẩu
+    public void changePasswordToFirebaseRealtime(String newPassword) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        String uid = user.getUid();
+
+        // Tạo một HashMap chứa thuộc tính muốn cập nhật và giá trị mới
+        HashMap<String, Object> updatePassword = new HashMap<>();
+        updatePassword.put("password", newPassword);
+
+        // Sử dụng phương thức updateChildren() để cập nhật thuộc tính cảu Account
+        reference.child("Accounts").child(uid).updateChildren(updatePassword);
     }
 
     // Xử lý quên mật khẩu
@@ -111,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void login() {
         getText();
         if (!email.isEmpty() || !password.isEmpty()) {
-            accountService.login(email, password);
+            login(email, password);
         } else
             Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
     }

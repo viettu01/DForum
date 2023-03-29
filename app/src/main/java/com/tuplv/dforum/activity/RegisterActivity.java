@@ -1,8 +1,10 @@
 package com.tuplv.dforum.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.tuplv.dforum.until.Constant.ROLE_USER;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,10 +14,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.service.AccountService;
+import com.tuplv.dforum.model.Accounts;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 @SuppressLint("SetTextI18n")
@@ -26,16 +40,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button btnRegister;
     ImageView ic_back_arrow_register;
     private String email, password, confirmPassword;
-    private AccountService accountService;
+
+    //firebase
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // ánh xạ
+
         init();
-        // khai báo account service
-        accountService = new AccountService(this);
     }
 
     private void init() {
@@ -60,10 +76,56 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     // Lấy giá trị người dùng nhập trên view
-    private void getText(){
+    private void getText() {
         email = edtRegisterEmail.getText().toString().trim();
         password = edtRegisterPassword.getText().toString().trim();
         confirmPassword = edtRegisterConfirmPassword.getText().toString().trim();
+    }
+
+    public void sendEmailVerification(FirebaseUser user) {
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "Kiểm tra email của bạn để xác minh tài khoản", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+    // Đăng ký tài khoản với firebase
+    public void registerAccount(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            sendEmailVerification(user);
+
+                            Date startDate = new Date();
+                            long accountId = startDate.getTime();
+
+                            // tạo một đối tượng account
+                            Accounts accounts = new Accounts(accountId, "user" + accountId, "null", "null", email, password, ROLE_USER, STATUS_ENABLE);
+
+                            // gọi hàm thêm dữ liệu vào firebase
+                            assert user != null;
+                            reference.child("Accounts").child(user.getUid()).setValue(accounts);
+
+                            // Chuyển trang
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            finish();
+
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Email đã được sử dụng !",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     // kiểm tra độ mạnh mật khẩu
@@ -127,11 +189,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty();
     }
 
-    private void register(){
+    private void register() {
         getText();
         if (checkEmptyRegister()) {
             if (checkEmail() && checkPasswordStrength() && checkConfirmPassword()) {
-                accountService.registerAccount(email,password);
+                registerAccount(email, password);
             }
         }
     }
