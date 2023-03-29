@@ -3,6 +3,7 @@ package com.tuplv.dforum.activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,9 +23,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.model.Accounts;
 
 import java.util.HashMap;
 
@@ -36,10 +41,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ImageView ic_back_arrow_login;
     private String email, password;
 
+    Accounts accounts;
+
     //firebase
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference reference = database.getReference();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 boolean emailVerified = user.isEmailVerified();
                                 if (emailVerified) {
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    getProfile("Accounts", FirebaseAuth.getInstance().getCurrentUser().getUid());
                                     finish();
                                 } else
                                     Toast.makeText(LoginActivity.this, "Để đăng nhập hãy xác minh Email trước", Toast.LENGTH_SHORT).show();
@@ -170,8 +178,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getText();
         if (!email.isEmpty() || !password.isEmpty()) {
             login(email, password);
+
+
         } else
             Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
+    }
+
+    public void getProfile(String DB, String id) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(DB).child(id)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Accounts accounts = snapshot.getValue(Accounts.class);
+                            if (accounts != null) {
+                                Toast.makeText(LoginActivity.this, "lưu file", Toast.LENGTH_SHORT).show();
+                                SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putLong("accountId", accounts.getAccountId());
+                                editor.putString("accountName", accounts.getNickName());
+                                editor.apply();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
 
     @SuppressLint("NonConstantResourceId")
