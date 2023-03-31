@@ -1,6 +1,6 @@
 package com.tuplv.dforum.model;
 
-public class Comments {
+public class Comment {
     private long commentId;
     private long accountId;
     private String accountName;

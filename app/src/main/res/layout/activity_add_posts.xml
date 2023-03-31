@@ -16,7 +16,7 @@
         app:navigationIcon="@drawable/ic_arrow_back_white_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/dang_bai"
-        app:titleTextColor="@android:color/white"/>
+        app:titleTextColor="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/llAddPost"
@@ -30,8 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,5 +108,11 @@
             android:hint="@string/ban_muon_chia_se_gi"
             android:inputType="textMultiLine"
             android:textColorHint="@color/gray_color" />
+
+        <!--        <WebView-->
+        <!--            android:id="@+id/wvContentPost"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent" />-->
+
     </LinearLayout>
 </RelativeLayout>

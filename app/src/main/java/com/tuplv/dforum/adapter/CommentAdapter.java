@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tuplv.dforum.model.Comments;
+import com.tuplv.dforum.model.Comment;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     private int layout;
 
-    private List<Comments> comments;
+    private List<Comment> comments;
 
-    public CommentAdapter(Context context, int layout, List<Comments> comments) {
+    public CommentAdapter(Context context, int layout, List<Comment> comments) {
         this.context = context;
         this.layout = layout;
         this.comments = comments;

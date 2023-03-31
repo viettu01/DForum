@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tuplv.dforum.model.Posts;
+import com.tuplv.dforum.R;
+import com.tuplv.dforum.model.Post;
 
 import java.util.List;
 
@@ -18,9 +20,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private int layout;
 
-    private List<Posts> posts;
+    private List<Post> posts;
 
-    public PostsAdapter(Context context, int layout, List<Posts> posts) {
+    public PostsAdapter(Context context, int layout, List<Post> posts) {
         this.context = context;
         this.layout = layout;
         this.posts = posts;
@@ -37,7 +39,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Post post = posts.get(position);
 
+        holder.tvTitlePost.setText(post.getTitle());
+        holder.tvView.setText(String.valueOf(post.getView()));
     }
 
     @Override
@@ -50,8 +55,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTitlePost, tvView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvTitlePost = itemView.findViewById(R.id.tvTitlePost);
+            tvView = itemView.findViewById(R.id.tvView);
         }
     }
 }

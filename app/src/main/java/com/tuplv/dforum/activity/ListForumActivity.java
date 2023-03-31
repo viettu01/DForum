@@ -57,7 +57,7 @@ public class ListForumActivity extends AppCompatActivity {
 
     private void loadDataToView() {
         forums = new ArrayList<>();
-        forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_list_forum, forums);
+        forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_forum, forums);
         rvListForum.setAdapter(forumAdapter);
         rvListForum.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
