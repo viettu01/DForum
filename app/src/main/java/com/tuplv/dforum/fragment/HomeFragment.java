@@ -1,5 +1,7 @@
 package com.tuplv.dforum.fragment;
 
+import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
+import static com.tuplv.dforum.until.Constant.HOI_DAP;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 
 import android.annotation.SuppressLint;
@@ -35,9 +37,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView rvQA, rvShareKnowledge;
     FloatingActionButton fabAddPost;
     ImageView imgShowMoreForum;
+    PostsAdapter postsQAAdapter, postsShareKnowledgeAdapter;
+    List<Post> postsQA, postsShareKnowledge;
 
-    PostsAdapter postsAdapter;
-    List<Post> posts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,8 +49,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         fabAddPost.setOnClickListener(this);
         imgShowMoreForum.setOnClickListener(this);
-
-        loadDataToView();
 
         return view;
     }
@@ -61,19 +61,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadDataToView() {
-        posts = new ArrayList<>();
-        postsAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, posts);
-        rvQA.setAdapter(postsAdapter);
+
+        postsQA = new ArrayList<>();
+        postsQAAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsQA);
+        rvQA.setAdapter(postsQAAdapter);
         rvQA.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        postsShareKnowledge = new ArrayList<>();
+        postsShareKnowledgeAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsShareKnowledge);
+        rvShareKnowledge.setAdapter(postsShareKnowledgeAdapter);
+        rvShareKnowledge.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    posts.add(post);
+
+                    if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
+                        postsQA.add(post);
+                    }
+                    if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
+                        postsShareKnowledge.add(post);
+                    }
                 }
-                postsAdapter.notifyDataSetChanged();
+                postsQAAdapter.notifyDataSetChanged();
+                postsShareKnowledgeAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -94,5 +107,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), ListForumActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadDataToView();
     }
 }

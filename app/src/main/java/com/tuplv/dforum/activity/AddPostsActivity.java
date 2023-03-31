@@ -137,16 +137,19 @@ public class AddPostsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mnuSavePost) {
-            Post post = new Post();
-            post.setPostId(new Date().getTime());
-            post.setAccountId(sharedPreferences.getLong("accountId", 0));
-            post.setCategoryName(spnCategory.getSelectedItem().toString());
-            post.setForumName(spnForum.getSelectedItem().toString());
-            post.setTitle(edtTitlePost.getText().toString());
-            post.setContent(edtContentPost.getText().toString());
-            post.setCreatedDate(new Date().getTime());
-            post.setView(0);
-            post.setStatus(STATUS_DISABLE);
+            if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
+            } else {
+                Post post = new Post();
+                post.setPostId(new Date().getTime());
+                post.setAccountId(sharedPreferences.getLong("accountId", 0));
+                post.setCategoryName(spnCategory.getSelectedItem().toString());
+                post.setForumName(spnForum.getSelectedItem().toString());
+                post.setTitle(edtTitlePost.getText().toString());
+                post.setContent(edtContentPost.getText().toString());
+                post.setCreatedDate(new Date().getTime());
+                post.setView(0);
+                post.setStatus(STATUS_DISABLE);
 
 //            wvContentPost.evaluateJavascript("CKEDITOR.instances['editor'].getData();", new ValueCallback<String>() {
 //                @Override
@@ -155,7 +158,8 @@ public class AddPostsActivity extends AppCompatActivity {
 //                    Log.d("CKEditor", value);
 //                }
 //            });
-            create(post);
+                create(post);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
