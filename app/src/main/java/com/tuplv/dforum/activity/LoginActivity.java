@@ -1,7 +1,10 @@
 package com.tuplv.dforum.activity;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -29,9 +32,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.model.Accounts;
+import com.tuplv.dforum.model.Account;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,14 +43,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogin;
     EditText edtLoginEmail, edtLoginPassword;
     ImageView ic_back_arrow_login;
-    private String email, password;
 
-    Accounts accounts;
+    ProgressDialog progressDialog;
+
+    private String email, password;
 
     //firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         edtLoginEmail = findViewById(R.id.edtLoginEmail);
         edtLoginPassword = findViewById(R.id.edtLoginPassword);
+
+        progressDialog = new ProgressDialog(this);
+        //progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressDialog.setMessage("Đang đăng nhập");
     }
 
     private void getText() {
@@ -78,32 +86,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password = edtLoginPassword.getText().toString().trim();
     }
 
-    public void login(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+    public void login() {
+        getText();
+        if (!email.isEmpty() && !password.isEmpty()) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                changePasswordFirebaseRealtime(password);
 
-                            // kiểm tra email đã xác minh hay chưa
-                            if (user != null) {
-                                boolean emailVerified = user.isEmailVerified();
-                                if (emailVerified) {
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    getProfile("Accounts", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                    finish();
-                                } else
-                                    Toast.makeText(LoginActivity.this, "Để đăng nhập hãy xác minh Email trước", Toast.LENGTH_SHORT).show();
+                                // kiểm tra email đã xác minh hay chưa
+                                if (user != null) {
+                                    boolean emailVerified = user.isEmailVerified();
+                                    progressDialog.dismiss();
+                                    if (emailVerified) {
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        getAccountId();
+                                        finish();
+                                    } else
+                                        Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        } else
+            Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
     }
 
-    public void changePasswordToFirebaseAuthentication(String newPassword) {
+    public void changePasswordFirebaseAuth(String newPassword) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -117,17 +131,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     // Đổi mật khẩu
-    public void changePasswordToFirebaseRealtime(String newPassword) {
+    public void changePasswordFirebaseRealtime(String newPassword) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
-        String uid = user.getUid();
 
-        // Tạo một HashMap chứa thuộc tính muốn cập nhật và giá trị mới
         HashMap<String, Object> updatePassword = new HashMap<>();
         updatePassword.put("password", newPassword);
-
-        // Sử dụng phương thức updateChildren() để cập nhật thuộc tính cảu Account
-        reference.child("Accounts").child(uid).updateChildren(updatePassword);
+        reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updatePassword);
     }
 
     // Xử lý quên mật khẩu
@@ -173,31 +183,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         dialog.show();
     }
 
-    // Kiểm tra trống và đăng nhập
-    private void login() {
-        getText();
-        if (!email.isEmpty() || !password.isEmpty()) {
-            login(email, password);
-
-
-        } else
-            Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
-    }
-
-    public void getProfile(String DB, String id) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child(DB).child(id)
+    public void getAccountId() {
+        reference.child(OBJ_ACCOUNT).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Accounts accounts = snapshot.getValue(Accounts.class);
-                            if (accounts != null) {
-                                Toast.makeText(LoginActivity.this, "lưu file", Toast.LENGTH_SHORT).show();
+                            Account account = snapshot.getValue(Account.class);
+                            if (account != null) {
                                 SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putLong("accountId", accounts.getAccountId());
-                                editor.putString("accountName", accounts.getNickName());
+                                editor.putLong("accountId", account.getAccountId());
                                 editor.apply();
                             }
                         }
@@ -223,6 +219,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 this.finish();
                 break;
             case R.id.btnLogin:
+                progressDialog.show();
                 login();
                 break;
         }

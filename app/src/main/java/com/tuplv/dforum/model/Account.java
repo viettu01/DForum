@@ -1,6 +1,6 @@
 package com.tuplv.dforum.model;
 
-public class Accounts {
+public class Account {
     private long accountId;
     private String nickName;
     private String story;
@@ -10,10 +10,10 @@ public class Accounts {
     private String role;
     private String status;
 
-    public Accounts() {
+    public Account() {
     }
 
-    public Accounts(long accountId, String nickName, String story, String avatarUrl, String email, String password, String role, String status) {
+    public Account(long accountId, String nickName, String story, String avatarUrl, String email, String password, String role, String status) {
         this.accountId = accountId;
         this.nickName = nickName;
         this.story = story;

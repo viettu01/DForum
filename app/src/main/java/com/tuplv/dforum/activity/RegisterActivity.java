@@ -1,5 +1,6 @@
 package com.tuplv.dforum.activity;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
@@ -27,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.model.Accounts;
+import com.tuplv.dforum.model.Account;
 
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -43,8 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     //firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,38 +94,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         }
                     });
         }
-    }
-
-    // Đăng ký tài khoản với firebase
-    public void registerAccount(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            sendEmailVerification(user);
-
-                            Date startDate = new Date();
-                            long accountId = startDate.getTime();
-
-                            // tạo một đối tượng account
-                            Accounts accounts = new Accounts(accountId, "user" + accountId, "null", "null", email, password, ROLE_USER, STATUS_ENABLE);
-
-                            // gọi hàm thêm dữ liệu vào firebase
-                            assert user != null;
-                            reference.child("Accounts").child(user.getUid()).setValue(accounts);
-
-                            // Chuyển trang
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            finish();
-
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Email đã được sử dụng !",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
     // kiểm tra độ mạnh mật khẩu
@@ -189,11 +157,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty();
     }
 
+    // Đăng ký tài khoản với firebase
     private void register() {
         getText();
         if (checkEmptyRegister()) {
             if (checkEmail() && checkPasswordStrength() && checkConfirmPassword()) {
-                registerAccount(email, password);
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    sendEmailVerification(user);
+
+                                    long accountId = new Date().getTime();
+
+                                    //khởi tạo một đối tượng account
+                                    Account account = new Account(accountId, "user" + accountId, "null", "null", email, password, ROLE_USER, STATUS_ENABLE);
+
+                                    // gọi hàm thêm dữ liệu vào firebase
+                                    assert user != null;
+                                    reference.child(OBJ_ACCOUNT).child(user.getUid()).setValue(account);
+
+                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "Email đã được sử dụng !", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         }
     }

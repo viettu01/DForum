@@ -4,6 +4,7 @@ public class Constant {
     public static final String STATUS_ENABLE = "ENABLE";
     public static final String STATUS_DISABLE = "DISABLE";
 
+    public static final String OBJ_ACCOUNT = "ACCOUNTS";
     public static final String OBJ_FORUM = "FORUMS";
     public static final String OBJ_POST = "POSTS";
 
