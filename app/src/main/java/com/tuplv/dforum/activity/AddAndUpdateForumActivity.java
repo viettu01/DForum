@@ -69,7 +69,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     public void init() {
         edtNameForum = findViewById(R.id.edtNameForum);
         edtDesForum = findViewById(R.id.edtDesForum);
-        btnAddForum = findViewById(R.id.btnAddForum);
+        btnAddForum = findViewById(R.id.btnShowListForum);
         tbAddNewForum = findViewById(R.id.tbAddNewForum);
         pbForum = findViewById(R.id.pbForum);
     }

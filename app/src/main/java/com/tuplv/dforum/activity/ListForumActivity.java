@@ -5,9 +5,9 @@ import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,8 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
 
     Toolbar tbListForum;
     RecyclerView rvListForum;
+    FloatingActionButton fabAddForum;
+    SharedPreferences sharedPreferences;
     ForumAdapter forumAdapter;
     List<Forum> forums;
 
@@ -46,7 +49,6 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         setContentView(R.layout.activity_list_forum);
 
         init();
-        setSupportActionBar(tbListForum);
 
         tbListForum.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +56,16 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
                 finish();
             }
         });
+
+        fabAddForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ListForumActivity.this, AddAndUpdateForumActivity.class));
+            }
+        });
+
+        if (!sharedPreferences.getString("role", "").equals("ADMIN"))
+            fabAddForum.setVisibility(View.GONE);
     }
 
     @Override
@@ -105,7 +117,10 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
 
     private void init() {
         tbListForum = findViewById(R.id.tbListForum);
+        setSupportActionBar(tbListForum);
         rvListForum = findViewById(R.id.rvListForum);
+        fabAddForum = findViewById(R.id.fabAddForum);
+        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
     }
 
     private void loadDataToView() {
