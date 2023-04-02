@@ -13,10 +13,11 @@ import androidx.fragment.app.Fragment;
 
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.AddAndUpdateForumActivity;
+import com.tuplv.dforum.activity.ListForumActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
 
-    Button btnPostsApprove, btnAddForum;
+    Button btnPostsApprove, btnShowListForum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,14 +26,14 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
         init(view);
 
         btnPostsApprove.setOnClickListener(this);
-        btnAddForum.setOnClickListener(this);
+        btnShowListForum.setOnClickListener(this);
 
         return view;
     }
 
     private void init(View view) {
         btnPostsApprove = view.findViewById(R.id.btnPostsApprove);
-        btnAddForum = view.findViewById(R.id.btnAddForum);
+        btnShowListForum = view.findViewById(R.id.btnShowListForum);
     }
 
     @SuppressLint("NonConstantResourceId, CommitTransaction")
@@ -42,8 +43,8 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
             case R.id.btnPostsApprove:
                 Toast.makeText(view.getContext(), "Kiểm duyệt", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.btnAddForum:
-                startActivity(new Intent(getActivity(), AddAndUpdateForumActivity.class));
+            case R.id.btnShowListForum:
+                startActivity(new Intent(getActivity(), ListForumActivity.class));
                 break;
         }
     }

@@ -3,7 +3,9 @@ package com.tuplv.dforum.fragment;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,7 +119,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.btnLogout:
                 mAuth.signOut();
-                requireContext().deleteFile("account.xml");
+                requireContext().deleteSharedPreferences("account");
                 requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
                 requireActivity().finish();
                 break;

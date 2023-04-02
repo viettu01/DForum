@@ -17,10 +17,10 @@
         android:text="@string/kiem_duyet_bai_dang" />
 
     <Button
-        android:id="@+id/btnAddForum"
+        android:id="@+id/btnShowListForum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_radius_10"
-        android:text="@string/them_dien_dan" />
+        android:text="@string/danh_sach_dien_dan" />
 
 </LinearLayout>

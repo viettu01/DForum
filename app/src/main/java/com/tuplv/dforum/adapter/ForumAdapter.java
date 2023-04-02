@@ -1,31 +1,24 @@
 package com.tuplv.dforum.adapter;
 
-import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static android.content.Context.MODE_PRIVATE;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.AddAndUpdateForumActivity;
 import com.tuplv.dforum.interf.OnForumClickListener;
 import com.tuplv.dforum.model.Forum;
 
@@ -36,6 +29,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     int layout;
     List<Forum> forums;
     OnForumClickListener listener;
+    SharedPreferences sharedPreferences;
 
     public ForumAdapter(Context context, int layout, List<Forum> forums) {
         this.context = context;
@@ -48,6 +42,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
         this.layout = layout;
         this.forums = forums;
         this.listener = listener;
+        sharedPreferences = context.getSharedPreferences("account", MODE_PRIVATE);
     }
 
     @NonNull
@@ -65,13 +60,15 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
 
         holder.tvTitle.setText(forum.getName());
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showPopupMenu(holder, forum);
-                return false;
-            }
-        });
+        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showPopupMenu(holder, forum);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
