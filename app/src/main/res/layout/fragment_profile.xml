@@ -25,8 +25,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imvAvatar"
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="@dimen/_90sdp"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_110sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_gravity="center"
                     android:src="@drawable/no_avatar"
@@ -43,6 +43,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
+                    android:id="@+id/tvStory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tiểu sử sẽ xuất hiện ở đây"

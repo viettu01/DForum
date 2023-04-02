@@ -13,4 +13,5 @@ public class Constant {
 
     public static final String CHIA_SE_KIEN_THUC = "Chia sẻ kiến thức";
     public static final String HOI_DAP = "Hỏi đáp";
+    public static final int PICK_IMAGE_REQUEST = 111;
 }
