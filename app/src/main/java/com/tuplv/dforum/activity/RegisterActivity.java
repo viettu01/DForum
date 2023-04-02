@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Pattern chuSo = Pattern.compile("[0-9]");
         Pattern kyTu = Pattern.compile("[,.!@+#$&]");
 
-        if (password.length() <= 8
+        if (password.length() < 8
                 || !kyTu.matcher(password).find()
                 || !chuHoa.matcher(password).find()
                 || !chuThuong.matcher(password).find()
