@@ -1,6 +1,8 @@
 package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Constant.ROLE_USER;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -48,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String email, password;
 
+    SharedPreferences sharedPreferences;
+
     //firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -79,6 +83,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog = new ProgressDialog(this);
         //progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressDialog.setMessage("Đang đăng nhập");
+
+        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+
     }
 
     private void getText() {
@@ -100,17 +107,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 // kiểm tra email đã xác minh hay chưa
                                 if (user != null) {
                                     boolean emailVerified = user.isEmailVerified();
-                                    progressDialog.dismiss();
                                     if (emailVerified) {
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                         getAccountId();
-                                        finish();
                                     } else
                                         Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                             }
+                            progressDialog.dismiss();
                         }
                     });
         } else
@@ -191,10 +196,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (snapshot.exists()) {
                             Account account = snapshot.getValue(Account.class);
                             if (account != null) {
-                                SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putLong("accountId", account.getAccountId());
+                                editor.putString("role", account.getRole());
                                 editor.apply();
+
+                                if (account.getRole().equals(ROLE_ADMIN)) {
+                                    startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
+                                    finish();
+                                } else if (account.getRole().equals(ROLE_USER)) {
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                }
                             }
                         }
                     }

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        android:contentDescription="@string/dang_bai"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/ic_arrow_back_white_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -50,7 +51,8 @@
                 <Spinner
                     android:id="@+id/spnCategory"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/chuyen_muc" />
             </LinearLayout>
 
             <LinearLayout
@@ -70,7 +72,8 @@
                 <Spinner
                     android:id="@+id/spnForum"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/dien_dan" />
             </LinearLayout>
         </LinearLayout>
 

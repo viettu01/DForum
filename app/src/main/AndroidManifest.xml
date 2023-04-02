@@ -56,11 +56,14 @@
             android:name=".activity.ListForumActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddForumActivity"
+            android:name=".activity.AddAndUpdateForumActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
+        <activity
+            android:name=".activity.AdminMainActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

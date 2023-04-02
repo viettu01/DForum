@@ -8,6 +8,7 @@ public class Constant {
     public static final String OBJ_FORUM = "FORUMS";
     public static final String OBJ_POST = "POSTS";
 
+    public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_USER = "USER";
 
     public static final String CHIA_SE_KIEN_THUC = "Chia sẻ kiến thức";

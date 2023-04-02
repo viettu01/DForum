@@ -38,4 +38,7 @@
     <string name="tieu_de_bai_viet_">Tiêu đề bài viết?</string>
     <string name="dang">Đăng</string>
     <string name="dang_bai">Đăng bài</string>
+    <string name="chinh_sua">Chỉnh sửa</string>
+    <string name="xoa">Xóa</string>
+    <string name="quay_lai">Quay lại</string>
 </resources>

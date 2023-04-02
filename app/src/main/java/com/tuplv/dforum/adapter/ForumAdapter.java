@@ -1,15 +1,32 @@
 package com.tuplv.dforum.adapter;
 
+import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.AddAndUpdateForumActivity;
+import com.tuplv.dforum.interf.OnForumClickListener;
 import com.tuplv.dforum.model.Forum;
 
 import java.util.List;
@@ -18,11 +35,19 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     Context context;
     int layout;
     List<Forum> forums;
+    OnForumClickListener listener;
 
     public ForumAdapter(Context context, int layout, List<Forum> forums) {
         this.context = context;
         this.layout = layout;
         this.forums = forums;
+    }
+
+    public ForumAdapter(Context context, int layout, List<Forum> forums, OnForumClickListener listener) {
+        this.context = context;
+        this.layout = layout;
+        this.forums = forums;
+        this.listener = listener;
     }
 
     @NonNull
@@ -39,6 +64,14 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
         Forum forum = forums.get(position);
 
         holder.tvTitle.setText(forum.getName());
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPopupMenu(holder, forum);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -58,5 +91,37 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
             tvTotalView = itemView.findViewById(R.id.tvTotalView);
             tvTotalPosts = itemView.findViewById(R.id.tvTotalPosts);
         }
+    }
+
+    @SuppressLint("RestrictedApi, NonConstantResourceId")
+    private void showPopupMenu(ViewHolder holder, Forum forum) {
+        MenuBuilder menuBuilder = new MenuBuilder(context);
+        MenuInflater menuInflater = new MenuInflater(context);
+        menuInflater.inflate(R.menu.menu_popup_item_forum, menuBuilder);
+
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, menuBuilder, holder.itemView);
+        menuPopupHelper.setForceShowIcon(true);
+
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mnuDeleteForum:
+                        listener.onDeleteClick(forum);
+                        break;
+                    case R.id.mnuEditForum:
+                        listener.goToActivityUpdate(forum);
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onMenuModeChange(@NonNull MenuBuilder menu) {
+
+            }
+        });
+
+        menuPopupHelper.show();
     }
 }

@@ -1,6 +1,8 @@
 package com.tuplv.dforum.model;
 
-public class Forum {
+import java.io.Serializable;
+
+public class Forum implements Serializable {
     private long forumId;
     private String name;
     private String description;
@@ -36,5 +38,14 @@ public class Forum {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Forum{" +
+                "forumId=" + forumId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

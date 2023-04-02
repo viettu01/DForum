@@ -112,7 +112,17 @@ public class AddPostsActivity extends AppCompatActivity {
     }
 
     //Thêm bài viết mới
-    public void create(Post post) {
+    public void create() {
+        Post post = new Post();
+        post.setPostId(new Date().getTime());
+        post.setAccountId(sharedPreferences.getLong("accountId", 0));
+        post.setCategoryName(spnCategory.getSelectedItem().toString());
+        post.setForumName(spnForum.getSelectedItem().toString());
+        post.setTitle(edtTitlePost.getText().toString());
+        post.setContent(edtContentPost.getText().toString());
+        post.setCreatedDate(new Date().getTime());
+        post.setView(0);
+        post.setStatus(STATUS_DISABLE);
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).setValue(post)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -140,17 +150,6 @@ public class AddPostsActivity extends AppCompatActivity {
             if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
             } else {
-                Post post = new Post();
-                post.setPostId(new Date().getTime());
-                post.setAccountId(sharedPreferences.getLong("accountId", 0));
-                post.setCategoryName(spnCategory.getSelectedItem().toString());
-                post.setForumName(spnForum.getSelectedItem().toString());
-                post.setTitle(edtTitlePost.getText().toString());
-                post.setContent(edtContentPost.getText().toString());
-                post.setCreatedDate(new Date().getTime());
-                post.setView(0);
-                post.setStatus(STATUS_DISABLE);
-
 //            wvContentPost.evaluateJavascript("CKEDITOR.instances['editor'].getData();", new ValueCallback<String>() {
 //                @Override
 //                public void onReceiveValue(String value) {
@@ -158,7 +157,7 @@ public class AddPostsActivity extends AppCompatActivity {
 //                    Log.d("CKEditor", value);
 //                }
 //            });
-                create(post);
+                create();
             }
         }
         return super.onOptionsItemSelected(item);

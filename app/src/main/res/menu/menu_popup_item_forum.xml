@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mnuEditForum"
+        android:icon="@drawable/ic_edit_24"
+        android:title="@string/chinh_sua" />
+    <item
+        android:id="@+id/mnuDeleteForum"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/xoa" />
+</menu>

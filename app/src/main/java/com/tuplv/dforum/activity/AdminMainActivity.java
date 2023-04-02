@@ -18,7 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AdminMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0:
-                    case 2:
-                        bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
-                        break;
                     case 1:
                         bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
+                        break;
+                    case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
+                        break;
+                    default:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
                         break;
                 }
             }
@@ -61,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
-
-        bottomNavigationView.getMenu().removeItem(R.id.mnuAdmin);
     }
 
     private void init() {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        Toast outToast = Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
+        Toast outToast = Toast.makeText(AdminMainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
         if (outApp + 2000 > System.currentTimeMillis()) {
             outToast.cancel();
             super.onBackPressed();
@@ -129,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.mnuProfile:
                 viewPager.setCurrentItem(1);
+                break;
+            case R.id.mnuAdmin:
+                viewPager.setCurrentItem(2);
                 break;
         }
         return true;

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.AddForumActivity;
+import com.tuplv.dforum.activity.AddAndUpdateForumActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
 
@@ -43,7 +43,7 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(view.getContext(), "Kiểm duyệt", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnAddForum:
-                startActivity(new Intent(getActivity(), AddForumActivity.class));
+                startActivity(new Intent(getActivity(), AddAndUpdateForumActivity.class));
                 break;
         }
     }
