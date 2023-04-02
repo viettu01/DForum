@@ -1,13 +1,10 @@
 package com.tuplv.dforum.fragment;
 
-import static android.app.Activity.RESULT_OK;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,17 +25,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.EditProfileActivity;
 import com.tuplv.dforum.activity.LoginActivity;
 import com.tuplv.dforum.model.Account;
 
-import java.util.UUID;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     Button btnLogout, btnEditProfile;
-    TextView tvNickName;
+    TextView tvNickName, tvStory;
 
     ImageView imvAvatar;
 
@@ -49,10 +44,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
 
+    Account account;
     //firebase
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
-
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
     @Override
@@ -75,19 +69,27 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         btnEditProfile.setOnClickListener(this);
 
         tvNickName = view.findViewById(R.id.tvNickName);
-
+        tvStory = view.findViewById(R.id.tvStory);
         imvAvatar = view.findViewById(R.id.imvAvatar);
     }
 
-    public void getProfile() {
+    private void getProfile() {
         reference.child(OBJ_ACCOUNT).child(user.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Account account = snapshot.getValue(Account.class);
+                            account = snapshot.getValue(Account.class);
                             if (account != null) {
+                                if (account.getAvatarUri().equals("null")) {
+                                    imvAvatar.setImageResource(R.drawable.no_avatar);
+                                } else
+                                    Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
                                 tvNickName.setText(account.getNickName());
+                                tvStory.setText(account.getStory());
+
+                                if(tvStory.getText().toString().trim().equals("null"))
+                                    tvStory.setVisibility(View.VISIBLE);
                             }
                         }
                     }
@@ -98,64 +100,29 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 113 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-
-            StorageReference imageRef = storageRef.child("images/" + mAuth.getCurrentUser().getUid());
-
-            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    // Đường dẫn của tập tin
-                    String url = uri.toString();
-                    System.out.println("đường dẫn ảnh: "+url);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Xảy ra lỗi khi lấy đường dẫn
-                }
-            });
-
-            UploadTask uploadTask = imageRef.putFile(uri);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getContext(), "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
-                    String uri = taskSnapshot.getStorage().getDownloadUrl().toString();
-                    Toast.makeText(getContext(), "uri: " + uri, Toast.LENGTH_SHORT).show();
-                    System.out.println(uri);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(getContext(), "Tải ảnh lên không thành công", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+    private void putDataAccount(){
+        Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+        intent.putExtra("account", account);
+        startActivity(intent);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getProfile();
+    }
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogout:
                 mAuth.signOut();
+                requireContext().deleteFile("account.xml");
                 requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
                 requireActivity().finish();
                 break;
             case R.id.btnEditProfile:
-
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 113);
-
-
-                //requireContext().startActivity(new Intent(getContext(), EditProfileActivity.class));
-                //requireActivity().finish();
+                putDataAccount();
                 break;
         }
     }

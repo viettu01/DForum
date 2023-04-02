@@ -1,10 +1,12 @@
 package com.tuplv.dforum.model;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
     private long accountId;
     private String nickName;
     private String story;
-    private String avatarUrl;
+    private String avatarUri;
     private String email;
     private String password;
     private String role;
@@ -13,11 +15,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(long accountId, String nickName, String story, String avatarUrl, String email, String password, String role, String status) {
+    public Account(long accountId, String nickName, String story, String avatarUri, String email, String password, String role, String status) {
         this.accountId = accountId;
         this.nickName = nickName;
         this.story = story;
-        this.avatarUrl = avatarUrl;
+        this.avatarUri = avatarUri;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -48,12 +50,12 @@ public class Account {
         this.story = story;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getAvatarUri() {
+        return avatarUri;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatarUri(String avatarUrl) {
+        this.avatarUri = avatarUrl;
     }
 
     public String getEmail() {

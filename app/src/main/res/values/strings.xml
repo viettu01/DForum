@@ -38,7 +38,15 @@
     <string name="tieu_de_bai_viet_">Tiêu đề bài viết?</string>
     <string name="dang">Đăng</string>
     <string name="dang_bai">Đăng bài</string>
+    <string name="edit_profile">Chỉnh sửa thông tin cá nhân</string>
     <string name="chinh_sua">Chỉnh sửa</string>
+    <string name="anh_dai_dien">Ảnh đại diện</string>
+    <string name="nick_name">Tên hiển thị</string>
+    <string name="tieu_su">Mô tả bản thân...</string>
+    <string name="add">Thêm</string>
+    <string name="length_story">0 / 100</string>
+    <string name="length_nickname">0 / 30</string>
     <string name="xoa">Xóa</string>
     <string name="quay_lai">Quay lại</string>
+
 </resources>
