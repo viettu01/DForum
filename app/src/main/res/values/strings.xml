@@ -48,5 +48,9 @@
     <string name="length_nickname">0 / 30</string>
     <string name="xoa">Xóa</string>
     <string name="quay_lai">Quay lại</string>
+    <string name="Choose_avatar">Chọn ảnh đại diện</string>
+    <string name="view_avatar">Xem ảnh đại diện</string>
+    <string name="remove_avatar">Gỡ ảnh đại diện</string>
+    <string name="detail">Chi tiết</string>
 
 </resources>

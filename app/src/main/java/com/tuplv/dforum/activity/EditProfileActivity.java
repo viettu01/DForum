@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -36,7 +38,7 @@ import com.tuplv.dforum.model.Account;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     TextView tvEditAvatar, tvEditNickName, tvAddStory, tvLengthNickName, tvLengthStory;
     ImageView imvAvatar;
@@ -45,7 +47,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseUser user = mAuth.getCurrentUser();
 
     //firebase
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -84,11 +85,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         imvAvatar.setOnClickListener(this);
 
         edtNickName = findViewById(R.id.edtNickName);
+        edtNickName.addTextChangedListener(this);
+
         edtStory = findViewById(R.id.edtStory);
+        edtStory.addTextChangedListener(this);
+
         tbEditProfile = findViewById(R.id.tbEditProfile);
     }
 
-    private void getDataAccount(){
+    private void getDataAccount() {
         Account account = (Account) getIntent().getSerializableExtra("account");
         if (account.getAvatarUri().equals("null")) {
             imvAvatar.setImageResource(R.drawable.no_avatar);
@@ -181,4 +186,21 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (charSequence == edtNickName.getText()) {
+            int lengthNickName = edtNickName.getText().toString().trim().length();
+            tvLengthNickName.setText(lengthNickName + " / 30");
+        }
+        if (charSequence == edtStory.getText()) {
+            int lengthStory = edtStory.getText().toString().trim().length();
+            tvLengthStory.setText(lengthStory + " / 100");
+        }
+    }
+    @Override
+    public void afterTextChanged(Editable editable) {}
 }

@@ -116,7 +116,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
     }
-
     // kiểm tra định dạng email
     private boolean checkEmail() {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -128,7 +127,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
     }
-
     // kiểm tra mật khẩu và xác nhận mật khẩu
     private boolean checkConfirmPassword() {
         if (!password.equals(confirmPassword)) {
@@ -140,7 +138,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
     }
-
     private boolean checkEmptyRegister() {
         if (email.isEmpty()) {
             tvErrorEmail.setText("Không được để trống");
@@ -171,7 +168,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     sendEmailVerification(user);
 
                                     long accountId = new Date().getTime();
-
                                     //khởi tạo một đối tượng account
                                     Account account = new Account(accountId, "user" + accountId, "null", "null", email, password, ROLE_USER, STATUS_ENABLE);
 

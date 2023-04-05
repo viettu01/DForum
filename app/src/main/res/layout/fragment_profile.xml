@@ -37,8 +37,9 @@
                     android:id="@+id/tvNickName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="nick name"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:textStyle="bold"
                     android:textSize="@dimen/_18sdp"
                     android:textAlignment="center"/>
 
@@ -46,8 +47,7 @@
                     android:id="@+id/tvStory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tiểu sử sẽ xuất hiện ở đây"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
                     android:textSize="@dimen/_12sdp"
                     android:layout_marginBottom="8sp"
                     android:textAlignment="center"/>
@@ -64,8 +64,8 @@
                         android:layout_weight="8"
                         android:text="Chỉnh sửa thông tin"
                         android:textStyle="bold"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:layout_marginRight="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_3sdp"
                         android:textAllCaps="false"
                         android:textSize="@dimen/_11sdp" />
 
@@ -73,8 +73,8 @@
                         android:id="@+id/btnLogout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_2sdp"
-                        android:layout_marginRight="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
                         android:layout_weight="4"
                         android:textColor="@color/black"
                         android:backgroundTint="#E1DEDE"
@@ -86,53 +86,90 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:background="@color/gray_color" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_15sdp"
+                    android:text="@string/detail"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:background="@drawable/baseline_assignment_ind_24" />
+                    <TextView
+                        android:id="@+id/tvAccountId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="9"
+                        android:textSize="@dimen/_14sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:background="@drawable/envelope_solid" />
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:background="@drawable/baseline_email_24" />
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvEmail"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:text="Tiểu sử sẽ xuất hiện ở đây"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:background="@drawable/clock_solid" />
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:background="@drawable/baseline_access_time_filled_24" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvCreatedDate"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:text="Tiểu sử sẽ xuất hiện ở đây"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -229,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialogForgotPassword();
                 break;
             case R.id.ic_back_arrow_login:
-                this.finish();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;
             case R.id.btnLogin:
                 progressDialog.show();
