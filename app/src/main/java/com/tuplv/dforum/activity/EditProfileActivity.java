@@ -166,12 +166,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //getProfile();
-    }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -188,7 +182,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -201,6 +197,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             tvLengthStory.setText(lengthStory + " / 100");
         }
     }
+
     @Override
-    public void afterTextChanged(Editable editable) {}
+    public void afterTextChanged(Editable editable) {
+    }
 }

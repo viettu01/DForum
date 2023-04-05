@@ -67,14 +67,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         init(view);
 
         if (user != null)
             getProfile();
+        
         return view;
     }
 
@@ -96,6 +96,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         imvAvatar.setOnClickListener(this);
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void getProfile() {
         reference.child(OBJ_ACCOUNT).child(user.getUid())
                 .addValueEventListener(new ValueEventListener() {
@@ -105,9 +106,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         if (snapshot.exists()) {
                             account = snapshot.getValue(Account.class);
                             if (account != null) {
-                                if (account.getAvatarUri().equals("null")) {
+                                if (account.getAvatarUri().equals("null"))
                                     imvAvatar.setImageResource(R.drawable.no_avatar);
-                                } else
+                                else
                                     Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
                                 tvNickName.setText(account.getNickName());
 
@@ -120,15 +121,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 tvEmail.setText(account.getEmail());
 
                                 Date date = new Date(account.getAccountId());
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat fDate = new SimpleDateFormat("M");
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat fYear = new SimpleDateFormat("yyyy");
-                                String month = fDate.format(date);
+                                SimpleDateFormat fMonth = new SimpleDateFormat("M");
+                                SimpleDateFormat fYear = new SimpleDateFormat("yyyy");
+                                String month = fMonth.format(date);
                                 String year = fYear.format(date);
 
                                 tvCreatedDate.setText("Tham gia vào tháng " + month + " năm " + year);
                             }
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getContext(), "Có lỗi xảy ra vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
@@ -136,9 +138,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 });
     }
 
+    @SuppressLint("InflateParams")
     private void dialogAvatar() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        @SuppressLint("InflateParams") View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bottom_sheet_menu, null);
+        View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bottom_sheet_menu, null);
         bottomSheetDialog.setContentView(bottomSheetView);
 
         LinearLayout linear_choose_avatar = bottomSheetDialog.findViewById(R.id.linear_choose_avatar);
@@ -201,8 +204,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                String AvatarUri = uri.toString();
-                updateAvatar(AvatarUri);
+                String avatarUri = uri.toString();
+                updateAvatar(avatarUri);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
