@@ -1,6 +1,7 @@
 package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -30,8 +32,11 @@ import com.tuplv.dforum.adapter.ForumAdapter;
 import com.tuplv.dforum.interf.OnForumClickListener;
 import com.tuplv.dforum.model.Forum;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListForumActivity extends AppCompatActivity implements OnForumClickListener {
 
@@ -115,6 +120,12 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         builder.show();
     }
 
+    @Override
+    public void goToHomeFragment(Forum forum) {
+        EventBus.getDefault().post(forum);
+        finish();
+    }
+
     private void init() {
         tbListForum = findViewById(R.id.tbListForum);
         setSupportActionBar(tbListForum);
@@ -123,6 +134,7 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadDataToView() {
         forums = new ArrayList<>();
         forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_forum, forums, this);
@@ -131,9 +143,21 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot dsForum) {
+                for (DataSnapshot dataSnapshot : dsForum.getChildren()) {
                     Forum forum = dataSnapshot.getValue(Forum.class);
+//                    FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
+//                            .addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot dsPost) {
+//                                    forum.setTotalPost(Math.toIntExact(dsPost.getChildrenCount()));
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                }
+//                            });
                     forums.add(forum);
                 }
                 forumAdapter.notifyDataSetChanged();
@@ -144,5 +168,22 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
                 Toast.makeText(ListForumActivity.this, "Fail", Toast.LENGTH_SHORT).show();
             }
         });
+
+        forumAdapter.notifyDataSetChanged();
+    }
+
+    private void totalPost(Forum forum) {
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dsPost) {
+                        forum.setTotalPost(Math.toIntExact(dsPost.getChildrenCount()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

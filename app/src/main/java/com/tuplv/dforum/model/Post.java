@@ -1,12 +1,13 @@
 package com.tuplv.dforum.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Post {
+public class Post implements Serializable {
     private long postId;
-    private long accountId;
+    private String accountId;
     private String categoryName;
-    private String forumName;
+    private long forumId;
     private String title;
     private String content;
     private long approvalDate; //Ngày duyệt
@@ -18,11 +19,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(long postId, long accountId, String categoryName, String forumName, String title, String content, long approvalDate, long createdDate, long view, List<Comment> comments, String status) {
+    public Post(long postId, String accountId, String categoryName, long forumId, String title, String content, long approvalDate, long createdDate, long view, List<Comment> comments, String status) {
         this.postId = postId;
         this.accountId = accountId;
         this.categoryName = categoryName;
-        this.forumName = forumName;
+        this.forumId = forumId;
         this.title = title;
         this.content = content;
         this.approvalDate = approvalDate;
@@ -40,11 +41,11 @@ public class Post {
         this.postId = postId;
     }
 
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(long accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -56,12 +57,12 @@ public class Post {
         this.categoryName = categoryName;
     }
 
-    public String getForumName() {
-        return forumName;
+    public long getForumId() {
+        return forumId;
     }
 
-    public void setForumName(String forumName) {
-        this.forumName = forumName;
+    public void setForumId(long forumId) {
+        this.forumId = forumId;
     }
 
     public String getTitle() {
@@ -126,7 +127,7 @@ public class Post {
                 "postId=" + postId +
                 ", accountId=" + accountId +
                 ", categoryName='" + categoryName + '\'' +
-                ", forumName='" + forumName + '\'' +
+                ", forumName='" + forumId + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", approvalDate=" + approvalDate +

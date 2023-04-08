@@ -75,7 +75,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     }
 
     public void create() {
-        forum = new Forum();
+//        forum = new Forum(new Date().getTime(), edtNameForum.getText().toString(), edtDesForum.getText().toString());
         forum.setForumId(new Date().getTime());
         forum.setName(edtNameForum.getText().toString());
         forum.setDescription(edtDesForum.getText().toString());
@@ -100,7 +100,6 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
             btnAddForum.setText("Cập nhật");
             edtNameForum.setText(forum.getName());
             edtDesForum.setText(forum.getDescription());
-            Log.d("AAA", forum.toString());
         }
     }
 

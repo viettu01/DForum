@@ -8,7 +8,7 @@
     tools:context=".fragment.HomeFragment">
 
     <RelativeLayout
-        android:id="@+id/llShowForum"
+        android:id="@+id/rlShowListForum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_radius_10"
@@ -17,9 +17,9 @@
         tools:ignore="RtlSymmetry">
 
         <TextView
+            android:id="@+id/tvNameAndTotalPostForum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:gravity="center"
             android:text="@string/tat_ca"
             android:textColor="@color/white"
@@ -35,13 +35,13 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="@string/xem_them"
-            android:src="@drawable/ic_arrow_right_24" />
+            android:src="@drawable/ic_arrow_right_white_30" />
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/llShowForum">
+        android:layout_below="@id/rlShowListForum">
 
         <LinearLayout
             android:layout_width="match_parent"

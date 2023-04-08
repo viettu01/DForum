@@ -40,9 +40,9 @@
                     android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imgAvatar"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:id="@+id/imvAvatar"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
                         android:src="@mipmap/ic_launcher" />
 
                     <LinearLayout
@@ -57,7 +57,9 @@
                             android:layout_height="0dp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:text="@string/nguyen_van_a" />
+                            android:text="@string/nguyen_van_a"
+                            android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvDatePost"
@@ -122,8 +124,8 @@
             <ImageView
                 android:id="@+id/imgSendComment"
                 android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/ic_send_black_24" />
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_send_main_color_24" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

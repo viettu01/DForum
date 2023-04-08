@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
+import com.tuplv.dforum.model.Forum;
 
 public class AdminMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

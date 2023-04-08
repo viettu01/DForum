@@ -52,6 +52,7 @@
                     android:id="@+id/spnCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/background_spinner"
                     android:contentDescription="@string/chuyen_muc" />
             </LinearLayout>
 
@@ -73,6 +74,7 @@
                     android:id="@+id/spnForum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/background_spinner"
                     android:contentDescription="@string/dien_dan" />
             </LinearLayout>
         </LinearLayout>

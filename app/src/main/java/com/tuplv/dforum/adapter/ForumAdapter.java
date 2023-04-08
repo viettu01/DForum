@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     Context context;
     int layout;
     List<Forum> forums;
+    Forum forum;
     OnForumClickListener listener;
     SharedPreferences sharedPreferences;
 
@@ -60,6 +63,19 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
 
         holder.tvTitle.setText(forum.getName());
 
+        holder.llItemListForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.goToHomeFragment(forum);
+            }
+        });
+        holder.imgShowForum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.goToHomeFragment(forum);
+            }
+        });
+
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -80,13 +96,15 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvTotalView, tvTotalPosts;
+        LinearLayout llItemListForum;
+        TextView tvTitle;
+        ImageView imgShowForum;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            llItemListForum = itemView.findViewById(R.id.llItemListForum);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvTotalView = itemView.findViewById(R.id.tvTotalView);
-            tvTotalPosts = itemView.findViewById(R.id.tvTotalPosts);
+            imgShowForum = itemView.findViewById(R.id.imgShowForum);
         }
     }
 

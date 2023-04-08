@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Account account = snapshot.getValue(Account.class);
                             if (account != null) {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putLong("accountId", account.getAccountId());
+                                editor.putString("accountId", mAuth.getCurrentUser().getUid());
                                 editor.putString("role", account.getRole());
                                 editor.apply();
 

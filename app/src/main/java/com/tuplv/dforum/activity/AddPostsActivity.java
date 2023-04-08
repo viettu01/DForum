@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -29,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.adapter.CategorySpinnerAdapter;
+import com.tuplv.dforum.adapter.ForumSpinnerAdapter;
 import com.tuplv.dforum.model.Forum;
 import com.tuplv.dforum.model.Post;
 
@@ -40,8 +40,11 @@ public class AddPostsActivity extends AppCompatActivity {
 
     Spinner spnCategory, spnForum;
     EditText edtTitlePost, edtContentPost;
-    WebView wvContentPost;
     Toolbar tbAddPost;
+
+    ForumSpinnerAdapter forumSpinnerAdapter;
+    CategorySpinnerAdapter categorySpinnerAdapter;
+    List<Forum> forums;
 
     SharedPreferences sharedPreferences;
 
@@ -69,40 +72,34 @@ public class AddPostsActivity extends AppCompatActivity {
         spnForum = findViewById(R.id.spnForum);
         edtTitlePost = findViewById(R.id.edtTitlePost);
         edtContentPost = findViewById(R.id.edtContentPost);
-
         tbAddPost = findViewById(R.id.tbAddPost);
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
-
-        // wvContentPost = findViewById(R.id.wvContentPost);
-        // wvContentPost.loadUrl("file:///android_asset/ckeditor/index.html");
-        // WebSettings webSettings = wvContentPost.getSettings();
-        // webSettings.setJavaScriptEnabled(true);
-        // wvContentPost.setWebViewClient(new WebViewClient());
     }
 
     //Đổ dữ liệu ra spinner chuyên mục
     private void loadDataToSpinnerCategory() {
-        String[] items = {HOI_DAP, CHIA_SE_KIEN_THUC};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnCategory.setAdapter(adapter);
+        List<String> categoryName = new ArrayList<>();
+        categoryName.add(HOI_DAP);
+        categoryName.add(CHIA_SE_KIEN_THUC);
+        categorySpinnerAdapter = new CategorySpinnerAdapter(this, categoryName);
+        spnCategory.setAdapter(categorySpinnerAdapter);
     }
 
     //Đổ dữ liệu ra spinner diễn đàn
     private void loadDataToSpinnerForum() {
-        List<String> items = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnForum.setAdapter(adapter);
+        forums = new ArrayList<>();
+        forumSpinnerAdapter = new ForumSpinnerAdapter(this, forums);
+        spnForum.setAdapter(forumSpinnerAdapter);
+
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Forum forum = dataSnapshot.getValue(Forum.class);
-                    items.add(forum.getName());
+                    forums.add(forum);
                 }
-                adapter.notifyDataSetChanged();
+                forumSpinnerAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -113,11 +110,12 @@ public class AddPostsActivity extends AppCompatActivity {
 
     //Thêm bài viết mới
     public void create() {
+        Forum forum = (Forum) spnForum.getSelectedItem();
         Post post = new Post();
         post.setPostId(new Date().getTime());
-        post.setAccountId(sharedPreferences.getLong("accountId", 0));
+        post.setAccountId(sharedPreferences.getString("accountId", ""));
         post.setCategoryName(spnCategory.getSelectedItem().toString());
-        post.setForumName(spnForum.getSelectedItem().toString());
+        post.setForumId(forum.getForumId());
         post.setTitle(edtTitlePost.getText().toString());
         post.setContent(edtContentPost.getText().toString());
         post.setCreatedDate(new Date().getTime());
@@ -150,13 +148,6 @@ public class AddPostsActivity extends AppCompatActivity {
             if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
             } else {
-//            wvContentPost.evaluateJavascript("CKEDITOR.instances['editor'].getData();", new ValueCallback<String>() {
-//                @Override
-//                public void onReceiveValue(String value) {
-//                    // value chứa dữ liệu từ trình soạn thảo CKEditor
-//                    Log.d("CKEditor", value);
-//                }
-//            });
                 create();
             }
         }
