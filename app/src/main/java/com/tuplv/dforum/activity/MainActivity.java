@@ -1,28 +1,51 @@
 package com.tuplv.dforum.activity;
 
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.adapter.PostsAdapter;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
+import com.tuplv.dforum.interf.OnPostClickListener;
+import com.tuplv.dforum.model.Post;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-    private ViewPager viewPager;
-    private BottomNavigationView bottomNavigationView;
-    private Toolbar tbMain;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener {
+
+    ViewPager viewPager;
+    BottomNavigationView bottomNavigationView;
+    Toolbar tbMain;
+    RecyclerView rvSearchPost;
+    PostsAdapter postsAdapter;
+    List<Post> postsSearch;
+    List<Post> posts = new ArrayList<>();
     private long outApp;
     SharedPreferences sharedPreferences;
 
@@ -69,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tbMain = findViewById(R.id.tbMain);
         viewPager = findViewById(R.id.viewPager);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
+        rvSearchPost = findViewById(R.id.rvSearchPost);
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
     }
 
@@ -97,6 +121,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mnuSearch:
+                rvSearchPost.setVisibility(View.VISIBLE);
+                viewPager.setVisibility(View.GONE);
+                bottomNavigationView.setVisibility(View.GONE);
+
+                postsSearch = new ArrayList<>();
+
+                FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    Post post = dataSnapshot.getValue(Post.class);
+                                    posts.add(post);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setQueryHint("Tìm kiếm ...");
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -106,9 +152,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         return true;
                     }
 
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        // Do something when the search text changes
+                        postsAdapter = new PostsAdapter(MainActivity.this, R.layout.item_posts, postsSearch, MainActivity.this);
+                        rvSearchPost.setAdapter(postsAdapter);
+                        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+                        if (newText.isBlank()) {
+                            postsSearch.clear();
+                        } else {
+                            postsSearch.clear();
+                            for (Post post : posts) {
+                                if (post.getTitle().toLowerCase().contains(newText.toLowerCase()) || post.getContent().toLowerCase().contains(newText.toLowerCase())) {
+                                    postsSearch.add(post);
+                                }
+                            }
+                        }
+                        postsAdapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
+
+                item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(@NonNull MenuItem menuItem) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(@NonNull MenuItem menuItem) {
+                        rvSearchPost.setVisibility(View.GONE);
+                        viewPager.setVisibility(View.VISIBLE);
+                        bottomNavigationView.setVisibility(View.VISIBLE);
                         return true;
                     }
                 });
@@ -132,5 +208,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void goToActivityDetail(Post post) {
+        HashMap<String, Object> updateView = new HashMap<>();
+        updateView.put("view", post.getView() + 1);
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
+                .updateChildren(updateView);
+
+        Intent intent = new Intent(this, ViewPostsActivity.class);
+        intent.putExtra("post", post);
+
+        startActivity(intent);
     }
 }

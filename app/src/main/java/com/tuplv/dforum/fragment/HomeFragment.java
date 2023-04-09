@@ -91,31 +91,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         postsShareKnowledgeAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsShareKnowledge, this);
         rvShareKnowledge.setAdapter(postsShareKnowledgeAdapter);
         rvShareKnowledge.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        FirebaseDatabase.getInstance().getReference(OBJ_POST).addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvTotalPostForum.setText("(" + snapshot.getChildrenCount() + ")");
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Post post = dataSnapshot.getValue(Post.class);
-                    if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)) {
-                        if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
-                            postsQA.add(post);
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        tvTotalPostForum.setText("(" + snapshot.getChildrenCount() + ")");
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Post post = dataSnapshot.getValue(Post.class);
+                            if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
+                                postsQA.add(post);
+                            }
+                            if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
+                                postsShareKnowledge.add(post);
+                            }
                         }
-                        if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
-                            postsShareKnowledge.add(post);
-                        }
+                        postsQAAdapter.notifyDataSetChanged();
+                        postsShareKnowledgeAdapter.notifyDataSetChanged();
                     }
-                }
-                postsQAAdapter.notifyDataSetChanged();
-                postsShareKnowledgeAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void findByForum() {
