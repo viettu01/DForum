@@ -1,5 +1,7 @@
 package com.tuplv.dforum.model;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,24 +15,9 @@ public class Post implements Serializable {
     private long approvalDate; //Ngày duyệt
     private long createdDate; //Ngày tạo
     private long view;
-    private List<Comment> comments;
     private String status;
 
     public Post() {
-    }
-
-    public Post(long postId, String accountId, String categoryName, long forumId, String title, String content, long approvalDate, long createdDate, long view, List<Comment> comments, String status) {
-        this.postId = postId;
-        this.accountId = accountId;
-        this.categoryName = categoryName;
-        this.forumId = forumId;
-        this.title = title;
-        this.content = content;
-        this.approvalDate = approvalDate;
-        this.createdDate = createdDate;
-        this.view = view;
-        this.comments = comments;
-        this.status = status;
     }
 
     public long getPostId() {
@@ -105,14 +92,6 @@ public class Post implements Serializable {
         this.view = view;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -121,6 +100,7 @@ public class Post implements Serializable {
         this.status = status;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Posts{" +
@@ -133,7 +113,6 @@ public class Post implements Serializable {
                 ", approvalDate=" + approvalDate +
                 ", createdDate=" + createdDate +
                 ", view=" + view +
-                ", comments=" + comments +
                 ", status='" + status + '\'' +
                 '}';
     }

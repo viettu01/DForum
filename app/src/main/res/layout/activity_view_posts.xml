@@ -26,7 +26,8 @@
         <ScrollView
             android:id="@+id/svViewPosts"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,17 +98,16 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvComment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_35sdp"/>
             </LinearLayout>
         </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:backgroundTint="@color/white"
+            android:background="@color/white"
             android:orientation="horizontal">
 
             <EditText
@@ -122,7 +122,7 @@
                 tools:ignore="RtlSymmetry" />
 
             <ImageView
-                android:id="@+id/imgSendComment"
+                android:id="@+id/imvSendComment"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_send_main_color_24" />

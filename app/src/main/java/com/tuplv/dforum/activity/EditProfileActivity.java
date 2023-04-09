@@ -52,6 +52,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
+    private Uri uri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,28 +143,30 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    private void setImageToStorage(){
+        StorageReference imgRef = storageRef.child("images/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "." + getFileNameExtension(uri));
+
+        UploadTask uploadTask = imgRef.putFile(uri);
+        getAvatarUri(imgRef);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(EditProfileActivity.this, "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(EditProfileActivity.this, "Tải ảnh lên không thành công, vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-
-            StorageReference imgRef = storageRef.child("images/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "." + getFileNameExtension(uri));
-
-            UploadTask uploadTask = imgRef.putFile(uri);
-            getAvatarUri(imgRef);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Picasso.get().load(uri).into(imvAvatar);
-                    Toast.makeText(EditProfileActivity.this, "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(EditProfileActivity.this, "Tải ảnh lên không thành công, vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
-                }
-            });
+            uri = data.getData();
+            Picasso.get().load(uri).into(imvAvatar);
         }
     }
 
@@ -170,13 +174,14 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tvEditAvatar:
+//            case R.id.tvEditAvatar:
             case R.id.imvAvatar:
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), PICK_IMAGE_REQUEST);
                 break;
             case R.id.tvEditNickName:
             case R.id.tvAddStory:
-                updateProfile("null", edtNickName.getText().toString().trim(), edtStory.getText().toString().trim());
+                setImageToStorage();
+//                updateProfile("null", edtNickName.getText().toString().trim(), edtStory.getText().toString().trim());
                 break;
         }
     }
