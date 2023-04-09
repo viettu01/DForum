@@ -19,6 +19,12 @@
         android:theme="@style/Theme.DForum"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ViewPostApproveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PostApproveActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ShowImageActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llItemListPostApprove"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@drawable/custom_background_item_posts"
+    android:elevation="@dimen/_2sdp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/_10sdp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitlePost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:text="@string/tieu_de"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvCreateDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:text="10:10 10/10/1010"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imvPostApprove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:contentDescription="@string/duyet_bai_dang"
+        android:src="@drawable/ic_check_black_24" />
+
+    <ImageView
+        android:id="@+id/imvNoPostApprove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:contentDescription="@string/khong_duyet_bai_dang"
+        android:src="@drawable/ic_close_black_24" />
+</LinearLayout>

@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.tuplv.dforum.activity.PostApproveActivity;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.AddAndUpdateForumActivity;
 import com.tuplv.dforum.activity.ListForumActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
@@ -41,7 +40,7 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnPostsApprove:
-                Toast.makeText(view.getContext(), "Kiểm duyệt", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), PostApproveActivity.class));
                 break;
             case R.id.btnShowListForum:
                 startActivity(new Intent(getActivity(), ListForumActivity.class));
