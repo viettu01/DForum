@@ -140,24 +140,13 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_forum, forums, this);
         rvListForum.setAdapter(forumAdapter);
         rvListForum.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        forums.add(new Forum(0, "Tất cả", ""));
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dsForum) {
                 for (DataSnapshot dataSnapshot : dsForum.getChildren()) {
                     Forum forum = dataSnapshot.getValue(Forum.class);
-//                    FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
-//                            .addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot dsPost) {
-//                                    forum.setTotalPost(Math.toIntExact(dsPost.getChildrenCount()));
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                                }
-//                            });
                     forums.add(forum);
                 }
                 forumAdapter.notifyDataSetChanged();
@@ -170,20 +159,5 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         });
 
         forumAdapter.notifyDataSetChanged();
-    }
-
-    private void totalPost(Forum forum) {
-        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dsPost) {
-                        forum.setTotalPost(Math.toIntExact(dsPost.getChildrenCount()));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
     }
 }

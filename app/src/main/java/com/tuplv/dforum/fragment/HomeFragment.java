@@ -49,14 +49,14 @@ import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, OnPostClickListener {
 
-    TextView tvNameAndTotalPostForum;
+    TextView tvNameForum, tvTotalPostForum;
     RelativeLayout rlShowListForum;
     RecyclerView rvQA, rvShareKnowledge;
     FloatingActionButton fabAddPost;
     ImageView imgShowMoreForum;
     PostsAdapter postsQAAdapter, postsShareKnowledgeAdapter;
     List<Post> postsQA, postsShareKnowledge;
-
+    Forum forum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +72,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         rvShareKnowledge = view.findViewById(R.id.rvShareKnowledge);
         fabAddPost = view.findViewById(R.id.fabAddPost);
         imgShowMoreForum = view.findViewById(R.id.imgShowMoreForum);
-        tvNameAndTotalPostForum = view.findViewById(R.id.tvNameAndTotalPostForum);
+        tvNameForum = view.findViewById(R.id.tvNameForum);
+        tvTotalPostForum = view.findViewById(R.id.tvTotalPostForum);
         rlShowListForum = view.findViewById(R.id.rlShowListForum);
 
         fabAddPost.setOnClickListener(this);
@@ -80,23 +81,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         imgShowMoreForum.setOnClickListener(this);
     }
 
-    private void loadDataToView() {
+    private void findAll() {
         postsQA = new ArrayList<>();
         postsQAAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsQA, this);
         rvQA.setAdapter(postsQAAdapter);
         rvQA.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
         postsShareKnowledge = new ArrayList<>();
-        postsShareKnowledgeAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsShareKnowledge);
+        postsShareKnowledgeAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsShareKnowledge, this);
         rvShareKnowledge.setAdapter(postsShareKnowledgeAdapter);
         rvShareKnowledge.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST).addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvTotalPostForum.setText("(" + snapshot.getChildrenCount() + ")");
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)){
+                    if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)) {
                         if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
                             postsQA.add(post);
                         }
@@ -114,6 +116,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
                 Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void findByForum() {
+        FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                .orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dsPost) {
+                        tvTotalPostForum.setText("(" + dsPost.getChildrenCount() + ")");
+                        for (DataSnapshot dataSnapshot : dsPost.getChildren()) {
+                            Post post = dataSnapshot.getValue(Post.class);
+                            if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)) {
+                                if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
+                                    postsQA.add(post);
+                                }
+                                if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
+                                    postsShareKnowledge.add(post);
+                                }
+                            }
+                        }
+                        postsQAAdapter.notifyDataSetChanged();
+                        postsShareKnowledgeAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -138,7 +170,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
     @Override
     public void onResume() {
         super.onResume();
-        loadDataToView();
+        if (forum != null && forum.getForumId() != 0) {
+            postsQA.clear();
+            postsShareKnowledge.clear();
+            findByForum();
+        } else if (forum != null && forum.getForumId() == 0)
+            findAll();
+        else
+            findAll();
     }
 
     @Override
@@ -155,9 +194,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDataEvent(Forum forum) {
-        String data = forum.getName();
-        // Cập nhật dữ liệu ở đây
-        Toast.makeText(getActivity(), "name forum: " + data, Toast.LENGTH_SHORT).show();
+        this.forum = forum;
+        tvNameForum.setText(forum.getName());
     }
 
     @Override

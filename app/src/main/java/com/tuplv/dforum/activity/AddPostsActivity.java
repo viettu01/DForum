@@ -4,7 +4,9 @@ import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
 import static com.tuplv.dforum.until.Constant.HOI_DAP;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -120,7 +122,11 @@ public class AddPostsActivity extends AppCompatActivity {
         post.setContent(edtContentPost.getText().toString());
         post.setCreatedDate(new Date().getTime());
         post.setView(0);
-        post.setStatus(STATUS_DISABLE);
+        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
+            post.setStatus(STATUS_ENABLE);
+        else
+            post.setStatus(STATUS_DISABLE);
+
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).setValue(post)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
