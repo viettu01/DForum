@@ -82,6 +82,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'org.greenrobot:eventbus:3.2.0'
-//    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.0"
 
 }

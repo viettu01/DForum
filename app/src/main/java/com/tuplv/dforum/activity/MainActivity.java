@@ -6,10 +6,13 @@ import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -41,12 +45,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
     Toolbar tbMain;
+    TextView tvCardBadge;
     RecyclerView rvSearchPost;
     PostsAdapter postsAdapter;
     List<Post> postsSearch;
     List<Post> posts;
     private long outApp;
     SharedPreferences sharedPreferences;
+    BadgeDrawable badgeDrawable;
+    LayerDrawable layerDrawable;
+    Drawable[] layers;
+    int countNotify = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +129,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
 
+        MenuItem menuItem = menu.findItem(R.id.mnuNotify);
+        View view = menuItem.getActionView();
+        tvCardBadge = view.findViewById(R.id.tvNotifyBadge);
+        setupBadge();
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -150,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         return true;
                     }
                 });
-
                 item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionExpand(@NonNull MenuItem menuItem) {
@@ -168,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.mnuNotify:
                 Toast.makeText(this, "Thông báo", Toast.LENGTH_SHORT).show();
+                tvCardBadge.setText(String.valueOf(countNotify++));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -233,5 +254,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     }
                 });
+    }
+
+    private void setupBadge() {
+        if (tvCardBadge != null) {
+            if (countNotify == 0) {
+                if (tvCardBadge.getVisibility() != View.GONE) {
+                    tvCardBadge.setVisibility(View.GONE);
+                }
+            } else {
+                tvCardBadge.setText(String.valueOf(Math.min(countNotify, 99)));
+                if (tvCardBadge.getVisibility() != View.VISIBLE) {
+                    tvCardBadge.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 }
