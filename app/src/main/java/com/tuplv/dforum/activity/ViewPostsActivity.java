@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class ViewPostsActivity extends AppCompatActivity {
     RecyclerView rvComment;
     EditText edtComment;
     ImageView imvSendComment;
+    LinearLayout ll_comment;
     CommentAdapter commentAdapter;
     List<Comment> comments;
 
@@ -65,6 +67,10 @@ public class ViewPostsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_posts);
         init();
+
+        if (user == null)
+            ll_comment.setVisibility(View.GONE);
+
         tbViewPosts.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +105,7 @@ public class ViewPostsActivity extends AppCompatActivity {
 
         edtComment = findViewById(R.id.edtComment);
         imvSendComment = findViewById(R.id.imvSendComment);
+        ll_comment = findViewById(R.id.ll_comment);
     }
 
     @SuppressLint("SimpleDateFormat")
