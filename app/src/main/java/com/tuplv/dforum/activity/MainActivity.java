@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView rvSearchPost;
     PostsAdapter postsAdapter;
     List<Post> postsSearch;
-    List<Post> posts = new ArrayList<>();
+    List<Post> posts;
     private long outApp;
     SharedPreferences sharedPreferences;
 
@@ -94,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         rvSearchPost = findViewById(R.id.rvSearchPost);
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+
+        posts = new ArrayList<>();
+        postsSearch = new ArrayList<>();
     }
 
     @Override
@@ -107,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             outToast.show();
         }
         outApp = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -125,23 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 viewPager.setVisibility(View.GONE);
                 bottomNavigationView.setVisibility(View.GONE);
 
-                postsSearch = new ArrayList<>();
-
-                FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                    Post post = dataSnapshot.getValue(Post.class);
-                                    posts.add(post);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+                findAllPost();
 
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setQueryHint("Tìm kiếm ...");
@@ -155,21 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        postsAdapter = new PostsAdapter(MainActivity.this, R.layout.item_posts, postsSearch, MainActivity.this);
-                        rvSearchPost.setAdapter(postsAdapter);
-                        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
-                        if (newText.isBlank()) {
-                            postsSearch.clear();
-                        } else {
-                            postsSearch.clear();
-                            for (Post post : posts) {
-                                if (post.getTitle().toLowerCase().contains(newText.toLowerCase()) || post.getContent().toLowerCase().contains(newText.toLowerCase())) {
-                                    postsSearch.add(post);
-                                }
-                            }
-                        }
-                        postsAdapter.notifyDataSetChanged();
+                        loadDataToSearch(newText);
                         return true;
                     }
                 });
@@ -221,5 +198,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra("post", post);
 
         startActivity(intent);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadDataToSearch(String search) {
+        postsAdapter = new PostsAdapter(MainActivity.this, R.layout.item_posts, postsSearch, MainActivity.this);
+        rvSearchPost.setAdapter(postsAdapter);
+        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        postsSearch.clear();
+        if (!search.isBlank()) {
+            for (Post post : posts) {
+                if (post.getTitle().toLowerCase().contains(search.toLowerCase()) || post.getContent().toLowerCase().contains(search.toLowerCase())) {
+                    postsSearch.add(post);
+                }
+            }
+        }
+        postsAdapter.notifyDataSetChanged();
+    }
+
+    private void findAllPost() {
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Post post = dataSnapshot.getValue(Post.class);
+                            posts.add(post);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

@@ -1,18 +1,8 @@
 package com.tuplv.dforum.activity;
 
-import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
-import static com.tuplv.dforum.until.Constant.HOI_DAP;
-import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -23,6 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -31,17 +28,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.adapter.ForumAdapter;
 import com.tuplv.dforum.adapter.PostsAdapter;
 import com.tuplv.dforum.interf.OnPostApproveClickListener;
-import com.tuplv.dforum.interf.OnPostClickListener;
-import com.tuplv.dforum.model.Forum;
 import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class PostApproveActivity extends AppCompatActivity implements OnPostApproveClickListener {
     Toolbar tbPostApprove;
@@ -55,7 +49,6 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_approve_main);
         init();
-
 
         tbPostApprove.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,13 +115,14 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
     public void postApprove(Post post) {
         AlertDialog.Builder builder = new AlertDialog.Builder(PostApproveActivity.this);
         builder.setTitle("Cảnh báo!");
-        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setMessage("Bạn có chắc chắn muốn duyệt bài viết này?");
         builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 HashMap<String, Object> updateView = new HashMap<>();
                 updateView.put("status", STATUS_ENABLE);
+                updateView.put("approvalDate", new Date().getTime());
                 FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                         .updateChildren(updateView);
                 Toast.makeText(PostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
@@ -152,7 +146,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         builder.setTitle("Cảnh báo!");
         builder.setIcon(android.R.drawable.ic_delete);
         builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()));
@@ -185,13 +179,14 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         if (item.getItemId() == R.id.mnuPostApprove) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PostApproveActivity.this);
             builder.setTitle("Cảnh báo!");
-            builder.setIcon(android.R.drawable.ic_delete);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setMessage("Bạn có chắc chắn muốn duyệt tất cả bài viết?");
             builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     HashMap<String, Object> updateView = new HashMap<>();
                     updateView.put("status", STATUS_ENABLE);
+                    updateView.put("approvalDate", new Date().getTime());
                     for (Post post : posts) {
                         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                                 .updateChildren(updateView);

@@ -112,6 +112,7 @@ public class AddPostsActivity extends AppCompatActivity {
 
     //Thêm bài viết mới
     public void create() {
+        String message = "";
         Forum forum = (Forum) spnForum.getSelectedItem();
         Post post = new Post();
         post.setPostId(new Date().getTime());
@@ -122,17 +123,21 @@ public class AddPostsActivity extends AppCompatActivity {
         post.setContent(edtContentPost.getText().toString());
         post.setCreatedDate(new Date().getTime());
         post.setView(0);
-        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
+        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
+            message = "Thêm bài viết thành công";
             post.setStatus(STATUS_ENABLE);
-        else
+        } else {
+            message = "Bài viết của bạn đang chờ kiểm duyệt";
             post.setStatus(STATUS_DISABLE);
+        }
 
+        String finalMessage = message;
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).setValue(post)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(AddPostsActivity.this, "Thêm bài viết thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddPostsActivity.this, finalMessage, Toast.LENGTH_SHORT).show();
                             finish();
                         } else
                             Toast.makeText(AddPostsActivity.this, "Thêm bài viết thất bại", Toast.LENGTH_SHORT).show();

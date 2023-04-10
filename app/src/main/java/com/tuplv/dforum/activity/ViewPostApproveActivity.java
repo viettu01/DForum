@@ -1,15 +1,8 @@
 package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
-import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
-import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -19,6 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,12 +35,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ViewPostApproveActivity extends AppCompatActivity {
+public class ViewPostApproveActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar tbViewPostsApprove;
     ImageView imvAvatar;
     TextView tvNamePoster, tvDatePostApprove, tvTitlePost, tvContentPosts;
     Button btnPostsApprove, btnNoPostApprove;
     Post post;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,69 +55,8 @@ public class ViewPostApproveActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btnPostsApprove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViewPostApproveActivity.this);
-                builder.setTitle("Cảnh báo!");
-                builder.setIcon(android.R.drawable.ic_delete);
-                builder.setMessage("Bạn có chắc chắn muốn duyệt bài viết này?");
-                builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        HashMap<String, Object> updateView = new HashMap<>();
-                        updateView.put("status", STATUS_ENABLE);
-                        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
-                                .updateChildren(updateView);
-                        Toast.makeText(ViewPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
-                            finish();
-                    }
-                });
-                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                builder.show();
-
-            }
-        });
-        btnNoPostApprove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViewPostApproveActivity.this);
-                builder.setTitle("Cảnh báo!");
-                builder.setIcon(android.R.drawable.ic_delete);
-                builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
-                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()));
-                        databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ViewPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
-                                    finish();
-
-                                } else {
-                                    Toast.makeText(ViewPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                });
-                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                builder.show();
-            }
-        });
+        btnPostsApprove.setOnClickListener(this);
+        btnNoPostApprove.setOnClickListener(this);
     }
 
     private void init() {
@@ -131,7 +69,7 @@ public class ViewPostApproveActivity extends AppCompatActivity {
         tvContentPosts = findViewById(R.id.tvContentPosts);
         btnPostsApprove = findViewById(R.id.btnPostsApprove);
         btnNoPostApprove = findViewById(R.id.btnNoPostApprove);
-
+        builder = new AlertDialog.Builder(this);
         post = (Post) getIntent().getSerializableExtra("post");
     }
 
@@ -162,6 +100,76 @@ public class ViewPostApproveActivity extends AppCompatActivity {
             tvDatePostApprove.setText(dateFormat.format(new Date(post.getApprovalDate())));
             tvTitlePost.setText(post.getTitle());
             tvContentPosts.setText(post.getContent());
+        }
+    }
+
+    private void approvePost() {
+        builder.setTitle("Thông báo!");
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setMessage("Bạn có chắc chắn muốn duyệt bài viết này?");
+        builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                HashMap<String, Object> updateView = new HashMap<>();
+                updateView.put("status", STATUS_ENABLE);
+                updateView.put("approvalDate", new Date().getTime());
+                FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
+                        .updateChildren(updateView);
+                Toast.makeText(ViewPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
+    private void noApprovePost() {
+        builder.setTitle("Thông báo!");
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()));
+                databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ViewPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
+                            finish();
+
+                        } else {
+                            Toast.makeText(ViewPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnPostsApprove:
+                approvePost();
+                break;
+            case R.id.btnNoPostApprove:
+                noApprovePost();
+                break;
         }
     }
 }
