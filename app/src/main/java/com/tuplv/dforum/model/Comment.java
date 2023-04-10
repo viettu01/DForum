@@ -2,7 +2,9 @@ package com.tuplv.dforum.model;
 
 import androidx.annotation.NonNull;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment implements Serializable {
     private long commentId;
     private String accountId;
     private String content;

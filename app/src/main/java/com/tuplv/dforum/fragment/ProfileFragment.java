@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
 import static com.tuplv.dforum.until.Constant.HOI_DAP;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
@@ -16,6 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +55,7 @@ import com.tuplv.dforum.activity.ViewPostsActivity;
 import com.tuplv.dforum.adapter.PostsAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Account;
+import com.tuplv.dforum.model.Comment;
 import com.tuplv.dforum.model.Post;
 
 import java.text.SimpleDateFormat;
@@ -63,18 +66,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, OnPostClickListener {
-
     Button btnLogout, btnEditProfile;
-    TextView tvNickName, tvStory, tvAccountId, tvEmail, tvCreatedDate;
+    TextView tvNickName, tvStory, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment;
     ImageView imvAvatar;
     RecyclerView rvMyPost;
     List<Post> myPost;
     PostsAdapter myPostAdapter;
-
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
-
     Account account;
     //firebase
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -85,16 +85,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         init(view);
-
-        if (user != null)
-            getProfile();
-
-        getMyPost();
         return view;
     }
 
     private void init(View view) {
-        tvAccountId = view.findViewById(R.id.tvAccountId);
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCreatedDate = view.findViewById(R.id.tvCreatedDate);
 
@@ -111,6 +105,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         imvAvatar.setOnClickListener(this);
 
         rvMyPost = view.findViewById(R.id.rvMyPost);
+        tvTotalPost = view.findViewById(R.id.tvTotalPost);
+        tvTotalComment = view.findViewById(R.id.tvTotalComment);
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -134,7 +130,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                                 else
                                     tvStory.setText(account.getStory());
 
-                                tvAccountId.setText(String.valueOf(account.getAccountId()));
                                 tvEmail.setText(account.getEmail());
 
                                 Date date = new Date(account.getAccountId());
@@ -260,7 +255,38 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
     @Override
     public void onResume() {
         super.onResume();
-        getProfile();
+        if (user != null)
+            getProfile();
+        getMyPost();
+        getTotalComment();
+    }
+
+    private void getTotalComment(){
+        List<Comment> comments = new ArrayList<>();
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference(OBJ_POST);
+        postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                comments.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot commentSnapshot : postSnapshot.child(OBJ_COMMENT).getChildren()) {
+                        Comment comment = commentSnapshot.getValue(Comment.class);
+                        assert comment != null;
+                        if (comment.getAccountId().equals(user.getUid())){
+                            comments.add(comment);
+                        }
+                    }
+                    tvTotalComment.setText(String.valueOf(comments.size()));
+                    System.out.println("Số comment: oooooooooooooooooooooooooo: " + comments.size());
+                    // sử dụng post và comments ở đây
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // xử lý khi có lỗi xảy ra
+            }
+        });
+
     }
 
     private void getMyPost(){
@@ -268,21 +294,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         myPostAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, myPost, this);
         rvMyPost.setAdapter(myPostAdapter);
         rvMyPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
         FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
                 .addValueEventListener(new ValueEventListener() {
                     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        myPost.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
                             if (Objects.requireNonNull(post).getAccountId().equals(user.getUid())) {
                                 myPost.add(post);
                             }
                         }
+                        tvTotalPost.setText(String.valueOf(myPost.size()));
                         myPostAdapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
