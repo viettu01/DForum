@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:background="@color/gray_color"
     tools:context=".fragment.ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,15 +24,76 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imvAvatar"
-                    android:layout_width="@dimen/_110sdp"
-                    android:layout_height="@dimen/_110sdp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/no_avatar"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="@color/white"/>
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imvAvatar"
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_95sdp"
+                        android:layout_gravity="start"
+                        android:src="@drawable/no_avatar"
+                        app:civ_border_color="@color/gray_color"
+                        app:civ_border_width="2dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textStyle="bold"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/_15sdp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Bài viết"
+                                android:singleLine="true"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/_14sdp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textStyle="bold"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/_15sdp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Bình luận"
+                                android:singleLine="true"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/_14sdp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvNickName"
@@ -39,75 +101,82 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:textAlignment="textStart"
+                    android:text="@string/tieu_su"
                     android:textSize="@dimen/_18sdp"
-                    android:textAlignment="center"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvStory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"
-                    android:textSize="@dimen/_12sdp"
                     android:layout_marginBottom="8sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="textStart"
+                    android:text="@string/tieu_su"
+                    android:textSize="@dimen/_12sdp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/btnEditProfile"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_3sdp"
                         android:layout_weight="8"
                         android:text="Chỉnh sửa thông tin"
-                        android:textStyle="bold"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_marginEnd="@dimen/_3sdp"
                         android:textAllCaps="false"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/btnLogout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
-                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="4"
-                        android:textColor="@color/black"
                         android:backgroundTint="#E1DEDE"
                         android:text="Đăng xuất"
-                        android:textStyle="bold"
                         android:textAllCaps="false"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@color/gray_color" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginStart="@dimen/_15sdp"
-                    android:textStyle="bold"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:text="@string/detail"
                     android:textSize="@dimen/_15sdp"
-                    android:text="@string/detail"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -116,6 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_8sdp"
                         android:background="@drawable/baseline_assignment_ind_24" />
+
                     <TextView
                         android:id="@+id/tvAccountId"
                         android:layout_width="0dp"
@@ -127,10 +197,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -152,10 +222,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -164,6 +234,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_8sdp"
                         android:background="@drawable/baseline_access_time_filled_24" />
+
                     <TextView
                         android:id="@+id/tvCreatedDate"
                         android:layout_width="0dp"
@@ -172,6 +243,11 @@
                         android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMyPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

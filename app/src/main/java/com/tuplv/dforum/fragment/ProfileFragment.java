@@ -1,8 +1,12 @@
 package com.tuplv.dforum.fragment;
 
 import static android.app.Activity.RESULT_OK;
+import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
+import static com.tuplv.dforum.until.Constant.HOI_DAP;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -24,6 +28,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,19 +49,27 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.EditProfileActivity;
 import com.tuplv.dforum.activity.LoginActivity;
 import com.tuplv.dforum.activity.ShowImageActivity;
+import com.tuplv.dforum.activity.ViewPostsActivity;
+import com.tuplv.dforum.adapter.PostsAdapter;
+import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Account;
+import com.tuplv.dforum.model.Post;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements View.OnClickListener {
+public class ProfileFragment extends Fragment implements View.OnClickListener, OnPostClickListener {
 
     Button btnLogout, btnEditProfile;
     TextView tvNickName, tvStory, tvAccountId, tvEmail, tvCreatedDate;
-
     ImageView imvAvatar;
+    RecyclerView rvMyPost;
+    List<Post> myPost;
+    PostsAdapter myPostAdapter;
 
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -74,7 +88,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         if (user != null)
             getProfile();
-        
+
+        getMyPost();
         return view;
     }
 
@@ -94,6 +109,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         imvAvatar = view.findViewById(R.id.imvAvatar);
         imvAvatar.setOnClickListener(this);
+
+        rvMyPost = view.findViewById(R.id.rvMyPost);
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -244,6 +261,46 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getProfile();
+    }
+
+    private void getMyPost(){
+        myPost = new ArrayList<>();
+        myPostAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, myPost, this);
+        rvMyPost.setAdapter(myPostAdapter);
+        rvMyPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Post post = dataSnapshot.getValue(Post.class);
+                            if (Objects.requireNonNull(post).getAccountId().equals(user.getUid())) {
+                                myPost.add(post);
+                            }
+                        }
+                        myPostAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    public void goToActivityDetail(Post post) {
+        HashMap<String, Object> updateView = new HashMap<>();
+        updateView.put("view", post.getView() + 1);
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
+                .updateChildren(updateView);
+
+        Intent intent = new Intent(getActivity(), ViewPostsActivity.class);
+        intent.putExtra("post", post);
+
+        startActivity(intent);
     }
 
     @SuppressLint("NonConstantResourceId")
