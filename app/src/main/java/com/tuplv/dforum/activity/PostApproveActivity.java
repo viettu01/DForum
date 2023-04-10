@@ -50,7 +50,6 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         setContentView(R.layout.activity_post_approve_main);
         init();
 
-
         tbPostApprove.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +179,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         if (item.getItemId() == R.id.mnuPostApprove) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PostApproveActivity.this);
             builder.setTitle("Cảnh báo!");
-            builder.setIcon(android.R.drawable.ic_delete);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setMessage("Bạn có chắc chắn muốn duyệt tất cả bài viết?");
             builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
                 @Override
