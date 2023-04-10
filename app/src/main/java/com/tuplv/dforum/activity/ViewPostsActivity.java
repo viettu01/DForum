@@ -2,7 +2,9 @@ package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
+import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,6 +37,7 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.adapter.CommentAdapter;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
+import com.tuplv.dforum.model.Notify;
 import com.tuplv.dforum.model.Post;
 
 import java.text.SimpleDateFormat;
@@ -144,6 +147,20 @@ public class ViewPostsActivity extends AppCompatActivity {
             comment.setContent(edtComment.getText().toString().trim());
 
             reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT).child(String.valueOf(comment.getCommentId())).setValue(comment)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            task.isSuccessful();
+                        }
+                    });
+
+            Notify notify = new Notify();
+            notify.setNotifyId(new Date().getTime());
+            notify.setPostId(post.getPostId());
+            notify.setNotifyContent("");
+            notify.setStatus(STATUS_DISABLE);
+            reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
+                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

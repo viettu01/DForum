@@ -1,13 +1,14 @@
 package com.tuplv.dforum.activity;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,9 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private long outApp;
     SharedPreferences sharedPreferences;
 
-    int countNotify = 10;
+    int countNotify = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+        changeNotify();
     }
 
     @Override
@@ -186,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.mnuNotify:
                 Toast.makeText(this, "Thông báo", Toast.LENGTH_SHORT).show();
-                tvCardBadge.setText(String.valueOf(countNotify++));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -266,6 +268,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     tvCardBadge.setVisibility(View.VISIBLE);
                 }
             }
+        }
+    }
+
+    private void changeNotify() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid()).child(OBJ_NOTIFY)
+                    .orderByChild("status").equalTo(STATUS_DISABLE)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            countNotify = (int) snapshot.getChildrenCount();
+                            setupBadge();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         }
     }
 }
