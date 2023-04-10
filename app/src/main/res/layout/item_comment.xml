@@ -44,7 +44,16 @@
                 android:id="@+id/tvContentComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:text="@string/lorem" />
+
+            <Button
+                android:id="@+id/btn_read_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="Xem thêm" />
         </LinearLayout>
 
         <TextView

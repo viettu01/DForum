@@ -38,7 +38,6 @@ import com.tuplv.dforum.model.Post;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -101,6 +100,7 @@ public class ViewPostsActivity extends AppCompatActivity {
         edtComment = findViewById(R.id.edtComment);
         imvSendComment = findViewById(R.id.imvSendComment);
     }
+
     @SuppressLint("SimpleDateFormat")
     private void loadData() {
         if (post != null) {
@@ -117,6 +117,7 @@ public class ViewPostsActivity extends AppCompatActivity {
                                 tvNamePoster.setText(account.getNickName());
                             }
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
@@ -146,10 +147,10 @@ public class ViewPostsActivity extends AppCompatActivity {
     }
 
     // đóng bàn phím
-    private void closeKeyBoard(){
-        View view =this.getCurrentFocus();
-        if(view !=null){
-            InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+    private void closeKeyBoard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
@@ -173,6 +174,7 @@ public class ViewPostsActivity extends AppCompatActivity {
                         commentAdapter.notifyDataSetChanged();
                         Collections.reverse(comments);
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(ViewPostsActivity.this, "Fail", Toast.LENGTH_SHORT).show();

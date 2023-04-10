@@ -2,10 +2,13 @@ package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,9 +27,14 @@ import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
 
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private final Context context;
@@ -50,6 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @Override
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
         Comment comment = comments.get(position);
 
@@ -72,8 +81,53 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:ss");
-//        holder.tvApprovalDate.setText(dateFormat.format(post.getApprovalDate()));
+
+        final boolean[] isShowMore = {false};
+        holder.tvContentComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShowMore[0]){
+                    holder.tvContentComment.setMaxLines(3);
+                }
+                else {
+                    holder.tvContentComment.setMaxLines(Integer.MAX_VALUE);
+                }
+                isShowMore[0] = !isShowMore[0];
+            }
+        });
+        Date commentDate = new Date(comment.getCommentId());
+        long diffInMillis = new Date().getTime() - commentDate.getTime();
+        long secondsAgo = TimeUnit.SECONDS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+        if (secondsAgo < 60) {
+            holder.tvTimeComment.setText("Vừa xong");
+        } else if (secondsAgo < 3600) {
+            long minutesAgo = TimeUnit.MINUTES.convert(diffInMillis, TimeUnit.MILLISECONDS);
+            holder.tvTimeComment.setText(minutesAgo + " phút");
+        } else if (secondsAgo < 86400) {
+            long hoursAgo = TimeUnit.HOURS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+            holder.tvTimeComment.setText(hoursAgo + " giờ");
+        } else if (secondsAgo < 604800) {
+            long daysAgo = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+            holder.tvTimeComment.setText(daysAgo + " ngày");
+        } else if (secondsAgo < 31536000) {
+            long diffInWeeks = diffInMillis / (7 * 24 * 60 * 60 * 1000);
+            holder.tvTimeComment.setText(diffInWeeks + " tuần");
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(commentDate);
+
+            int commentMonth = calendar.get(Calendar.MONTH);
+            int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+
+            int commentDate2 = calendar.get(Calendar.DATE);
+            int currentDate = Calendar.getInstance().get(Calendar.DATE);
+
+            int diffInYears = Calendar.getInstance().get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
+            if (currentMonth < commentMonth || (currentMonth == commentMonth && currentDate < commentDate2)) {
+                diffInYears--;
+            }
+            holder.tvTimeComment.setText(diffInYears + " năm");
+        }
     }
 
     @Override
@@ -88,12 +142,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNameCommentator, tvTimeComment, tvContentComment;
         ImageView imvAvatar;
+        Button btnReadMore;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNameCommentator = itemView.findViewById(R.id.tvNameCommentator);
             tvTimeComment = itemView.findViewById(R.id.tvTimeComment);
             tvContentComment = itemView.findViewById(R.id.tvContentComment);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
+
+            btnReadMore = itemView.findViewById(R.id.btn_read_more);
         }
     }
 }
