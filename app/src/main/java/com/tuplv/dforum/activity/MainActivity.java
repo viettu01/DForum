@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<Post> posts;
     private long outApp;
     SharedPreferences sharedPreferences;
-    BadgeDrawable badgeDrawable;
-    LayerDrawable layerDrawable;
-    Drawable[] layers;
+
     int countNotify = 10;
 
     @Override

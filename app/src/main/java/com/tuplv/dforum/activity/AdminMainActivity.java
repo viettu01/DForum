@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,15 +39,17 @@ import java.util.List;
 
 public class AdminMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener {
 
-    private ViewPager viewPager;
-    private BottomNavigationView bottomNavigationView;
-    private Toolbar tbMain;
+    ViewPager viewPager;
+    BottomNavigationView bottomNavigationView;
+    Toolbar tbMain;
+    TextView tvCardBadge;
     RecyclerView rvSearchPost;
     PostsAdapter postsAdapter;
     List<Post> postsSearch;
     List<Post> posts;
     private long outApp;
     SharedPreferences sharedPreferences;
+    int countNotify = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,18 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.mnuNotify);
+        View view = menuItem.getActionView();
+        tvCardBadge = view.findViewById(R.id.tvNotifyBadge);
+        setupBadge();
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -232,4 +247,20 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                     }
                 });
     }
+
+    private void setupBadge() {
+        if (tvCardBadge != null) {
+            if (countNotify == 0) {
+                if (tvCardBadge.getVisibility() != View.GONE) {
+                    tvCardBadge.setVisibility(View.GONE);
+                }
+            } else {
+                tvCardBadge.setText(String.valueOf(Math.min(countNotify, 99)));
+                if (tvCardBadge.getVisibility() != View.VISIBLE) {
+                    tvCardBadge.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
 }
