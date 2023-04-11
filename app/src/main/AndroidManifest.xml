@@ -19,7 +19,7 @@
         android:theme="@style/Theme.DForum"
         tools:targetApi="31">
         <activity
-            android:name=".ListNotifyActivity"
+            android:name=".activity.ListNotifyActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ViewPostApproveActivity"

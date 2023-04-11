@@ -188,7 +188,7 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                 });
                 break;
             case R.id.mnuNotify:
-                Toast.makeText(this, "Thông báo", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AdminMainActivity.this, ListNotifyActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

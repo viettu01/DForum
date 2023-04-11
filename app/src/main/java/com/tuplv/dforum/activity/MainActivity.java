@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
                 break;
             case R.id.mnuNotify:
-                Toast.makeText(this, "Thông báo", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, ListNotifyActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

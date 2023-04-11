@@ -24,7 +24,7 @@ import java.util.List;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
     Context context;
-     int layout;
+    int layout;
     List<Post> posts;
     OnPostClickListener listener;
     OnPostApproveClickListener onPostApproveClickListener;
@@ -62,7 +62,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         holder.tvTitlePost.setText(post.getTitle());
 
         if (layout == R.layout.item_posts) {
@@ -75,13 +75,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 }
             });
         }
-        if (layout == R.layout.item_post_approve){
+        if (layout == R.layout.item_post_approve) {
             holder.tvCreateDate.setText(dateFormat.format(post.getCreatedDate()));
 
             holder.llItemListPostApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   onPostApproveClickListener.goToActivityDetail(post);
+                    onPostApproveClickListener.goToActivityDetail(post);
                 }
             });
             holder.imvPostApprove.setOnClickListener(new View.OnClickListener() {

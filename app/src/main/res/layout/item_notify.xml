@@ -4,18 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
-    android:orientation="horizontal">
+    android:background="@drawable/custom_background_item_posts"
+    android:elevation="@dimen/_2sdp"
+    android:orientation="horizontal"
+    android:padding="@dimen/_5sdp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvAvatar"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/_5sdp"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -24,8 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:maxLines="3"
-            android:text="@string/lorem" />
+            android:maxLines="3" />
 
         <TextView
             android:id="@+id/tvDateNotify"
@@ -35,5 +38,12 @@
             android:maxLines="1"
             android:text="12/12/1212" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imvNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_dot_red_24" />
 
 </LinearLayout>

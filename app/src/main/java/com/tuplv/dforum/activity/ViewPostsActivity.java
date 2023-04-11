@@ -19,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +31,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,6 +72,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Post post;
+    Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +128,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
-                                Account account = snapshot.getValue(Account.class);
+                                account = snapshot.getValue(Account.class);
                                 if (Objects.requireNonNull(account).getAvatarUri().equals("null"))
                                     imvAvatar.setImageResource(R.drawable.no_avatar);
                                 else
@@ -156,7 +155,8 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
             comment.setAccountId(user.getUid());
             comment.setContent(edtComment.getText().toString().trim());
 
-            reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT).child(String.valueOf(comment.getCommentId())).setValue(comment)
+            reference.child(OBJ_POST).child(String.valueOf(post.getPostId()))
+                    .child(OBJ_COMMENT).child(String.valueOf(comment.getCommentId())).setValue(comment)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -164,12 +164,13 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                         }
                     });
 
-            Notify notify = new Notify();
-            notify.setNotifyId(new Date().getTime());
-            notify.setPostId(post.getPostId());
-            notify.setNotifyContent("");
-            notify.setStatus(STATUS_DISABLE);
             if (!post.getAccountId().equals(user.getUid())) {
+                Notify notify = new Notify();
+                notify.setNotifyId(new Date().getTime());
+                notify.setPostId(post.getPostId());
+                notify.setAccountId(user.getUid());
+                notify.setStatus(STATUS_DISABLE);
+                notify.setNotifyContent(account.getNickName() + " đã bình luận bài viết của bạn");
                 reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
                         .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
