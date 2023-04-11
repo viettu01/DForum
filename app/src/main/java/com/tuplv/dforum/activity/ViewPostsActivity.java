@@ -2,7 +2,6 @@ package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
-import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
@@ -48,7 +47,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,7 +71,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_posts);
+        setContentView(R.layout.activity_view_post);
         init();
 
         if (user == null)
@@ -164,14 +162,16 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
             notify.setPostId(post.getPostId());
             notify.setNotifyContent("");
             notify.setStatus(STATUS_DISABLE);
-            reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
-                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            task.isSuccessful();
-                        }
-                    });
+            if (!post.getAccountId().equals(user.getUid())) {
+                reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
+                        .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                task.isSuccessful();
+                            }
+                        });
+            }
         }
     }
 
