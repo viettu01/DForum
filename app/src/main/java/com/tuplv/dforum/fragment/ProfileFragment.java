@@ -277,8 +277,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                         }
                     }
                     tvTotalComment.setText(String.valueOf(comments.size()));
-                    System.out.println("Số comment: oooooooooooooooooooooooooo: " + comments.size());
-                    // sử dụng post và comments ở đây
                 }
             }
             @Override

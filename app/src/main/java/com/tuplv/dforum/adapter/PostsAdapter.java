@@ -16,6 +16,7 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnPostApproveClickListener;
 import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Post;
+import com.tuplv.dforum.until.Until;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -65,7 +66,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.tvTitlePost.setText(post.getTitle());
 
         if (layout == R.layout.item_posts) {
-            holder.tvView.setText(String.valueOf(post.getView()));
+            holder.tvView.setText(Until.formatNumber(post.getView()));
             holder.tvApprovalDate.setText(dateFormat.format(post.getApprovalDate()));
             holder.llItemListPost.setOnClickListener(new View.OnClickListener() {
                 @Override

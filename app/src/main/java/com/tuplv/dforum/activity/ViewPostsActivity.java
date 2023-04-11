@@ -2,12 +2,14 @@ package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
+import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.adapter.CommentAdapter;
+import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
 import com.tuplv.dforum.model.Notify;
@@ -50,7 +54,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewPostsActivity extends AppCompatActivity {
+public class ViewPostsActivity extends AppCompatActivity implements OnCommentClickListener {
 
     Toolbar tbViewPosts;
     CircleImageView imvAvatar;
@@ -183,7 +187,7 @@ public class ViewPostsActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void getComment() {
         comments = new ArrayList<>();
-        commentAdapter = new CommentAdapter(ViewPostsActivity.this, R.layout.item_comment, comments);
+        commentAdapter = new CommentAdapter(ViewPostsActivity.this, R.layout.item_comment, this, comments);
         rvComment.setAdapter(commentAdapter);
         rvComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT)
@@ -206,5 +210,44 @@ public class ViewPostsActivity extends AppCompatActivity {
                     }
                 });
         commentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void goToActivityUpdate(Comment comment) {
+
+    }
+
+    @Override
+    public void onDeleteClick(Comment comment) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cảnh báo!");
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setMessage("Bạn có chắc chắn muốn xóa bình luận này?");
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT).child(String.valueOf(comment.getCommentId()));
+                databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ViewPostsActivity.this, "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
+                            comments.remove(comment);
+                            commentAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(ViewPostsActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 }

@@ -1,21 +1,34 @@
 package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
+import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,8 +36,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.ListForumActivity;
+import com.tuplv.dforum.interf.OnCommentClickListener;
+import com.tuplv.dforum.interf.OnForumClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
+import com.tuplv.dforum.model.Forum;
 
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
@@ -39,8 +56,17 @@ import java.util.concurrent.TimeUnit;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private final Context context;
     private final int layout;
+    OnCommentClickListener listener;
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final List<Comment> comments;
+
+    public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments) {
+        this.context = context;
+        this.layout = layout;
+        this.listener = listener;
+        this.comments = comments;
+    }
 
     public CommentAdapter(Context context, int layout, List<Comment> comments) {
         this.context = context;
@@ -128,6 +154,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
             holder.tvTimeComment.setText(diffInYears + " năm");
         }
+
+        if (Objects.requireNonNull(mAuth.getCurrentUser()).getUid().equals(comment.getAccountId())) {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showPopupMenu(holder, comment);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -152,5 +188,38 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             btnReadMore = itemView.findViewById(R.id.btn_read_more);
         }
+    }
+    @SuppressLint("RestrictedApi, NonConstantResourceId")
+    private void showPopupMenu(CommentAdapter.ViewHolder holder, Comment comment) {
+        MenuBuilder menuBuilder = new MenuBuilder(context);
+        MenuInflater menuInflater = new MenuInflater(context);
+        menuInflater.inflate(R.menu.menu_popup_item_forum, menuBuilder);
+
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, menuBuilder, holder.itemView);
+        menuPopupHelper.setForceShowIcon(true);
+
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mnuDeleteForum:
+                        listener.onDeleteClick(comment);
+                        Toast.makeText(context, "Xóa bình luận", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.mnuEditForum:
+                        //listener.goToActivityUpdate(forum);
+                        Toast.makeText(context, "Chỉnh sửa bình luận", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onMenuModeChange(@NonNull MenuBuilder menu) {
+
+            }
+        });
+
+        menuPopupHelper.show();
     }
 }
