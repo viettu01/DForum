@@ -78,7 +78,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_posts);
+        setContentView(R.layout.activity_view_post);
         init();
 
         if (user == null)
@@ -169,14 +169,16 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
             notify.setPostId(post.getPostId());
             notify.setNotifyContent("");
             notify.setStatus(STATUS_DISABLE);
-            reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
-                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            task.isSuccessful();
-                        }
-                    });
+            if (!post.getAccountId().equals(user.getUid())) {
+                reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
+                        .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                task.isSuccessful();
+                            }
+                        });
+            }
         }
     }
 
