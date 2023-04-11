@@ -40,9 +40,9 @@ import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    TextView tvEditAvatar, tvEditNickName, tvAddStory, tvLengthNickName, tvLengthStory;
+    TextView tvEditAvatar, tvEditNickName, tvLengthNickName, tvLengthStory;
     ImageView imvAvatar;
-    EditText edtNickName, edtStory;
+    EditText edtNickName;
     Toolbar tbEditProfile;
 
     //firebase authentication
@@ -78,19 +78,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         tvEditNickName = findViewById(R.id.tvEditNickName);
         tvEditNickName.setOnClickListener(this);
 
-        tvAddStory = findViewById(R.id.tvAddStory);
-        tvAddStory.setOnClickListener(this);
-
         tvLengthNickName = findViewById(R.id.tvLengthNickName);
-        tvLengthStory = findViewById(R.id.tvLengthStory);
         imvAvatar = findViewById(R.id.imvAvatar);
         imvAvatar.setOnClickListener(this);
 
         edtNickName = findViewById(R.id.edtNickName);
         edtNickName.addTextChangedListener(this);
-
-        edtStory = findViewById(R.id.edtStory);
-        edtStory.addTextChangedListener(this);
 
         tbEditProfile = findViewById(R.id.tbEditProfile);
     }
@@ -102,10 +95,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         } else
             Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
         edtNickName.setText(account.getNickName());
-        edtStory.setText(account.getStory());
     }
 
-    private void updateProfile(String uri, String nickName, String story) {
+    private void updateProfile(String uri, String nickName) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
 
@@ -113,10 +105,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         updateProfile.put("nickName", nickName);
         if (!uri.equals("null"))
             updateProfile.put("avatarUri", uri);
-        if (story.isEmpty())
-            updateProfile.put("story", "null");
-        else
-            updateProfile.put("story", story);
         reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updateProfile);
         Toast.makeText(this, "Cập nhật thông tin thành công !", Toast.LENGTH_SHORT).show();
     }
@@ -133,7 +121,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onSuccess(Uri uri) {
                 String AvatarUri = uri.toString();
-                updateProfile(AvatarUri, edtNickName.getText().toString().trim(), edtStory.getText().toString().trim());
+                updateProfile(AvatarUri, edtNickName.getText().toString().trim());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -179,7 +167,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), PICK_IMAGE_REQUEST);
                 break;
             case R.id.tvEditNickName:
-            case R.id.tvAddStory:
                 setImageToStorage();
 //                updateProfile("null", edtNickName.getText().toString().trim(), edtStory.getText().toString().trim());
                 break;
@@ -196,10 +183,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (charSequence == edtNickName.getText()) {
             int lengthNickName = edtNickName.getText().toString().trim().length();
             tvLengthNickName.setText(lengthNickName + " / 30");
-        }
-        if (charSequence == edtStory.getText()) {
-            int lengthStory = edtStory.getText().toString().trim().length();
-            tvLengthStory.setText(lengthStory + " / 100");
         }
     }
 

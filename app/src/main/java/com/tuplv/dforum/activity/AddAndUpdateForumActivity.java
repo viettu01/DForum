@@ -58,7 +58,6 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     update();
                 else
                     create();
-
                 finish();
             }
         });
@@ -75,7 +74,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     }
 
     public void create() {
-//        forum = new Forum(new Date().getTime(), edtNameForum.getText().toString(), edtDesForum.getText().toString());
+        forum = new Forum();
         forum.setForumId(new Date().getTime());
         forum.setName(edtNameForum.getText().toString());
         forum.setDescription(edtDesForum.getText().toString());

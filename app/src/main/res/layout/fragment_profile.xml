@@ -162,18 +162,6 @@
                         android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvStory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_marginBottom="8sp"
-                    android:text="@string/tieu_su"
-                    android:textAlignment="textStart"
-                    android:textSize="@dimen/_12sdp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

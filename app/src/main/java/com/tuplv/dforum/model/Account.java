@@ -3,34 +3,34 @@ package com.tuplv.dforum.model;
 import java.io.Serializable;
 
 public class Account implements Serializable {
-    private long accountId;
+    private String accountId;
     private String nickName;
-    private String story;
     private String avatarUri;
     private String email;
     private String password;
     private String role;
     private String status;
+    private long createdDate;
 
     public Account() {
     }
 
-    public Account(long accountId, String nickName, String story, String avatarUri, String email, String password, String role, String status) {
+    public Account(String accountId, String nickName, String avatarUri, String email, String password, String role, String status, long createdDate) {
         this.accountId = accountId;
         this.nickName = nickName;
-        this.story = story;
         this.avatarUri = avatarUri;
         this.email = email;
         this.password = password;
         this.role = role;
         this.status = status;
+        this.createdDate = createdDate;
     }
 
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(long accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -42,20 +42,12 @@ public class Account implements Serializable {
         this.nickName = nickName;
     }
 
-    public String getStory() {
-        return story;
-    }
-
-    public void setStory(String story) {
-        this.story = story;
-    }
-
     public String getAvatarUri() {
         return avatarUri;
     }
 
-    public void setAvatarUri(String avatarUrl) {
-        this.avatarUri = avatarUrl;
+    public void setAvatarUri(String avatarUri) {
+        this.avatarUri = avatarUri;
     }
 
     public String getEmail() {
@@ -88,5 +80,13 @@ public class Account implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(long createdDate) {
+        this.createdDate = createdDate;
     }
 }

@@ -167,12 +167,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     sendEmailVerification(user);
 
-                                    long accountId = new Date().getTime();
+                                    assert user != null;
+                                    long createdDate = new Date().getTime();
                                     //khởi tạo một đối tượng account
-                                    Account account = new Account(accountId, "user" + accountId, "null", "null", email, password, ROLE_USER, STATUS_ENABLE);
+                                    Account account = new Account(user.getUid(), "user" + createdDate, "null", email, password, ROLE_USER, STATUS_ENABLE, createdDate);
 
                                     // gọi hàm thêm dữ liệu vào firebase
-                                    assert user != null;
                                     reference.child(OBJ_ACCOUNT).child(user.getUid()).setValue(account);
 
                                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));

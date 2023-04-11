@@ -67,7 +67,7 @@ import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, OnPostClickListener {
     Button btnLogout, btnEditProfile;
-    TextView tvNickName, tvStory, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment;
+    TextView tvNickName, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment;
     ImageView imvAvatar;
     RecyclerView rvMyPost;
     List<Post> myPost;
@@ -99,7 +99,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         btnEditProfile.setOnClickListener(this);
 
         tvNickName = view.findViewById(R.id.tvNickName);
-        tvStory = view.findViewById(R.id.tvStory);
 
         imvAvatar = view.findViewById(R.id.imvAvatar);
         imvAvatar.setOnClickListener(this);
@@ -125,14 +124,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                                     Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
                                 tvNickName.setText(account.getNickName());
 
-                                if (account.getStory().equals("null"))
-                                    tvStory.setVisibility(View.GONE);
-                                else
-                                    tvStory.setText(account.getStory());
-
                                 tvEmail.setText(account.getEmail());
 
-                                Date date = new Date(account.getAccountId());
+                                Date date = new Date(account.getCreatedDate());
                                 SimpleDateFormat fMonth = new SimpleDateFormat("M");
                                 SimpleDateFormat fYear = new SimpleDateFormat("yyyy");
                                 String month = fMonth.format(date);

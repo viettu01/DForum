@@ -229,18 +229,6 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
         bottomSheetDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-
-        LinearLayout linear_choose_avatar = bottomSheetDialog.findViewById(R.id.linear_choose_avatar);
-        LinearLayout linear_view_avatar = bottomSheetDialog.findViewById(R.id.linear_view_avatar);
-        LinearLayout linear_remove_avatar = bottomSheetDialog.findViewById(R.id.linear_remove_avatar);
-
-        Objects.requireNonNull(linear_choose_avatar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
         bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         bottomSheetDialog.show();
     }

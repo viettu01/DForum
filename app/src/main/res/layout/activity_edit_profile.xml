@@ -121,64 +121,6 @@
                         android:layout_marginTop="@dimen/_3sdp"
                         android:text="@string/length_nickname"/>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_weight="1"
-                        android:text="@string/tieu_su"
-                        android:textSize="@dimen/_16sdp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvAddStory"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_weight="1"
-                        android:text="@string/add"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/main_color"
-                        android:textSize="@dimen/_14sdp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/edtStory"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="8"
-                        android:background="@drawable/edit_text_radius_5"
-                        android:gravity="top"
-                        android:maxLength="100"
-                        android:hint="@string/tieu_su"
-                        android:inputType="textMultiLine"
-                        android:textColorHint="@color/gray_color" />
-
-                    <TextView
-                        android:id="@+id/tvLengthStory"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/gray_color_more"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:text="@string/length_story"/>
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 </LinearLayout>
