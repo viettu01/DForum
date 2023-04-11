@@ -9,6 +9,7 @@ import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -195,7 +196,7 @@ public class AddPostsActivity extends AppCompatActivity {
             notify.setPostId(post.getPostId());
             notify.setAccountId(user.getUid());
             notify.setStatus(STATUS_DISABLE);
-            notify.setNotifyContent(account.getNickName() + " (ADMIN) đã đăng bài viết mới");
+            notify.setTypeNotify(TYPE_NOTIFY_ADD_POST);
             for (Account account : accounts) {
                 HashMap<String, Object> updateNotify = new HashMap<>();
                 updateNotify.put(OBJ_NOTIFY, notify);

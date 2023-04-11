@@ -123,6 +123,8 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
     @Override
     public void goToHomeFragment(Forum forum) {
         EventBus.getDefault().post(forum);
+//        if (sharedPreferences.getString("role", "").equals("ADMIN"))
+//            startActivity(new Intent(this, AdminMainActivity.class));
         finish();
     }
 

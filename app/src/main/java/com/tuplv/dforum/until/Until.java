@@ -1,5 +1,10 @@
 package com.tuplv.dforum.until;
 
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_REPLY_COMMENT;
+
 import android.annotation.SuppressLint;
 
 import java.util.Calendar;
@@ -54,5 +59,23 @@ public class Until {
             }
             return diffInYears + " năm";
         }
+    }
+
+    public static String formatNotify(String typeNotify) {
+        String message = "";
+
+        if (typeNotify.equals(TYPE_NOTIFY_APPROVE))
+            message = " đã phê duyệt bài vết của bạn!";
+
+        if (typeNotify.equals(TYPE_NOTIFY_ADD_POST))
+            message = " đã thêm một bài viết mới!";
+
+        if (typeNotify.equals(TYPE_NOTIFY_ADD_COMMENT))
+            message = " đã bình luận bài vết của bạn!";
+
+        if (typeNotify.equals(TYPE_NOTIFY_REPLY_COMMENT))
+            message = " đã trả lời bình luận của bạn!";
+
+        return message;
     }
 }

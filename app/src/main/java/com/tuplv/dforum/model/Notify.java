@@ -4,8 +4,8 @@ public class Notify {
     private long notifyId;
     private String accountId;
     private long postId;
-    private String notifyContent;
     private String status;
+    private String typeNotify;
 
     public long getNotifyId() {
         return notifyId;
@@ -31,19 +31,19 @@ public class Notify {
         this.postId = postId;
     }
 
-    public String getNotifyContent() {
-        return notifyContent;
-    }
-
-    public void setNotifyContent(String notifyContent) {
-        this.notifyContent = notifyContent;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTypeNotify() {
+        return typeNotify;
+    }
+
+    public void setTypeNotify(String typeNotify) {
+        this.typeNotify = typeNotify;
     }
 }

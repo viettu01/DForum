@@ -5,6 +5,7 @@ import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -72,7 +73,6 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Post post;
-    Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
-                                account = snapshot.getValue(Account.class);
+                                Account account = snapshot.getValue(Account.class);
                                 if (Objects.requireNonNull(account).getAvatarUri().equals("null"))
                                     imvAvatar.setImageResource(R.drawable.no_avatar);
                                 else
@@ -170,7 +170,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                 notify.setPostId(post.getPostId());
                 notify.setAccountId(user.getUid());
                 notify.setStatus(STATUS_DISABLE);
-                notify.setNotifyContent(account.getNickName() + " đã bình luận bài viết của bạn");
+                notify.setTypeNotify(TYPE_NOTIFY_ADD_COMMENT);
                 reference.child(OBJ_ACCOUNT).child(post.getAccountId())
                         .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -2,6 +2,7 @@ package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+import static com.tuplv.dforum.until.Until.formatNotify;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,8 +25,8 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Notify;
+import com.tuplv.dforum.until.Until;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,9 +60,9 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
         if (notify.getStatus().equals(STATUS_ENABLE)) {
             holder.imvNotify.setVisibility(View.GONE);
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
                 .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -70,6 +71,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                                 holder.imvAvatar.setImageResource(R.drawable.no_avatar);
                             else
                                 Picasso.get().load(account.getAvatarUri()).into(holder.imvAvatar);
+                            holder.tvContentNotify.setText(account.getNickName() + formatNotify(notify.getTypeNotify()));
                         }
                     }
 
@@ -77,8 +79,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-        holder.tvContentNotify.setText(notify.getNotifyContent());
-        holder.tvDateNotify.setText(dateFormat.format(notify.getNotifyId()));
+        holder.tvDateNotify.setText(Until.formatTime(notify.getNotifyId()));
 
         holder.llItemListNotify.setOnClickListener(new View.OnClickListener() {
             @Override

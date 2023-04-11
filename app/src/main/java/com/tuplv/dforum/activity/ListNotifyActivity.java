@@ -30,6 +30,7 @@ import com.tuplv.dforum.model.Notify;
 import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,6 +82,7 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
                                 Notify notify = dataSnapshot.getValue(Notify.class);
                                 notifies.add(notify);
                             }
+                            Collections.reverse(notifies);
                             notifyAdapter.notifyDataSetChanged();
                         }
 

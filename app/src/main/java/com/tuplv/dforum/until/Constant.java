@@ -16,4 +16,9 @@ public class Constant {
     public static final String CHIA_SE_KIEN_THUC = "Chia sẻ kiến thức";
     public static final String HOI_DAP = "Hỏi đáp";
     public static final int PICK_IMAGE_REQUEST = 111;
+
+    public static final String TYPE_NOTIFY_APPROVE = "APPROVE";
+    public static final String TYPE_NOTIFY_ADD_POST = "ADD_POST";
+    public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT";
+    public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT";
 }
