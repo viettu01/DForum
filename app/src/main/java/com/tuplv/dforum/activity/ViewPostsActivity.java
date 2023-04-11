@@ -171,7 +171,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                 notify.setAccountId(user.getUid());
                 notify.setStatus(STATUS_DISABLE);
                 notify.setNotifyContent(account.getNickName() + " đã bình luận bài viết của bạn");
-                reference.child(OBJ_ACCOUNT).child(String.valueOf(post.getAccountId()))
+                reference.child(OBJ_ACCOUNT).child(post.getAccountId())
                         .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

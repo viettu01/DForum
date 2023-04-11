@@ -274,8 +274,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void changeNotify() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid()).child(OBJ_NOTIFY)
-                    .orderByChild("status").equalTo(STATUS_DISABLE)
+            FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid())
+                    .child(OBJ_NOTIFY).orderByChild("status").equalTo(STATUS_DISABLE)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

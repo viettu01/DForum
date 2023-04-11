@@ -91,7 +91,6 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
                     });
             notifyAdapter.notifyDataSetChanged();
         }
-
     }
 
     @Override

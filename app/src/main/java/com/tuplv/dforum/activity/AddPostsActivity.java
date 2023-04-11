@@ -199,9 +199,9 @@ public class AddPostsActivity extends AppCompatActivity {
             for (Account account : accounts) {
                 HashMap<String, Object> updateNotify = new HashMap<>();
                 updateNotify.put(OBJ_NOTIFY, notify);
-
-                FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(String.valueOf(account.getAccountId()))
-                        .updateChildren(updateNotify);
+                if (!account.getAccountId().equals(user.getUid()))
+                    FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
+                            .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
             }
         }
     }
