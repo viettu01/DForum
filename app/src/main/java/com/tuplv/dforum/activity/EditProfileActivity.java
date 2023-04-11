@@ -167,8 +167,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), PICK_IMAGE_REQUEST);
                 break;
             case R.id.tvEditNickName:
-                setImageToStorage();
-//                updateProfile("null", edtNickName.getText().toString().trim(), edtStory.getText().toString().trim());
+//                setImageToStorage();
+                updateProfile("null", edtNickName.getText().toString().trim());
                 break;
         }
     }
