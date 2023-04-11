@@ -1,0 +1,113 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlDialogBottomSheet"
+    android:background="@drawable/dialog_bg_radius">
+
+    <View
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_3sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:background="@color/gray_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linear_choose_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/background_circle">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/baseline_image_24" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Choose_avatar"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14sdp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_view_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/background_circle">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/baseline_account_box_24" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/view_avatar"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14sdp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_remove_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/background_circle">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/baseline_hide_image_24" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/remove_avatar"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14sdp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -30,10 +30,9 @@
     <string name="hoi_dap">Hỏi đáp</string>
     <string name="chia_se_kien_thuc">Chia sẻ kiến thức</string>
     <string name="luot_xem">Lượt xem</string>
-    <string name="nguyen_van_a">Nguyễn Văn A</string>
+    <string name="username">Username</string>
     <string name="tieu_de_bai_viet">Tiêu đề bài viết</string>
     <string name="viet_binh_luan">Viết bình luận...</string>
-    <string name="lorem">Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem</string>
     <string name="danh_sach_dien_dan">Danh sách diễn đàn</string>
     <string name="tieu_de_bai_viet_">Tiêu đề bài viết?</string>
     <string name="dang">Đăng</string>
@@ -47,6 +46,7 @@
     <string name="length_story">0 / 100</string>
     <string name="length_nickname">0 / 30</string>
     <string name="xoa">Xóa</string>
+    <string name="copy">Sao chép</string>
     <string name="quay_lai">Quay lại</string>
     <string name="Choose_avatar">Chọn ảnh đại diện</string>
     <string name="view_avatar">Xem ảnh đại diện</string>

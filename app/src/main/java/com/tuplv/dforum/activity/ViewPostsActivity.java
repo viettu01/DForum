@@ -2,7 +2,6 @@ package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
-import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
@@ -10,12 +9,17 @@ import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +32,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +54,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -212,9 +217,34 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
         commentAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("InflateParams")
+    private void dialogEditComment() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet_edit_comment, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        bottomSheetDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+
+
+        LinearLayout linear_choose_avatar = bottomSheetDialog.findViewById(R.id.linear_choose_avatar);
+        LinearLayout linear_view_avatar = bottomSheetDialog.findViewById(R.id.linear_view_avatar);
+        LinearLayout linear_remove_avatar = bottomSheetDialog.findViewById(R.id.linear_remove_avatar);
+
+        Objects.requireNonNull(linear_choose_avatar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        bottomSheetDialog.show();
+    }
+
     @Override
     public void goToActivityUpdate(Comment comment) {
-
+        dialogEditComment();
     }
 
     @Override
