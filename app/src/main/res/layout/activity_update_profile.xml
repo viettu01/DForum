@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.profile.EditProfileActivity">
+    tools:context=".activity.account.UpdateProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbEditProfile"
+        android:id="@+id/tbUpdateProfile"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"

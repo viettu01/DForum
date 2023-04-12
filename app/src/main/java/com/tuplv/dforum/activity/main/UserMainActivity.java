@@ -34,8 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.notify.ListNotifyActivity;
-import com.tuplv.dforum.activity.post.ViewPostsActivity;
-import com.tuplv.dforum.adapter.PostsAdapter;
+import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Post;
@@ -44,14 +44,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener {
+public class UserMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener {
 
     ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
     Toolbar tbMain;
     TextView tvCardBadge;
     RecyclerView rvSearchPost;
-    PostsAdapter postsAdapter;
+    PostAdapter postAdapter;
     List<Post> postsSearch;
     List<Post> posts;
     private long outApp;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        Toast outToast = Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
+        Toast outToast = Toast.makeText(UserMainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
         if (outApp + 2000 > System.currentTimeMillis()) {
             outToast.cancel();
             super.onBackPressed();
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 viewPager.setVisibility(View.GONE);
                 bottomNavigationView.setVisibility(View.GONE);
 
-                findAllPost();
+                getAllPost();
 
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setQueryHint("Tìm kiếm ...");
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        loadDataToSearch(newText);
+                        searchPost(newText);
                         return true;
                     }
                 });
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
                 break;
             case R.id.mnuNotify:
-                startActivity(new Intent(MainActivity.this, ListNotifyActivity.class));
+                startActivity(new Intent(UserMainActivity.this, ListNotifyActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -217,30 +217,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                 .updateChildren(updateView);
 
-        Intent intent = new Intent(this, ViewPostsActivity.class);
+        Intent intent = new Intent(this, DetailPostActivity.class);
         intent.putExtra("post", post);
 
         startActivity(intent);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadDataToSearch(String search) {
-        postsAdapter = new PostsAdapter(MainActivity.this, R.layout.item_posts, postsSearch, MainActivity.this);
-        rvSearchPost.setAdapter(postsAdapter);
-        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
-        postsSearch.clear();
-        if (!search.isBlank()) {
-            for (Post post : posts) {
-                if (post.getTitle().toLowerCase().contains(search.toLowerCase()) || post.getContent().toLowerCase().contains(search.toLowerCase())) {
-                    postsSearch.add(post);
-                }
-            }
-        }
-        postsAdapter.notifyDataSetChanged();
-    }
-
-    private void findAllPost() {
+    private void getAllPost() {
         FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -256,6 +239,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     }
                 });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void searchPost(String search) {
+        postAdapter = new PostAdapter(UserMainActivity.this, R.layout.item_post, postsSearch, UserMainActivity.this);
+        rvSearchPost.setAdapter(postAdapter);
+        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        postsSearch.clear();
+        if (!search.isBlank()) {
+            for (Post post : posts) {
+                if (post.getTitle().toLowerCase().contains(search.toLowerCase()) || post.getContent().toLowerCase().contains(search.toLowerCase())) {
+                    postsSearch.add(post);
+                }
+            }
+        }
+        postAdapter.notifyDataSetChanged();
     }
 
     private void setupBadge() {

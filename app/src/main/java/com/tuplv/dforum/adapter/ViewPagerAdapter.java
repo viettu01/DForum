@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.tuplv.dforum.activity.main.MainActivity;
+import com.tuplv.dforum.activity.main.UserMainActivity;
 import com.tuplv.dforum.fragment.AdminFragment;
 import com.tuplv.dforum.fragment.HomeFragment;
 import com.tuplv.dforum.fragment.NotLoggedInFragment;
@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 else
                     return new NotLoggedInFragment();
             case 2:
-                if (context instanceof MainActivity)
+                if (context instanceof UserMainActivity)
                     return new HomeFragment();
                 else
                     return new AdminFragment();
@@ -46,7 +46,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        if (context instanceof MainActivity) {
+        if (context instanceof UserMainActivity) {
             return 2;
         }
 

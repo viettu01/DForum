@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.post.ViewPostsActivity">
+    tools:context=".activity.post.DetailPostActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbViewPostsApprove"
+        android:id="@+id/tbDetailPost"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -21,12 +21,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_10sdp">
+        android:paddingBottom="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp">
 
         <ScrollView
             android:id="@+id/svViewPosts"
+            android:paddingTop="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,7 +56,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tvNamePoster"
+                            android:id="@+id/tvNameAuthor"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_marginBottom="@dimen/_5sdp"
@@ -62,7 +66,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tvDatePostApprove"
+                            android:id="@+id/tvDatePost"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
@@ -86,39 +90,46 @@
                     android:layout_weight="1"
                     android:text="@string/noi_dung"
                     android:textSize="@dimen/_15sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/gray_color" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_35sdp"/>
             </LinearLayout>
         </ScrollView>
 
         <LinearLayout
+            android:id="@+id/ll_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:backgroundTint="@color/white"
+            android:background="@color/white"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnPostsApprove"
+            <EditText
+                android:id="@+id/edtComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_radius_5"
-               android:text="@string/duyet_bai_dang"
-                android:paddingStart="@dimen/_10sdp"
-                tools:ignore="RtlSymmetry" />
-            <Button
-                android:id="@+id/btnNoPostApprove"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="@drawable/edit_text_radius_5"
-                android:text="Không duyệt bài"
+                android:hint="@string/viet_binh_luan"
                 android:paddingStart="@dimen/_10sdp"
                 tools:ignore="RtlSymmetry" />
 
+            <ImageView
+                android:id="@+id/imvSendComment"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_send_main_color_24" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

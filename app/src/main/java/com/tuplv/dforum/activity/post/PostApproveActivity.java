@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity.postApprove;
+package com.tuplv.dforum.activity.post;
 
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
@@ -28,7 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.adapter.PostsAdapter;
+import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostApproveClickListener;
 import com.tuplv.dforum.model.Post;
 
@@ -41,13 +41,13 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
     Toolbar tbPostApprove;
     RecyclerView rvListPostApprove;
     List<Post> posts;
-    PostsAdapter postsAdapter;
+    PostAdapter postAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_approve_main);
+        setContentView(R.layout.activity_post_approve);
         init();
 
         tbPostApprove.setNavigationOnClickListener(new View.OnClickListener() {
@@ -80,8 +80,8 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
     @SuppressLint("NotifyDataSetChanged")
     private void loadDataToView() {
         posts = new ArrayList<>();
-        postsAdapter = new PostsAdapter(PostApproveActivity.this, R.layout.item_post_approve, posts, this);
-        rvListPostApprove.setAdapter(postsAdapter);
+        postAdapter = new PostAdapter(PostApproveActivity.this, R.layout.item_post_approve, posts, this);
+        rvListPostApprove.setAdapter(postAdapter);
         rvListPostApprove.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST)
                 .orderByChild("status").equalTo(STATUS_DISABLE)
@@ -93,7 +93,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                             Post post = dataSnapshot.getValue(Post.class);
                             posts.add(post);
                         }
-                        postsAdapter.notifyDataSetChanged();
+                        postAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -106,7 +106,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
 
     @Override
     public void goToActivityDetail(Post post) {
-        Intent intent = new Intent(this, ViewPostApproveActivity.class);
+        Intent intent = new Intent(this, DetailPostApproveActivity.class);
         intent.putExtra("post", post);
         startActivity(intent);
     }

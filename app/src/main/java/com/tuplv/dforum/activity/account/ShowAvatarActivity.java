@@ -1,11 +1,7 @@
-package com.tuplv.dforum.activity.profile;
-
-import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
+package com.tuplv.dforum.activity.account;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,21 +10,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.tuplv.dforum.R;
@@ -37,42 +24,42 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Objects;
 
-public class ShowImageActivity extends AppCompatActivity implements View.OnClickListener {
+public class ShowAvatarActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView ic_back_arrow_show_image, download_image, image_full_size;
-    RelativeLayout show_menu;
-    boolean show = true;
+    ImageView imvBack, imvDownload, imvAvatarFullSize;
+    RelativeLayout rlShowMenu;
+    boolean show = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_image);
+        setContentView(R.layout.activity_show_avatar);
 
         init();
 
         String avatarUri = String.valueOf(getIntent().getSerializableExtra("avatarUri"));
         if (avatarUri.equals("null")) {
-            image_full_size.setImageResource(R.drawable.no_avatar);
+            imvAvatarFullSize.setImageResource(R.drawable.no_avatar);
         } else
-            Picasso.get().load(avatarUri).into(image_full_size);
+            Picasso.get().load(avatarUri).into(imvAvatarFullSize);
     }
 
     private void init() {
-        ic_back_arrow_show_image = findViewById(R.id.ic_back_arrow_show_image);
-        ic_back_arrow_show_image.setOnClickListener(this);
+        imvBack = findViewById(R.id.imvBack);
+        imvBack.setOnClickListener(this);
 
-        download_image = findViewById(R.id.download_image);
-        download_image.setOnClickListener(this);
+        imvDownload = findViewById(R.id.imvDownload);
+        imvDownload.setOnClickListener(this);
 
-        image_full_size = findViewById(R.id.image_full_size);
-        image_full_size.setOnClickListener(this);
+        imvAvatarFullSize = findViewById(R.id.imvAvatarFullSize);
+        imvAvatarFullSize.setOnClickListener(this);
 
-        show_menu =findViewById(R.id.show_menu);
+        rlShowMenu = findViewById(R.id.rlShowMenu);
     }
 
-    private void saveImageToGallery(Bitmap bitmap) {
+    // Lưu ảnh về máy
+    private void saveAvatarToGallery(Bitmap bitmap) {
         String filename = "image_" + System.currentTimeMillis() + ".jpg"; // Tạo tên file
         OutputStream fos; // Khai báo OutputStream để ghi ảnh xuống
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Kiểm tra phiên bản Android có hỗ trợ Storage Access Framework hay không
@@ -85,10 +72,10 @@ public class ShowImageActivity extends AppCompatActivity implements View.OnClick
                 fos = getContentResolver().openOutputStream(imageUri);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 fos.close();
-                Toast.makeText(this, "Saved to gallery", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đã lưu ảnh", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Lưu ảnh thất bại", Toast.LENGTH_SHORT).show();
             }
         } else { // Nếu không hỗ trợ Storage Access Framework, sử dụng phương thức truyền thống để lưu ảnh xuống bộ nhớ
             String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
@@ -100,24 +87,26 @@ public class ShowImageActivity extends AppCompatActivity implements View.OnClick
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 fos.flush();
                 fos.close();
-                Toast.makeText(this, "Saved to gallery", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đã lưu ảnh", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Lưu ảnh thất bại", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void downloadImage(String uri){
+    private void downloadAvatar(String uri) {
         Picasso.get().load(uri).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 // Lưu ảnh xuống bộ nhớ
-                saveImageToGallery(bitmap);
+                saveAvatarToGallery(bitmap);
             }
+
             @Override
             public void onBitmapFailed(Exception e, Drawable errorDrawable) {
             }
+
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
@@ -129,21 +118,18 @@ public class ShowImageActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ic_back_arrow_show_image:
+            case R.id.imvBack:
                 finish();
                 break;
-            case R.id.download_image:
-                downloadImage(String.valueOf(getIntent().getSerializableExtra("avatarUri")));
+            case R.id.imvDownload:
+                downloadAvatar(String.valueOf(getIntent().getSerializableExtra("avatarUri")));
                 break;
-            case R.id.image_full_size:
-                if(!show){
-                    show_menu.setVisibility(View.GONE);
-                    show = true;
-                }
-                else if(show){
-                    show_menu.setVisibility(View.VISIBLE);
-                    show = false;
-                }
+            case R.id.imvAvatarFullSize:
+                if (show)
+                    rlShowMenu.setVisibility(View.VISIBLE);
+                else
+                    rlShowMenu.setVisibility(View.GONE);
+                show = !show;
                 break;
         }
     }

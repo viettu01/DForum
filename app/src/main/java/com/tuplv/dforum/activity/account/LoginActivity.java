@@ -35,8 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.main.AdminMainActivity;
-import com.tuplv.dforum.activity.main.MainActivity;
-import com.tuplv.dforum.model.Account;
+import com.tuplv.dforum.activity.main.UserMainActivity;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -47,13 +46,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogin;
     EditText edtLoginEmail, edtLoginPassword;
     ImageView ic_back_arrow_login;
-
     ProgressDialog progressDialog;
-
     private String email, password;
-
     SharedPreferences sharedPreferences;
-
     //firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -87,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog.setMessage("Đang đăng nhập");
 
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
-
     }
 
     private void getText() {
@@ -95,7 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password = edtLoginPassword.getText().toString().trim();
     }
 
-    public void login() {
+    private void login() {
+        progressDialog.show();
         getText();
         if (!email.isEmpty() && !password.isEmpty()) {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -110,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (user != null) {
                                     boolean emailVerified = user.isEmailVerified();
                                     if (emailVerified) {
-                                        getAccountId();
+                                        getAccountRole();
                                     } else
                                         Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước", Toast.LENGTH_SHORT).show();
                                 }
@@ -124,7 +119,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
     }
 
-    public void changePasswordFirebaseAuth(String newPassword) {
+    //Đổi mật khẩu trên authentication
+    private void changePasswordFirebaseAuth(String newPassword) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -137,8 +133,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    // Đổi mật khẩu
-    public void changePasswordFirebaseRealtime(String newPassword) {
+    // Đổi mật khẩu cũ trên realtime
+    private void changePasswordFirebaseRealtime(String newPassword) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
 
@@ -190,26 +186,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         dialog.show();
     }
 
-    public void getAccountId() {
-        reference.child(OBJ_ACCOUNT).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+    private void getAccountRole() {
+        reference.child(OBJ_ACCOUNT).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child("role")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Account account = snapshot.getValue(Account.class);
-                            if (account != null) {
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("accountId", mAuth.getCurrentUser().getUid());
-                                editor.putString("role", account.getRole());
-                                editor.apply();
-
-                                if (account.getRole().equals(ROLE_ADMIN)) {
+                            String role = snapshot.getValue(String.class);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("role", role);
+                            editor.apply();
+                            if (role != null) {
+                                if (role.equals(ROLE_ADMIN))
                                     startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
-                                    finish();
-                                } else if (account.getRole().equals(ROLE_USER)) {
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
-                                }
+                                if (role.equals(ROLE_USER))
+                                    startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+                                finish();
                             }
                         }
                     }
@@ -231,10 +223,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialogForgotPassword();
                 break;
             case R.id.ic_back_arrow_login:
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
                 break;
             case R.id.btnLogin:
-                progressDialog.show();
                 login();
                 break;
         }

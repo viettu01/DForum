@@ -29,11 +29,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.post.AddPostsActivity;
+import com.tuplv.dforum.activity.post.AddPostActivity;
 import com.tuplv.dforum.activity.forum.ListForumActivity;
 import com.tuplv.dforum.activity.account.LoginActivity;
-import com.tuplv.dforum.activity.post.ViewPostsActivity;
-import com.tuplv.dforum.adapter.PostsAdapter;
+import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Forum;
 import com.tuplv.dforum.model.Post;
@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
     RecyclerView rvQA, rvShareKnowledge;
     FloatingActionButton fabAddPost;
     ImageView imgShowMoreForum;
-    PostsAdapter postsQAAdapter, postsShareKnowledgeAdapter;
+    PostAdapter postsQAAdapter, postsShareKnowledgeAdapter;
     List<Post> postsQA, postsShareKnowledge;
     Forum forum;
 
@@ -83,12 +83,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
 
     private void findAll() {
         postsQA = new ArrayList<>();
-        postsQAAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsQA, this);
+        postsQAAdapter = new PostAdapter(getActivity(), R.layout.item_post, postsQA, this);
         rvQA.setAdapter(postsQAAdapter);
         rvQA.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
         postsShareKnowledge = new ArrayList<>();
-        postsShareKnowledgeAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, postsShareKnowledge, this);
+        postsShareKnowledgeAdapter = new PostAdapter(getActivity(), R.layout.item_post, postsShareKnowledge, this);
         rvShareKnowledge.setAdapter(postsShareKnowledgeAdapter);
         rvShareKnowledge.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         switch (view.getId()) {
             case R.id.fabAddPost:
                 if (FirebaseAuth.getInstance().getCurrentUser() != null)
-                    startActivity(new Intent(getActivity(), AddPostsActivity.class));
+                    startActivity(new Intent(getActivity(), AddPostActivity.class));
                 else {
                     Toast.makeText(getActivity(), "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                 .updateChildren(updateView);
 
-        Intent intent = new Intent(getActivity(), ViewPostsActivity.class);
+        Intent intent = new Intent(getActivity(), DetailPostActivity.class);
         intent.putExtra("post", post);
 
         startActivity(intent);

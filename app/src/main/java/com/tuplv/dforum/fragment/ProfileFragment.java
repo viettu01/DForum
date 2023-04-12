@@ -45,11 +45,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.profile.EditProfileActivity;
+import com.tuplv.dforum.activity.account.UpdateProfileActivity;
 import com.tuplv.dforum.activity.account.LoginActivity;
-import com.tuplv.dforum.activity.profile.ShowImageActivity;
-import com.tuplv.dforum.activity.post.ViewPostsActivity;
-import com.tuplv.dforum.adapter.PostsAdapter;
+import com.tuplv.dforum.activity.account.ShowAvatarActivity;
+import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
@@ -68,7 +68,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
     ImageView imvAvatar;
     RecyclerView rvMyPost;
     List<Post> myPost;
-    PostsAdapter myPostAdapter;
+    PostAdapter myPostAdapter;
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
     @SuppressLint("InflateParams")
     private void dialogAvatar() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bottom_sheet_menu, null);
+        View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bottom_sheet_avatar, null);
         bottomSheetDialog.setContentView(bottomSheetView);
 
         LinearLayout linear_choose_avatar = bottomSheetDialog.findViewById(R.id.linear_choose_avatar);
@@ -162,7 +162,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         Objects.requireNonNull(linear_view_avatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ShowImageActivity.class);
+                Intent intent = new Intent(getActivity(), ShowAvatarActivity.class);
                 intent.putExtra("avatarUri", account.getAvatarUri());
                 startActivity(intent);
                 bottomSheetDialog.dismiss();
@@ -280,7 +280,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
 
     private void getMyPost(){
         myPost = new ArrayList<>();
-        myPostAdapter = new PostsAdapter(getActivity(), R.layout.item_posts, myPost, this);
+        myPostAdapter = new PostAdapter(getActivity(), R.layout.item_post, myPost, this);
         rvMyPost.setAdapter(myPostAdapter);
         rvMyPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
@@ -312,7 +312,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                 .updateChildren(updateView);
 
-        Intent intent = new Intent(getActivity(), ViewPostsActivity.class);
+        Intent intent = new Intent(getActivity(), DetailPostActivity.class);
         intent.putExtra("post", post);
 
         startActivity(intent);
@@ -328,7 +328,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                 requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
                 break;
             case R.id.btnEditProfile:
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                Intent intent = new Intent(getActivity(), UpdateProfileActivity.class);
                 intent.putExtra("account", account);
                 startActivity(intent);
                 break;

@@ -82,7 +82,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         confirmPassword = edtRegisterConfirmPassword.getText().toString().trim();
     }
 
-    public void sendEmailVerification(FirebaseUser user) {
+    // Gửi email xác minh tài khoản về email đã đăng ký
+    private void sendEmailVerification(FirebaseUser user) {
         if (user != null) {
             user.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -98,16 +99,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     // kiểm tra độ mạnh mật khẩu
     private boolean checkPasswordStrength() {
-        Pattern chuHoa = Pattern.compile("[A-Z]");
-        Pattern chuThuong = Pattern.compile("[a-z]");
-        Pattern chuSo = Pattern.compile("[0-9]");
-        Pattern kyTu = Pattern.compile("[,.!@+#$&]");
+        Pattern uppercase = Pattern.compile("[A-Z]");
+        Pattern lowercase = Pattern.compile("[a-z]");
+        Pattern number = Pattern.compile("[0-9]");
+        Pattern specialCharacter = Pattern.compile("[,.!@+#$&]");
 
         if (password.length() < 8
-                || !kyTu.matcher(password).find()
-                || !chuHoa.matcher(password).find()
-                || !chuThuong.matcher(password).find()
-                || !chuSo.matcher(password).find()) {
+                || !specialCharacter.matcher(password).find()
+                || !uppercase.matcher(password).find()
+                || !lowercase.matcher(password).find()
+                || !number.matcher(password).find()) {
             tvErrorPassword.setText("Mật khẩu phải có 8 ký tự đủ chữ hoa, chữ thường, chữ số và ký tự đặc biệt !");
             tvErrorPassword.setVisibility(View.VISIBLE);
             return false;
@@ -116,6 +117,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
     }
+
     // kiểm tra định dạng email
     private boolean checkEmail() {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -127,6 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
     }
+
     // kiểm tra mật khẩu và xác nhận mật khẩu
     private boolean checkConfirmPassword() {
         if (!password.equals(confirmPassword)) {
@@ -138,6 +141,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
     }
+
+    // Kiểm tra trống các trường
     private boolean checkEmptyRegister() {
         if (email.isEmpty()) {
             tvErrorEmail.setText("Không được để trống");
@@ -178,7 +183,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                     finish();
                                 } else {
-                                    Toast.makeText(RegisterActivity.this, "Email đã được sử dụng !", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, "Email đã được sử dụng!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -205,7 +210,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         getText();
 
         if (charSequence == edtRegisterEmail.getText()) {

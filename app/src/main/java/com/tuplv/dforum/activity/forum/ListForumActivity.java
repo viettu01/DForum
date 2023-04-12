@@ -1,6 +1,7 @@
 package com.tuplv.dforum.activity.forum;
 
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -52,6 +53,9 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
 
         init();
 
+        if (!sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
+            fabAddForum.setVisibility(View.GONE);
+
         tbListForum.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,15 +69,20 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
                 startActivity(new Intent(ListForumActivity.this, AddAndUpdateForumActivity.class));
             }
         });
+    }
 
-        if (!sharedPreferences.getString("role", "").equals("ADMIN"))
-            fabAddForum.setVisibility(View.GONE);
+    private void init() {
+        tbListForum = findViewById(R.id.tbListForum);
+        setSupportActionBar(tbListForum);
+        rvListForum = findViewById(R.id.rvListForum);
+        fabAddForum = findViewById(R.id.fabAddForum);
+        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadDataToView();
+        getAllForum();
     }
 
     @Override
@@ -120,30 +129,21 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
     @Override
     public void goToHomeFragment(Forum forum) {
         EventBus.getDefault().post(forum);
-//        if (sharedPreferences.getString("role", "").equals("ADMIN"))
-//            startActivity(new Intent(this, AdminMainActivity.class));
         finish();
     }
 
-    private void init() {
-        tbListForum = findViewById(R.id.tbListForum);
-        setSupportActionBar(tbListForum);
-        rvListForum = findViewById(R.id.rvListForum);
-        fabAddForum = findViewById(R.id.fabAddForum);
-        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
-    }
-
     @SuppressLint("NotifyDataSetChanged")
-    private void loadDataToView() {
+    private void getAllForum() {
         forums = new ArrayList<>();
         forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_forum, forums, this);
         rvListForum.setAdapter(forumAdapter);
         rvListForum.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         forums.add(new Forum(0, "Tất cả", ""));
-        FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dsForum) {
+                forums.clear();
                 for (DataSnapshot dataSnapshot : dsForum.getChildren()) {
                     Forum forum = dataSnapshot.getValue(Forum.class);
                     forums.add(forum);
@@ -156,7 +156,5 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
                 Toast.makeText(ListForumActivity.this, "Fail", Toast.LENGTH_SHORT).show();
             }
         });
-
-        forumAdapter.notifyDataSetChanged();
     }
 }

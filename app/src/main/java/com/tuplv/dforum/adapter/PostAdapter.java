@@ -21,7 +21,7 @@ import com.tuplv.dforum.until.Until;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     Context context;
     int layout;
@@ -29,20 +29,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     OnPostClickListener listener;
     OnPostApproveClickListener onPostApproveClickListener;
 
-    public PostsAdapter(Context context, int layout, List<Post> posts) {
+    public PostAdapter(Context context, int layout, List<Post> posts) {
         this.context = context;
         this.layout = layout;
         this.posts = posts;
     }
 
-    public PostsAdapter(Context context, int layout, List<Post> posts, OnPostClickListener listener) {
+    public PostAdapter(Context context, int layout, List<Post> posts, OnPostClickListener listener) {
         this.context = context;
         this.layout = layout;
         this.posts = posts;
         this.listener = listener;
     }
 
-    public PostsAdapter(Context context, int layout, List<Post> posts, OnPostApproveClickListener onPostApproveClickListener) {
+    public PostAdapter(Context context, int layout, List<Post> posts, OnPostApproveClickListener onPostApproveClickListener) {
         this.context = context;
         this.layout = layout;
         this.posts = posts;
@@ -65,7 +65,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         holder.tvTitlePost.setText(post.getTitle());
 
-        if (layout == R.layout.item_posts) {
+        if (layout == R.layout.item_post) {
             holder.tvView.setText(Until.formatNumber(post.getView()));
             holder.tvApprovalDate.setText(dateFormat.format(post.getApprovalDate()));
             holder.llItemListPost.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitlePost = itemView.findViewById(R.id.tvTitlePost);
-            if (layout == R.layout.item_posts) {
+            if (layout == R.layout.item_post) {
                 tvView = itemView.findViewById(R.id.tvView);
                 llItemListPost = itemView.findViewById(R.id.llItemListPost);
                 tvApprovalDate = itemView.findViewById(R.id.tvApprovalDate);

@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.post.ViewPostsActivity;
+import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.adapter.NotifyAdapter;
 import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Notify;
@@ -56,23 +56,23 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
             }
         });
 
-        loadDataNotify();
+        getAllNotify();
     }
 
     private void init() {
         tbListNotify = findViewById(R.id.tbListNotify);
         setSupportActionBar(tbListNotify);
         rvListNotify = findViewById(R.id.rvListNotify);
-
-        notifies = new ArrayList<>();
-        notifyAdapter = new NotifyAdapter(this, R.layout.item_notify, notifies, this);
-        rvListNotify.setAdapter(notifyAdapter);
-        rvListNotify.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void loadDataNotify() {
+    private void getAllNotify() {
         if (user != null) {
+            notifies = new ArrayList<>();
+            notifyAdapter = new NotifyAdapter(this, R.layout.item_notify, notifies, this);
+            rvListNotify.setAdapter(notifyAdapter);
+            rvListNotify.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
             FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid()).child(OBJ_NOTIFY)
                     .addValueEventListener(new ValueEventListener() {
                         @SuppressLint("NotifyDataSetChanged")
@@ -89,7 +89,7 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(ListNotifyActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+
                         }
                     });
             notifyAdapter.notifyDataSetChanged();
@@ -97,13 +97,13 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
     }
 
     @Override
-    public void goToViewPostActivity(Notify notify) {
+    public void goToDetailPostActivity(Notify notify) {
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId()))
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Post post = snapshot.getValue(Post.class);
-                        Intent intent = new Intent(ListNotifyActivity.this, ViewPostsActivity.class);
+                        Intent intent = new Intent(ListNotifyActivity.this, DetailPostActivity.class);
                         intent.putExtra("post", post);
                         startActivity(intent);
                     }

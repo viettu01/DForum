@@ -34,8 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.notify.ListNotifyActivity;
-import com.tuplv.dforum.activity.post.ViewPostsActivity;
-import com.tuplv.dforum.adapter.PostsAdapter;
+import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Post;
@@ -51,7 +51,7 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
     Toolbar tbMain;
     TextView tvCardBadge;
     RecyclerView rvSearchPost;
-    PostsAdapter postsAdapter;
+    PostAdapter postAdapter;
     List<Post> postsSearch;
     List<Post> posts;
     private long outApp;
@@ -155,7 +155,7 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                 viewPager.setVisibility(View.GONE);
                 bottomNavigationView.setVisibility(View.GONE);
 
-                findAllPost();
+                getAllPost();
 
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setQueryHint("Tìm kiếm ...");
@@ -169,7 +169,7 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        loadDataToSearch(newText);
+                        searchPost(newText);
                         return true;
                     }
                 });
@@ -220,30 +220,13 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                 .updateChildren(updateView);
 
-        Intent intent = new Intent(this, ViewPostsActivity.class);
+        Intent intent = new Intent(this, DetailPostActivity.class);
         intent.putExtra("post", post);
 
         startActivity(intent);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadDataToSearch(String search) {
-        postsAdapter = new PostsAdapter(this, R.layout.item_posts, postsSearch, this);
-        rvSearchPost.setAdapter(postsAdapter);
-        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
-        postsSearch.clear();
-        if (!search.isBlank()) {
-            for (Post post : posts) {
-                if (post.getTitle().toLowerCase().contains(search.toLowerCase()) || post.getContent().toLowerCase().contains(search.toLowerCase())) {
-                    postsSearch.add(post);
-                }
-            }
-        }
-        postsAdapter.notifyDataSetChanged();
-    }
-
-    private void findAllPost() {
+    private void getAllPost() {
         FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -259,6 +242,23 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
 
                     }
                 });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void searchPost(String search) {
+        postAdapter = new PostAdapter(this, R.layout.item_post, postsSearch, this);
+        rvSearchPost.setAdapter(postAdapter);
+        rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        postsSearch.clear();
+        if (!search.isBlank()) {
+            for (Post post : posts) {
+                if (post.getTitle().toLowerCase().contains(search.toLowerCase()) || post.getContent().toLowerCase().contains(search.toLowerCase())) {
+                    postsSearch.add(post);
+                }
+            }
+        }
+        postAdapter.notifyDataSetChanged();
     }
 
     private void setupBadge() {

@@ -36,7 +36,6 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_forum);
 
         init();
-        setSupportActionBar(tbAddNewForum);
 
         tbAddNewForum.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,9 +53,9 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                 }
                 pbForum.setVisibility(View.VISIBLE);
                 if (forum != null)
-                    update();
+                    updateForum();
                 else
-                    create();
+                    addForum();
                 finish();
             }
         });
@@ -69,10 +68,11 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
         edtDesForum = findViewById(R.id.edtDesForum);
         btnAddForum = findViewById(R.id.btnShowListForum);
         tbAddNewForum = findViewById(R.id.tbAddNewForum);
+        setSupportActionBar(tbAddNewForum);
         pbForum = findViewById(R.id.pbForum);
     }
 
-    public void create() {
+    public void addForum() {
         forum = new Forum();
         forum.setForumId(new Date().getTime());
         forum.setName(edtNameForum.getText().toString());
@@ -101,7 +101,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
         }
     }
 
-    public void update() {
+    public void updateForum() {
         forum.setName(edtNameForum.getText().toString());
         forum.setDescription(edtDesForum.getText().toString());
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forum.getForumId())).setValue(forum)

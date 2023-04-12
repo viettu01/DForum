@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity.postApprove;
+package com.tuplv.dforum.activity.post;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ViewPostApproveActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailPostApproveActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar tbViewPostsApprove;
     ImageView imvAvatar;
     TextView tvNamePoster, tvDatePostApprove, tvTitlePost, tvContentPosts;
@@ -46,7 +46,7 @@ public class ViewPostApproveActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_post_approve);
+        setContentView(R.layout.activity_detail_post_approve);
         init();
         loadData();
         tbViewPostsApprove.setNavigationOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class ViewPostApproveActivity extends AppCompatActivity implements View.O
         tbViewPostsApprove = findViewById(R.id.tbViewPostsApprove);
         setSupportActionBar(tbViewPostsApprove);
         imvAvatar = findViewById(R.id.imvAvatar);
-        tvNamePoster = findViewById(R.id.tvNamePoster);
+        tvNamePoster = findViewById(R.id.tvNameAuthor);
         tvDatePostApprove = findViewById(R.id.tvDatePostApprove);
         tvTitlePost = findViewById(R.id.tvTitlePost);
         tvContentPosts = findViewById(R.id.tvContentPosts);
@@ -115,7 +115,7 @@ public class ViewPostApproveActivity extends AppCompatActivity implements View.O
                 updateView.put("approvalDate", new Date().getTime());
                 FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                         .updateChildren(updateView);
-                Toast.makeText(ViewPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -141,11 +141,11 @@ public class ViewPostApproveActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ViewPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
                             finish();
 
                         } else {
-                            Toast.makeText(ViewPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity.profile;
+package com.tuplv.dforum.activity.account;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
@@ -38,17 +38,17 @@ import com.tuplv.dforum.model.Account;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+public class UpdateProfileActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    TextView tvEditAvatar, tvEditNickName, tvLengthNickName, tvLengthStory;
+    TextView tvUpdateAvatar, tvUpdateNickName, tvLengthNickName;
     ImageView imvAvatar;
     EditText edtNickName;
-    Toolbar tbEditProfile;
+    Toolbar tbUpdateProfile;
 
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    //firebase
+    //firebase realtime
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
@@ -57,13 +57,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_update_profile);
 
         init();
-        getDataAccount();
+        getAccount();
 
-        setSupportActionBar(tbEditProfile);
-        tbEditProfile.setNavigationOnClickListener(new View.OnClickListener() {
+        tbUpdateProfile.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -72,11 +71,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void init() {
-        tvEditAvatar = findViewById(R.id.tvEditAvatar);
-        tvEditAvatar.setOnClickListener(this);
+        tvUpdateAvatar = findViewById(R.id.tvEditAvatar);
+        tvUpdateAvatar.setOnClickListener(this);
 
-        tvEditNickName = findViewById(R.id.tvEditNickName);
-        tvEditNickName.setOnClickListener(this);
+        tvUpdateNickName = findViewById(R.id.tvEditNickName);
+        tvUpdateNickName.setOnClickListener(this);
 
         tvLengthNickName = findViewById(R.id.tvLengthNickName);
         imvAvatar = findViewById(R.id.imvAvatar);
@@ -85,10 +84,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         edtNickName = findViewById(R.id.edtNickName);
         edtNickName.addTextChangedListener(this);
 
-        tbEditProfile = findViewById(R.id.tbEditProfile);
+        tbUpdateProfile = findViewById(R.id.tbUpdateProfile);
+        setSupportActionBar(tbUpdateProfile);
     }
 
-    private void getDataAccount() {
+    private void getAccount() {
         Account account = (Account) getIntent().getSerializableExtra("account");
         if (account.getAvatarUri().equals("null")) {
             imvAvatar.setImageResource(R.drawable.no_avatar);
@@ -116,7 +116,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void getAvatarUri(StorageReference imgRef) {
+    // Lấy dữ liệu từ Firebase Storage
+    private void getAvatarUriFormFirebaseStorage(StorageReference imgRef) {
         imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -131,20 +132,20 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    private void setImageToStorage(){
+    private void setImageToStorage() {
         StorageReference imgRef = storageRef.child("images/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "." + getFileNameExtension(uri));
 
         UploadTask uploadTask = imgRef.putFile(uri);
-        getAvatarUri(imgRef);
+        getAvatarUriFormFirebaseStorage(imgRef);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(EditProfileActivity.this, "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdateProfileActivity.this, "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(EditProfileActivity.this, "Tải ảnh lên không thành công, vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdateProfileActivity.this, "Tải ảnh lên không thành công, vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
             }
         });
     }

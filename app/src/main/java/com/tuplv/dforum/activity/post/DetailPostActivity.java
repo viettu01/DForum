@@ -53,16 +53,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+public class DetailPostActivity extends AppCompatActivity implements OnCommentClickListener {
 
-public class ViewPostsActivity extends AppCompatActivity implements OnCommentClickListener {
-
-    Toolbar tbViewPosts;
-    CircleImageView imvAvatar;
-    TextView tvNamePoster, tvDatePost, tvTitlePost, tvContentPosts;
+    Toolbar tbDetailPost;
+    TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPosts;
     RecyclerView rvComment;
     EditText edtComment;
-    ImageView imvSendComment;
+    ImageView imvAvatar, imvSendComment;
     LinearLayout ll_comment;
     CommentAdapter commentAdapter;
     List<Comment> comments;
@@ -74,23 +71,21 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_post);
+        setContentView(R.layout.activity_detail_post);
         init();
 
         if (user == null)
             ll_comment.setVisibility(View.GONE);
 
-        tbViewPosts.setNavigationOnClickListener(new View.OnClickListener() {
+        getDetailPost();
+        getAllComment();
+
+        tbDetailPost.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
-        post = (Post) getIntent().getSerializableExtra("post");
-        loadData();
-
-        getComment();
 
         imvSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,10 +98,10 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
     }
 
     private void init() {
-        tbViewPosts = findViewById(R.id.tbViewPosts);
-        setSupportActionBar(tbViewPosts);
+        tbDetailPost = findViewById(R.id.tbDetailPost);
+        setSupportActionBar(tbDetailPost);
         imvAvatar = findViewById(R.id.imvAvatar);
-        tvNamePoster = findViewById(R.id.tvNamePoster);
+        tvNameAuthor = findViewById(R.id.tvNameAuthor);
         tvDatePost = findViewById(R.id.tvDatePost);
         tvTitlePost = findViewById(R.id.tvTitlePost);
         tvContentPosts = findViewById(R.id.tvContentPosts);
@@ -115,10 +110,13 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
         edtComment = findViewById(R.id.edtComment);
         imvSendComment = findViewById(R.id.imvSendComment);
         ll_comment = findViewById(R.id.ll_comment);
+
+        post = (Post) getIntent().getSerializableExtra("post");
     }
 
+    // Lấy thông tin chi tiết bài viết
     @SuppressLint("SimpleDateFormat")
-    private void loadData() {
+    private void getDetailPost() {
         if (post != null) {
             reference.child(OBJ_ACCOUNT).child(post.getAccountId())
                     .addValueEventListener(new ValueEventListener() {
@@ -130,7 +128,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                                     imvAvatar.setImageResource(R.drawable.no_avatar);
                                 else
                                     Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
-                                tvNamePoster.setText(account.getNickName());
+                                tvNameAuthor.setText(account.getNickName());
                             }
                         }
 
@@ -145,6 +143,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
         }
     }
 
+    // Thêm bình luận
     private void addComment() {
         if (!edtComment.getText().toString().trim().isEmpty()) {
             Comment comment = new Comment();
@@ -161,26 +160,31 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                         }
                     });
 
-            if (!post.getAccountId().equals(user.getUid())) {
-                Notify notify = new Notify();
-                notify.setNotifyId(new Date().getTime());
-                notify.setPostId(post.getPostId());
-                notify.setAccountId(user.getUid());
-                notify.setStatus(STATUS_DISABLE);
-                notify.setTypeNotify(TYPE_NOTIFY_ADD_COMMENT);
-                reference.child(OBJ_ACCOUNT).child(post.getAccountId())
-                        .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                task.isSuccessful();
-                            }
-                        });
-            }
+            sendNotifyToAuthor();
         }
     }
 
-    // đóng bàn phím
+    // Gửi thông báo cho chủ bài viết
+    private void sendNotifyToAuthor() {
+        if (!post.getAccountId().equals(user.getUid())) {
+            Notify notify = new Notify();
+            notify.setNotifyId(new Date().getTime());
+            notify.setPostId(post.getPostId());
+            notify.setAccountId(user.getUid());
+            notify.setStatus(STATUS_DISABLE);
+            notify.setTypeNotify(TYPE_NOTIFY_ADD_COMMENT);
+            reference.child(OBJ_ACCOUNT).child(post.getAccountId())
+                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            task.isSuccessful();
+                        }
+                    });
+        }
+    }
+
+    // Đóng bàn phím
     private void closeKeyBoard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -189,10 +193,11 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
         }
     }
 
+    // Lấy toàn bộ bình luận của bài viết
     @SuppressLint("NotifyDataSetChanged")
-    private void getComment() {
+    private void getAllComment() {
         comments = new ArrayList<>();
-        commentAdapter = new CommentAdapter(ViewPostsActivity.this, R.layout.item_comment, this, comments);
+        commentAdapter = new CommentAdapter(DetailPostActivity.this, R.layout.item_comment, this, comments);
         rvComment.setAdapter(commentAdapter);
         rvComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT)
@@ -211,7 +216,7 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(ViewPostsActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailPostActivity.this, "Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
         commentAdapter.notifyDataSetChanged();
@@ -241,11 +246,11 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ViewPostsActivity.this, "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailPostActivity.this, "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
                             comments.remove(comment);
                             commentAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(ViewPostsActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailPostActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

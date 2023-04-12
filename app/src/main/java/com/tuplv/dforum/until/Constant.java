@@ -21,4 +21,5 @@ public class Constant {
     public static final String TYPE_NOTIFY_ADD_POST = "ADD_POST";
     public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT";
     public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT";
+    public static final String TYPE_NOTIFY_ADD_FORUM = "ADD_FORUM";
 }

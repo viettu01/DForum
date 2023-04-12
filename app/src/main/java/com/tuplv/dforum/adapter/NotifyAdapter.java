@@ -101,7 +101,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
         holder.llItemListNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.goToViewPostActivity(notify);
+                listener.goToDetailPostActivity(notify);
             }
         });
     }

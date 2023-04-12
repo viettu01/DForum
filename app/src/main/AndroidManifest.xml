@@ -24,19 +24,19 @@
             android:name=".activity.notify.ListNotifyActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.postApprove.ViewPostApproveActivity"
+            android:name=".activity.post.DetailPostApproveActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.postApprove.PostApproveActivity"
+            android:name=".activity.post.PostApproveActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.profile.ShowImageActivity"
+            android:name=".activity.account.ShowAvatarActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.profile.EditProfileActivity"
+            android:name=".activity.account.UpdateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.StartActivity"
+            android:name=".activity.main.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.post.ViewPostsActivity"
+            android:name=".activity.post.DetailPostActivity"
             android:exported="false" />
         <activity
             android:name=".activity.account.RegisterActivity"
@@ -55,7 +55,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".activity.post.AddPostsActivity"
+            android:name=".activity.post.AddPostActivity"
             android:exported="false" />
         <activity
             android:name=".activity.forum.ListForumActivity"
@@ -64,7 +64,7 @@
             android:name=".activity.forum.AddAndUpdateForumActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.main.MainActivity"
+            android:name=".activity.main.UserMainActivity"
             android:exported="true" />
         <activity
             android:name=".activity.main.AdminMainActivity"

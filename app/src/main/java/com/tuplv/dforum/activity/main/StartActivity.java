@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.main;
 
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 
@@ -10,8 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.main.AdminMainActivity;
-import com.tuplv.dforum.activity.main.MainActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,9 +38,9 @@ public class StartActivity extends AppCompatActivity {
                         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
                             startActivity(new Intent(StartActivity.this, AdminMainActivity.class));
                         else
-                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                            startActivity(new Intent(StartActivity.this, UserMainActivity.class));
 
-                        Toast.makeText(StartActivity.this, "Chào mừng bạn trở lại !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StartActivity.this, "Chào mừng bạn trở lại!", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });

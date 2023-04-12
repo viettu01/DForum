@@ -43,10 +43,10 @@ import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-public class AddPostsActivity extends AppCompatActivity {
+public class AddPostActivity extends AppCompatActivity {
 
     Spinner spnCategory, spnForum;
     EditText edtTitlePost, edtContentPost;
@@ -56,7 +56,7 @@ public class AddPostsActivity extends AppCompatActivity {
     CategorySpinnerAdapter categorySpinnerAdapter;
     List<Forum> forums;
     SharedPreferences sharedPreferences;
-    Account account;
+    Account currentAccountLogin;
     List<Account> accounts;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -64,7 +64,7 @@ public class AddPostsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_posts);
+        setContentView(R.layout.activity_add_post);
 
         init();
         setSupportActionBar(tbAddPost);
@@ -75,9 +75,9 @@ public class AddPostsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        loadDataToSpinnerCategory();
-        loadDataToSpinnerForum();
-        getDataAccount();
+        setCategoryToSpinner();
+        setForumToSpinner();
+        getAllAccount();
     }
 
     private void init() {
@@ -91,7 +91,7 @@ public class AddPostsActivity extends AppCompatActivity {
     }
 
     //Đổ dữ liệu ra spinner chuyên mục
-    private void loadDataToSpinnerCategory() {
+    private void setCategoryToSpinner() {
         List<String> categoryName = new ArrayList<>();
         categoryName.add(HOI_DAP);
         categoryName.add(CHIA_SE_KIEN_THUC);
@@ -100,7 +100,7 @@ public class AddPostsActivity extends AppCompatActivity {
     }
 
     //Đổ dữ liệu ra spinner diễn đàn
-    private void loadDataToSpinnerForum() {
+    private void setForumToSpinner() {
         forums = new ArrayList<>();
         forumSpinnerAdapter = new ForumSpinnerAdapter(this, forums);
         spnForum.setAdapter(forumSpinnerAdapter);
@@ -122,30 +122,18 @@ public class AddPostsActivity extends AppCompatActivity {
         });
     }
 
-    private void getDataAccount() {
-        FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            account = snapshot.getValue(Account.class);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
-
+    // Lấy danh sách tài khoản và lấy thông tin tài khoản đang đăng nhập
+    private void getAllAccount() {
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot ds : snapshot.getChildren()) {
-                            Account account1 = ds.getValue(Account.class);
-                            accounts.add(account1);
+                            Account account = ds.getValue(Account.class);
+                            if (Objects.requireNonNull(account).getAccountId().equals(user.getUid()))
+                                currentAccountLogin = account;
+                            accounts.add(account);
                         }
                     }
 
@@ -156,7 +144,7 @@ public class AddPostsActivity extends AppCompatActivity {
     }
 
     //Thêm bài viết mới
-    public void create() {
+    public void addPost() {
         String message = "";
         Forum forum = (Forum) spnForum.getSelectedItem();
         Post post = new Post();
@@ -183,13 +171,18 @@ public class AddPostsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(AddPostsActivity.this, finalMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddPostActivity.this, finalMessage, Toast.LENGTH_SHORT).show();
                             finish();
                         } else
-                            Toast.makeText(AddPostsActivity.this, "Thêm bài viết thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddPostActivity.this, "Thêm bài viết thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+        sendNotifyAllAccount(post);
+    }
+
+    // Thông báo cho tất cả người dùng là admin đã đăng bài
+    private void sendNotifyAllAccount(Post post) {
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
             Notify notify = new Notify();
             notify.setNotifyId(new Date().getTime());
@@ -198,8 +191,6 @@ public class AddPostsActivity extends AppCompatActivity {
             notify.setStatus(STATUS_DISABLE);
             notify.setTypeNotify(TYPE_NOTIFY_ADD_POST);
             for (Account account : accounts) {
-                HashMap<String, Object> updateNotify = new HashMap<>();
-                updateNotify.put(OBJ_NOTIFY, notify);
                 if (!account.getAccountId().equals(user.getUid()))
                     FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
                             .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
@@ -221,7 +212,7 @@ public class AddPostsActivity extends AppCompatActivity {
             if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
             } else {
-                create();
+                addPost();
             }
         }
         return super.onOptionsItemSelected(item);
