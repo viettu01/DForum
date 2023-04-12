@@ -1,6 +1,7 @@
 package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     OnCommentClickListener listener;
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final Account[] account = new Account[1];
     private final List<Comment> comments;
 
     public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments) {
@@ -72,7 +75,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
         Comment comment = comments.get(position);
-        final Account[] account = new Account[1];
 
         holder.tvContentComment.setText(comment.getContent());
 
@@ -100,7 +102,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 if (isShowMore[0]) {
-                    holder.tvContentComment.setMaxLines(3);
+                    holder.tvContentComment.setMaxLines(7);
                 } else {
                     holder.tvContentComment.setMaxLines(Integer.MAX_VALUE);
                 }
@@ -112,6 +114,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvTimeComment.setText(Until.formatTime(comment.getCommentId()));
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
+                return false;
+            }
+        });
+        holder.tvContentComment.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
@@ -133,6 +142,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         TextView tvNameCommentator, tvTimeComment, tvContentComment;
         ImageView imvAvatar;
         Button btnReadMore;
+        LinearLayout llItemComment;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -155,9 +165,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         menuPopupHelper.setForceShowIcon(true);
         MenuItem mnuEditComment = menuBuilder.findItem(R.id.mnuEditComment);
         MenuItem mnuDeleteComment = menuBuilder.findItem(R.id.mnuDeleteComment);
+
         if (!Objects.requireNonNull(mAuth.getCurrentUser()).getUid().equals(comment.getAccountId())) {
             mnuEditComment.setVisible(false);
             mnuDeleteComment.setVisible(false);
+            if (account[0].getRole().equals(ROLE_ADMIN))
+                mnuDeleteComment.setVisible(true);
         }
 
         menuBuilder.setCallback(new MenuBuilder.Callback() {
