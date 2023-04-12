@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_5sdp"
     android:orientation="horizontal"
-    android:padding="@dimen/_5sdp">
+    android:paddingEnd="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_2sdp"
+    android:paddingStart="@dimen/_5sdp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvAvatar"
@@ -44,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="3" />
+                android:maxLines="7" />
 
             <Button
                 android:id="@+id/btn_read_more"

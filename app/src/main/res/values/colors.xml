@@ -25,7 +25,7 @@
     <!-- màu đen làm mờ-->
     <color name="black_opacity">#99000000</color>
 
-    <!--    background comment-->
-    <color name="background_comment">#f1f2f6</color>
+    <!--    background comment, button cancel-->
+    <color name="gray">#f1f2f6</color>
 
 </resources>

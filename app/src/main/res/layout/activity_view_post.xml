@@ -21,10 +21,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_10sdp">
+        android:paddingBottom="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp">
 
         <ScrollView
             android:id="@+id/svViewPosts"
+            android:paddingTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">

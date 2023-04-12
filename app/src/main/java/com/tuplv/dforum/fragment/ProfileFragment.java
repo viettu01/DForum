@@ -266,7 +266,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                     for (DataSnapshot commentSnapshot : postSnapshot.child(OBJ_COMMENT).getChildren()) {
                         Comment comment = commentSnapshot.getValue(Comment.class);
                         assert comment != null;
-                        if (comment.getAccountId().equals(user.getUid())){
+                        if (String.valueOf(comment.getAccountId()).equals(user.getUid())){
                             comments.add(comment);
                         }
                     }

@@ -10,12 +10,10 @@ import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,7 +30,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -220,22 +217,13 @@ public class ViewPostsActivity extends AppCompatActivity implements OnCommentCli
         commentAdapter.notifyDataSetChanged();
     }
 
-    @SuppressLint("InflateParams")
-    private void dialogEditComment() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet_edit_comment, null);
-        bottomSheetDialog.setContentView(bottomSheetView);
-
-        bottomSheetDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-
-        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        bottomSheetDialog.show();
-    }
-
     @Override
-    public void goToActivityUpdate(Comment comment) {
-        dialogEditComment();
+    public void goToActivityUpdate(Comment comment, Uri avatarUri) {
+        Intent intent = new Intent(this, UpdateCommentActivity.class);
+        intent.putExtra("avatarUri", String.valueOf(avatarUri));
+        intent.putExtra("comment", comment);
+        intent.putExtra("postId", String.valueOf(post.getPostId()));
+        startActivity(intent);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,6 +72,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
         Comment comment = comments.get(position);
+        final Account[] account = new Account[1];
 
         holder.tvContentComment.setText(comment.getContent());
 
@@ -79,12 +81,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Account account = snapshot.getValue(Account.class);
-                            if (Objects.requireNonNull(account).getAvatarUri().equals("null"))
+                            account[0] = snapshot.getValue(Account.class);
+                            if (Objects.requireNonNull(account[0]).getAvatarUri().equals("null"))
                                 holder.imvAvatar.setImageResource(R.drawable.no_avatar);
                             else
-                                Picasso.get().load(account.getAvatarUri()).into(holder.imvAvatar);
-                            holder.tvNameCommentator.setText(account.getNickName());
+                                Picasso.get().load(account[0].getAvatarUri()).into(holder.imvAvatar);
+                            holder.tvNameCommentator.setText(account[0].getNickName());
                         }
                     }
 
@@ -112,7 +114,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showPopupMenu(holder, comment);
+                showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
                 return false;
             }
         });
@@ -144,7 +146,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @SuppressLint("RestrictedApi, NonConstantResourceId")
-    private void showPopupMenu(CommentAdapter.ViewHolder holder, Comment comment) {
+    private void showPopupMenu(CommentAdapter.ViewHolder holder, Comment comment, Uri avatarUri) {
         MenuBuilder menuBuilder = new MenuBuilder(context);
         MenuInflater menuInflater = new MenuInflater(context);
         menuInflater.inflate(R.menu.menu_popup_item_comment, menuBuilder);
@@ -166,7 +168,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         listener.onDeleteClick(comment);
                         break;
                     case R.id.mnuEditComment:
-                        listener.goToActivityUpdate(comment);
+                        listener.goToActivityUpdate(comment, avatarUri);
                         Toast.makeText(context, "Chỉnh sửa bình luận", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.mnuCopyComment:

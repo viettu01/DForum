@@ -57,5 +57,6 @@
     <string name="khong_duyet_bai_dang">Không duyệt bài đăng</string>
     <string name="update">Cập nhật</string>
     <string name="cancel">Hủy</string>
+    <string name="edit">Chỉnh sửa</string>
 
 </resources>
