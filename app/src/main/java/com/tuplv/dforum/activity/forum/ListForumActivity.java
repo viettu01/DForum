@@ -1,7 +1,6 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.forum;
 
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
-import static com.tuplv.dforum.until.Constant.OBJ_POST;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -36,7 +34,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ListForumActivity extends AppCompatActivity implements OnForumClickListener {
 

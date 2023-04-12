@@ -10,9 +10,9 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import com.tuplv.dforum.activity.PostApproveActivity;
+import com.tuplv.dforum.activity.postApprove.PostApproveActivity;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.ListForumActivity;
+import com.tuplv.dforum.activity.forum.ListForumActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
 

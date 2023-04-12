@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.profile;
 
 import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
 

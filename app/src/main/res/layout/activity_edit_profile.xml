@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.EditProfileActivity">
+    tools:context=".activity.profile.EditProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbEditProfile"

@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.postApprove;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;

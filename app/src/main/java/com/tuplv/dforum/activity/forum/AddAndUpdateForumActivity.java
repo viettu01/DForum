@@ -1,10 +1,9 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.forum;
 
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;

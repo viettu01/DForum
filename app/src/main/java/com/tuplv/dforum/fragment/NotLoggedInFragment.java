@@ -11,11 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.LoginActivity;
-import com.tuplv.dforum.activity.RegisterActivity;
+import com.tuplv.dforum.activity.account.LoginActivity;
+import com.tuplv.dforum.activity.account.RegisterActivity;
 
 public class NotLoggedInFragment extends Fragment implements View.OnClickListener {
 

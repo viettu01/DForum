@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.post;
 
 import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
 import static com.tuplv.dforum.until.Constant.HOI_DAP;

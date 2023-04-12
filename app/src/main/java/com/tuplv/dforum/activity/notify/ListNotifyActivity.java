@@ -1,4 +1,4 @@
-package com.tuplv.dforum.activity;
+package com.tuplv.dforum.activity.notify;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.post.ViewPostsActivity;
 import com.tuplv.dforum.adapter.NotifyAdapter;
 import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Notify;

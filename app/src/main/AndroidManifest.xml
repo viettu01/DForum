@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,22 +18,22 @@
         android:theme="@style/Theme.DForum"
         tools:targetApi="31">
         <activity
-            android:name=".activity.UpdateCommentActivity"
+            android:name=".activity.post.UpdateCommentActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ListNotifyActivity"
+            android:name=".activity.notify.ListNotifyActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ViewPostApproveActivity"
+            android:name=".activity.postApprove.ViewPostApproveActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.PostApproveActivity"
+            android:name=".activity.postApprove.PostApproveActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ShowImageActivity"
+            android:name=".activity.profile.ShowImageActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.EditProfileActivity"
+            android:name=".activity.profile.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activity.StartActivity"
@@ -46,29 +45,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ViewPostsActivity"
+            android:name=".activity.post.ViewPostsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name=".activity.account.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.account.LoginActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".activity.AddPostsActivity"
+            android:name=".activity.post.AddPostsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ListForumActivity"
+            android:name=".activity.forum.ListForumActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddAndUpdateForumActivity"
+            android:name=".activity.forum.AddAndUpdateForumActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.AdminMainActivity"
+            android:name=".activity.main.AdminMainActivity"
             android:exported="true" />
     </application>
 

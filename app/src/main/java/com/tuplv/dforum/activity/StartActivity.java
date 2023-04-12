@@ -1,18 +1,17 @@
 package com.tuplv.dforum.activity;
 
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
-import static com.tuplv.dforum.until.Constant.ROLE_USER;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.main.AdminMainActivity;
+import com.tuplv.dforum.activity.main.MainActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.tuplv.dforum.activity.MainActivity;
+import com.tuplv.dforum.activity.main.MainActivity;
 import com.tuplv.dforum.fragment.AdminFragment;
 import com.tuplv.dforum.fragment.HomeFragment;
 import com.tuplv.dforum.fragment.NotLoggedInFragment;
