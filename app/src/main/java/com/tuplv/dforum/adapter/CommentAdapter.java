@@ -113,20 +113,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         //format thời gian
         holder.tvTimeComment.setText(Until.formatTime(comment.getCommentId()));
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onLongClick(View view) {
                 showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
                 return false;
             }
-        });
-        holder.tvContentComment.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
-                return false;
-            }
-        });
+        };
+        holder.itemView.setOnLongClickListener(onLongClickListener);
+        holder.tvContentComment.setOnLongClickListener(onLongClickListener);
     }
 
     @Override
