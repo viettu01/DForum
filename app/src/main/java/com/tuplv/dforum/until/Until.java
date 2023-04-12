@@ -65,16 +65,16 @@ public class Until {
         String message = "";
 
         if (typeNotify.equals(TYPE_NOTIFY_APPROVE))
-            message = " đã phê duyệt bài vết của bạn!";
+            message = " đã phê duyệt bài vết của bạn: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_ADD_POST))
-            message = " đã thêm một bài viết mới!";
+            message = " đã thêm một bài viết mới: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_ADD_COMMENT))
-            message = " đã bình luận bài vết của bạn!";
+            message = " đã bình luận bài vết của bạn: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_REPLY_COMMENT))
-            message = " đã trả lời bình luận của bạn!";
+            message = " đã trả lời bình luận của bạn: ";
 
         return message;
     }

@@ -1,6 +1,7 @@
 package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Until.formatNotify;
 
@@ -25,6 +26,7 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Notify;
+import com.tuplv.dforum.model.Post;
 import com.tuplv.dforum.until.Until;
 
 import java.util.List;
@@ -53,16 +55,16 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
         return new NotifyAdapter.ViewHolder(view);
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat, SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notify notify = notifies.get(position);
+        String message = "";
         if (notify.getStatus().equals(STATUS_ENABLE)) {
             holder.imvNotify.setVisibility(View.GONE);
         }
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
                 .addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -77,6 +79,21 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId()))
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Post post = snapshot.getValue(Post.class);
+                            holder.tvContentNotify.setText(holder.tvContentNotify.getText() + Objects.requireNonNull(post).getTitle());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
         holder.tvDateNotify.setText(Until.formatTime(notify.getNotifyId()));
