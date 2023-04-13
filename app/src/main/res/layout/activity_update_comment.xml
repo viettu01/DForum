@@ -94,6 +94,8 @@
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
+                    android:elevation="@dimen/_10sdp"
+                    android:translationZ="@dimen/_3sdp"
                     android:textStyle="bold" />
 
                 <Button
@@ -104,6 +106,8 @@
                     android:letterSpacing="0.02"
                     android:text="@string/update"
                     android:textAllCaps="false"
+                    android:elevation="@dimen/_10sdp"
+                    android:translationZ="@dimen/_3sdp"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
             </LinearLayout>
