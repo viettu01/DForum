@@ -40,9 +40,9 @@ import java.util.List;
 public class PostApproveActivity extends AppCompatActivity implements OnPostApproveClickListener {
     Toolbar tbPostApprove;
     RecyclerView rvListPostApprove;
+    AlertDialog.Builder builder;
     List<Post> posts;
     PostAdapter postAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
     @Override
     protected void onResume() {
         super.onResume();
-        loadDataToView();
+        getAllPostApprove();
     }
 
     @Override
@@ -75,10 +75,11 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         setSupportActionBar(tbPostApprove);
         rvListPostApprove = findViewById(R.id.rvListPostApprove);
 
+        builder = new AlertDialog.Builder(PostApproveActivity.this);
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void loadDataToView() {
+    private void getAllPostApprove() {
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(PostApproveActivity.this, R.layout.item_post_approve, posts, this);
         rvListPostApprove.setAdapter(postAdapter);
@@ -101,7 +102,6 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
 
                     }
                 });
-
     }
 
     @Override
@@ -112,22 +112,21 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
     }
 
     @Override
-    public void postApprove(Post post) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PostApproveActivity.this);
-        builder.setTitle("Cảnh báo!");
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
+    public void approvePost(Post post) {
+        builder.setTitle("Thông báo!");
+        builder.setIcon(R.drawable.ic_round_info_24);
         builder.setMessage("Bạn có chắc chắn muốn duyệt bài viết này?");
         builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 HashMap<String, Object> updateView = new HashMap<>();
                 updateView.put("status", STATUS_ENABLE);
-                updateView.put("approvalDate", new Date().getTime());
+                updateView.put("approveDate", new Date().getTime());
                 FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                         .updateChildren(updateView);
                 Toast.makeText(PostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                 posts.clear();
-                loadDataToView();
+                getAllPostApprove();
             }
         });
         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -137,14 +136,12 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
             }
         });
         builder.show();
-
     }
 
     @Override
-    public void noPostApprove(Post post) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PostApproveActivity.this);
+    public void noApprovePost(Post post) {
         builder.setTitle("Cảnh báo!");
-        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setIcon(R.drawable.ic_round_warning_yellow_24);
         builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
@@ -157,7 +154,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                         if (task.isSuccessful()) {
                             Toast.makeText(PostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
                             posts.clear();
-                            loadDataToView();
+                            getAllPostApprove();
                         } else {
                             Toast.makeText(PostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                         }
@@ -177,23 +174,22 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mnuPostApprove) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PostApproveActivity.this);
             builder.setTitle("Cảnh báo!");
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setIcon(R.drawable.ic_round_warning_yellow_24);
             builder.setMessage("Bạn có chắc chắn muốn duyệt tất cả bài viết?");
             builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     HashMap<String, Object> updateView = new HashMap<>();
                     updateView.put("status", STATUS_ENABLE);
-                    updateView.put("approvalDate", new Date().getTime());
+                    updateView.put("approveDate", new Date().getTime());
                     for (Post post : posts) {
                         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                                 .updateChildren(updateView);
                     }
                     Toast.makeText(PostApproveActivity.this, "Tất cả bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                     posts.clear();
-                    loadDataToView();
+                    getAllPostApprove();
                 }
             });
             builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

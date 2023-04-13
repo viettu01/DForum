@@ -45,9 +45,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.account.UpdateProfileActivity;
 import com.tuplv.dforum.activity.account.LoginActivity;
 import com.tuplv.dforum.activity.account.ShowAvatarActivity;
+import com.tuplv.dforum.activity.account.UpdateProfileActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
@@ -82,6 +82,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         init(view);
+
         return view;
     }
 
@@ -142,16 +143,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
     }
 
     @SuppressLint("InflateParams")
-    private void dialogAvatar() {
+    private void showBottomSheetDialogAvatar() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
         View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bottom_sheet_avatar, null);
         bottomSheetDialog.setContentView(bottomSheetView);
 
-        LinearLayout linear_choose_avatar = bottomSheetDialog.findViewById(R.id.linear_choose_avatar);
-        LinearLayout linear_view_avatar = bottomSheetDialog.findViewById(R.id.linear_view_avatar);
-        LinearLayout linear_remove_avatar = bottomSheetDialog.findViewById(R.id.linear_remove_avatar);
+        LinearLayout llChooseAvatar = bottomSheetDialog.findViewById(R.id.llChooseAvatar);
+        LinearLayout llShowAvatar = bottomSheetDialog.findViewById(R.id.llShowAvatar);
+        LinearLayout llRemoveAvatar = bottomSheetDialog.findViewById(R.id.llRemoveAvatar);
 
-        Objects.requireNonNull(linear_choose_avatar).setOnClickListener(new View.OnClickListener() {
+        Objects.requireNonNull(llChooseAvatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), PICK_IMAGE_REQUEST);
@@ -159,7 +160,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
             }
         });
 
-        Objects.requireNonNull(linear_view_avatar).setOnClickListener(new View.OnClickListener() {
+        Objects.requireNonNull(llShowAvatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ShowAvatarActivity.class);
@@ -169,7 +170,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
             }
         });
 
-        Objects.requireNonNull(linear_remove_avatar).setOnClickListener(new View.OnClickListener() {
+        Objects.requireNonNull(llRemoveAvatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseUser user = mAuth.getCurrentUser();
@@ -184,7 +185,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         bottomSheetDialog.show();
     }
 
-    private void updateAvatar(String uri) {
+    // Cập nhật ảnh lên realtime
+    private void updateAvatarUriRealtime(String uri) {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
 
@@ -208,7 +210,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
             @Override
             public void onSuccess(Uri uri) {
                 String avatarUri = uri.toString();
-                updateAvatar(avatarUri);
+                updateAvatarUriRealtime(avatarUri);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -252,7 +254,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         getTotalComment();
     }
 
-    private void getTotalComment(){
+    private void getTotalComment() {
         List<Comment> comments = new ArrayList<>();
         DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference(OBJ_POST);
         postsRef.addValueEventListener(new ValueEventListener() {
@@ -263,13 +265,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                     for (DataSnapshot commentSnapshot : postSnapshot.child(OBJ_COMMENT).getChildren()) {
                         Comment comment = commentSnapshot.getValue(Comment.class);
                         assert comment != null;
-                        if (String.valueOf(comment.getAccountId()).equals(user.getUid())){
+                        if (String.valueOf(comment.getAccountId()).equals(user.getUid())) {
                             comments.add(comment);
                         }
                     }
                     tvTotalComment.setText(String.valueOf(comments.size()));
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // xử lý khi có lỗi xảy ra
@@ -278,7 +281,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
 
     }
 
-    private void getMyPost(){
+    private void getMyPost() {
         myPost = new ArrayList<>();
         myPostAdapter = new PostAdapter(getActivity(), R.layout.item_post, myPost, this);
         rvMyPost.setAdapter(myPostAdapter);
@@ -298,6 +301,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                         tvTotalPost.setText(String.valueOf(myPost.size()));
                         myPostAdapter.notifyDataSetChanged();
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
@@ -333,7 +337,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                 startActivity(intent);
                 break;
             case R.id.imvAvatar:
-                dialogAvatar();
+                showBottomSheetDialogAvatar();
                 break;
         }
     }

@@ -159,7 +159,7 @@ public class AddPostActivity extends AppCompatActivity {
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
             message = "Thêm bài viết thành công";
             post.setStatus(STATUS_ENABLE);
-            post.setApprovalDate(new Date().getTime());
+            post.setApproveDate(new Date().getTime());
         } else {
             message = "Bài viết của bạn đang chờ kiểm duyệt";
             post.setStatus(STATUS_DISABLE);

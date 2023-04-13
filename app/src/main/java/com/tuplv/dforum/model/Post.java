@@ -3,7 +3,6 @@ package com.tuplv.dforum.model;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Post implements Serializable {
     private long postId;
@@ -12,7 +11,7 @@ public class Post implements Serializable {
     private long forumId;
     private String title;
     private String content;
-    private long approvalDate; //Ngày duyệt
+    private long approveDate; //Ngày duyệt
     private long createdDate; //Ngày tạo
     private long view;
     private String status;
@@ -68,12 +67,12 @@ public class Post implements Serializable {
         this.content = content;
     }
 
-    public long getApprovalDate() {
-        return approvalDate;
+    public long getApproveDate() {
+        return approveDate;
     }
 
-    public void setApprovalDate(long approvalDate) {
-        this.approvalDate = approvalDate;
+    public void setApproveDate(long approveDate) {
+        this.approveDate = approveDate;
     }
 
     public long getCreatedDate() {
@@ -110,7 +109,7 @@ public class Post implements Serializable {
                 ", forumName='" + forumId + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", approvalDate=" + approvalDate +
+                ", approvalDate=" + approveDate +
                 ", createdDate=" + createdDate +
                 ", view=" + view +
                 ", status='" + status + '\'' +

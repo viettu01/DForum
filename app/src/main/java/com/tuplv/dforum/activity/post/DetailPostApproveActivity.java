@@ -36,10 +36,10 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class DetailPostApproveActivity extends AppCompatActivity implements View.OnClickListener {
-    Toolbar tbViewPostsApprove;
+    Toolbar tbDetailPostApprove;
     ImageView imvAvatar;
-    TextView tvNamePoster, tvDatePostApprove, tvTitlePost, tvContentPosts;
-    Button btnPostsApprove, btnNoPostApprove;
+    TextView tvNameAuthor, tvDatePostApprove, tvTitlePost, tvContentPost;
+    Button btnPostApprove, btnNoPostApprove;
     Post post;
     AlertDialog.Builder builder;
 
@@ -48,33 +48,36 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_post_approve);
         init();
-        loadData();
-        tbViewPostsApprove.setNavigationOnClickListener(new View.OnClickListener() {
+        getDetailPostApprove();
+        tbDetailPostApprove.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        btnPostsApprove.setOnClickListener(this);
-        btnNoPostApprove.setOnClickListener(this);
     }
 
     private void init() {
-        tbViewPostsApprove = findViewById(R.id.tbViewPostsApprove);
-        setSupportActionBar(tbViewPostsApprove);
+        tbDetailPostApprove = findViewById(R.id.tbDetailPostApprove);
+        setSupportActionBar(tbDetailPostApprove);
         imvAvatar = findViewById(R.id.imvAvatar);
-        tvNamePoster = findViewById(R.id.tvNameAuthor);
+        tvNameAuthor = findViewById(R.id.tvNameAuthor);
         tvDatePostApprove = findViewById(R.id.tvDatePostApprove);
         tvTitlePost = findViewById(R.id.tvTitlePost);
-        tvContentPosts = findViewById(R.id.tvContentPosts);
-        btnPostsApprove = findViewById(R.id.btnPostsApprove);
+        tvContentPost = findViewById(R.id.tvContentPosts);
+        btnPostApprove = findViewById(R.id.btnPostApprove);
         btnNoPostApprove = findViewById(R.id.btnNoPostApprove);
+
         builder = new AlertDialog.Builder(this);
         post = (Post) getIntent().getSerializableExtra("post");
+
+        btnPostApprove.setOnClickListener(this);
+        btnNoPostApprove.setOnClickListener(this);
     }
 
+    // Xem chi tiết bài viết
     @SuppressLint("SimpleDateFormat")
-    private void loadData() {
+    private void getDetailPostApprove() {
         if (post != null) {
             FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(post.getAccountId())
                     .addValueEventListener(new ValueEventListener() {
@@ -86,7 +89,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                                     imvAvatar.setImageResource(R.drawable.no_avatar);
                                 else
                                     Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
-                                tvNamePoster.setText(account.getNickName());
+                                tvNameAuthor.setText(account.getNickName());
                             }
                         }
 
@@ -97,22 +100,22 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                     });
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm");
-            tvDatePostApprove.setText(dateFormat.format(new Date(post.getApprovalDate())));
+            tvDatePostApprove.setText(dateFormat.format(new Date(post.getApproveDate())));
             tvTitlePost.setText(post.getTitle());
-            tvContentPosts.setText(post.getContent());
+            tvContentPost.setText(post.getContent());
         }
     }
 
     private void approvePost() {
         builder.setTitle("Thông báo!");
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setIcon(R.drawable.ic_round_info_24);
         builder.setMessage("Bạn có chắc chắn muốn duyệt bài viết này?");
         builder.setPositiveButton("Duyệt", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 HashMap<String, Object> updateView = new HashMap<>();
                 updateView.put("status", STATUS_ENABLE);
-                updateView.put("approvalDate", new Date().getTime());
+                updateView.put("approveDate", new Date().getTime());
                 FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                         .updateChildren(updateView);
                 Toast.makeText(DetailPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
@@ -129,8 +132,8 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
     }
 
     private void noApprovePost() {
-        builder.setTitle("Thông báo!");
-        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setTitle("Cảnh báo!");
+        builder.setIcon(R.drawable.ic_round_warning_yellow_24);
         builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
@@ -164,7 +167,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnPostsApprove:
+            case R.id.btnPostApprove:
                 approvePost();
                 break;
             case R.id.btnNoPostApprove:

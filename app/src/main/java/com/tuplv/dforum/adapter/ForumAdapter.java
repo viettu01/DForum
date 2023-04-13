@@ -6,6 +6,7 @@ import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,15 +31,8 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     Context context;
     int layout;
     List<Forum> forums;
-    Forum forum;
     OnForumClickListener listener;
     SharedPreferences sharedPreferences;
-
-    public ForumAdapter(Context context, int layout, List<Forum> forums) {
-        this.context = context;
-        this.layout = layout;
-        this.forums = forums;
-    }
 
     public ForumAdapter(Context context, int layout, List<Forum> forums, OnForumClickListener listener) {
         this.context = context;
@@ -63,18 +57,14 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
 
         holder.tvTitle.setText(forum.getName());
 
-        holder.llItemListForum.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.goToHomeFragment(forum);
             }
-        });
-        holder.imgShowForum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.goToHomeFragment(forum);
-            }
-        });
+        };
+        holder.llItemListForum.setOnClickListener(onClickListener);
+        holder.imgShowForum.setOnClickListener(onClickListener);
 
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -91,7 +81,6 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     public int getItemCount() {
         if (forums != null)
             return forums.size();
-
         return 0;
     }
 

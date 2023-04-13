@@ -26,20 +26,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     Context context;
     int layout;
     List<Post> posts;
-    OnPostClickListener listener;
+    OnPostClickListener onPostClickListener;
     OnPostApproveClickListener onPostApproveClickListener;
 
-    public PostAdapter(Context context, int layout, List<Post> posts) {
+    public PostAdapter(Context context, int layout, List<Post> posts, OnPostClickListener onPostClickListener) {
         this.context = context;
         this.layout = layout;
         this.posts = posts;
-    }
-
-    public PostAdapter(Context context, int layout, List<Post> posts, OnPostClickListener listener) {
-        this.context = context;
-        this.layout = layout;
-        this.posts = posts;
-        this.listener = listener;
+        this.onPostClickListener = onPostClickListener;
     }
 
     public PostAdapter(Context context, int layout, List<Post> posts, OnPostApproveClickListener onPostApproveClickListener) {
@@ -67,11 +61,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         if (layout == R.layout.item_post) {
             holder.tvView.setText(Until.formatNumber(post.getView()));
-            holder.tvApprovalDate.setText(dateFormat.format(post.getApprovalDate()));
+            holder.tvApprovalDate.setText(dateFormat.format(post.getApproveDate()));
             holder.llItemListPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.goToActivityDetail(post);
+                    onPostClickListener.goToActivityDetail(post);
                 }
             });
         }
@@ -87,13 +81,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.imvPostApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onPostApproveClickListener.postApprove(post);
+                    onPostApproveClickListener.approvePost(post);
                 }
             });
             holder.imvNoPostApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onPostApproveClickListener.noPostApprove(post);
+                    onPostApproveClickListener.noApprovePost(post);
                 }
             });
         }
@@ -103,7 +97,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public int getItemCount() {
         if (posts != null)
             return posts.size();
-
         return 0;
     }
 

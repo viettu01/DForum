@@ -4,6 +4,7 @@ import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Until.formatNotify;
+import static com.tuplv.dforum.until.Until.formatTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -59,7 +60,6 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notify notify = notifies.get(position);
-        String message = "";
         if (notify.getStatus().equals(STATUS_ENABLE)) {
             holder.imvNotify.setVisibility(View.GONE);
         }
@@ -96,7 +96,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
 
                     }
                 });
-        holder.tvDateNotify.setText(Until.formatTime(notify.getNotifyId()));
+        holder.tvDateNotify.setText(formatTime(notify.getNotifyId()));
 
         holder.llItemListNotify.setOnClickListener(new View.OnClickListener() {
             @Override

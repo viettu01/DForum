@@ -50,6 +50,4 @@ public class ForumSpinnerAdapter extends BaseAdapter {
 
         return view;
     }
-
-
 }

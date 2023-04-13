@@ -4,12 +4,9 @@
     <string name="them_bai_viet">Thêm bài viết</string>
     <string name="trang_ca_nhan">Cá nhân</string>
     <string name="admin">Quản trị</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tim_kiem">Tìm kiếm</string>
     <string name="thong_bao">Thông báo</string>
-    <string name="tìm_kiem">Tìm kiếm</string>
-    <string name="kiem_duyet_bai_dang">Kiểm duyệt bài đăng</string>
+    <string name="kiem_duyet_bai_viet">Kiểm duyệt bài viết</string>
     <string name="them_dien_dan">Thêm diễn dàn</string>
     <string name="dang_bai_viet">Đăng bài viết</string>
     <string name="tao_bai_viet">Tạo bài viết</string>
@@ -41,7 +38,6 @@
     <string name="chinh_sua">Chỉnh sửa</string>
     <string name="anh_dai_dien">Ảnh đại diện</string>
     <string name="nick_name">Tên hiển thị</string>
-    <string name="tieu_su">Mô tả bản thân...</string>
     <string name="add">Thêm</string>
     <string name="length_story">0 / 100</string>
     <string name="length_nickname">0 / 30</string>

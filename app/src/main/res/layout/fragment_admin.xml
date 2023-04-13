@@ -9,12 +9,12 @@
     tools:context=".fragment.AdminFragment">
 
     <Button
-        android:id="@+id/btnPostsApprove"
+        android:id="@+id/btnPostApprove"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_15sdp"
         android:background="@drawable/button_radius_10"
-        android:text="@string/kiem_duyet_bai_dang" />
+        android:text="@string/kiem_duyet_bai_viet" />
 
     <Button
         android:id="@+id/btnShowListForum"

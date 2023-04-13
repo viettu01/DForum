@@ -137,7 +137,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                         }
                     });
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm");
-            tvDatePost.setText(dateFormat.format(new Date(post.getApprovalDate())));
+            tvDatePost.setText(dateFormat.format(new Date(post.getApproveDate())));
             tvTitlePost.setText(post.getTitle());
             tvContentPosts.setText(post.getContent());
         }

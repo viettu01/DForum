@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linear_choose_avatar"
+            android:id="@+id/llChooseAvatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
@@ -48,7 +48,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/linear_view_avatar"
+            android:id="@+id/llShowAvatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
@@ -78,7 +78,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/linear_remove_avatar"
+            android:id="@+id/llRemoveAvatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"

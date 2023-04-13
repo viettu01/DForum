@@ -29,9 +29,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.post.AddPostActivity;
-import com.tuplv.dforum.activity.forum.ListForumActivity;
 import com.tuplv.dforum.activity.account.LoginActivity;
+import com.tuplv.dforum.activity.forum.ListForumActivity;
+import com.tuplv.dforum.activity.post.AddPostActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         imgShowMoreForum.setOnClickListener(this);
     }
 
-    private void findAll() {
+    private void getAllPost() {
         postsQA = new ArrayList<>();
         postsQAAdapter = new PostAdapter(getActivity(), R.layout.item_post, postsQA, this);
         rvQA.setAdapter(postsQAAdapter);
@@ -91,11 +92,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         postsShareKnowledgeAdapter = new PostAdapter(getActivity(), R.layout.item_post, postsShareKnowledge, this);
         rvShareKnowledge.setAdapter(postsShareKnowledgeAdapter);
         rvShareKnowledge.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                .orderByChild("status").equalTo(STATUS_ENABLE)
+                .addValueEventListener(new ValueEventListener() {
                     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        postsQA.clear();
+                        postsShareKnowledge.clear();
                         tvTotalPostForum.setText("(" + snapshot.getChildrenCount() + ")");
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
@@ -106,36 +110,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
                                 postsShareKnowledge.add(post);
                             }
                         }
+                        Collections.reverse(postsQA);
+                        Collections.reverse(postsShareKnowledge);
                         postsQAAdapter.notifyDataSetChanged();
                         postsShareKnowledgeAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void findByForum() {
+    private void getPostByForumId() {
         FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                .orderByChild("status").equalTo(STATUS_ENABLE)
                 .orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dsPost) {
+                        postsQA.clear();
+                        postsShareKnowledge.clear();
                         tvTotalPostForum.setText("(" + dsPost.getChildrenCount() + ")");
                         for (DataSnapshot dataSnapshot : dsPost.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
-                            if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)) {
-                                if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
-                                    postsQA.add(post);
-                                }
-                                if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
-                                    postsShareKnowledge.add(post);
-                                }
+                            if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
+                                postsQA.add(post);
+                            }
+                            if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
+                                postsShareKnowledge.add(post);
                             }
                         }
+                        Collections.reverse(postsQA);
+                        Collections.reverse(postsShareKnowledge);
                         postsQAAdapter.notifyDataSetChanged();
                         postsShareKnowledgeAdapter.notifyDataSetChanged();
                     }
@@ -172,11 +180,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
         if (forum != null && forum.getForumId() != 0) {
             postsQA.clear();
             postsShareKnowledge.clear();
-            findByForum();
+            getPostByForumId();
         } else if (forum != null && forum.getForumId() == 0)
-            findAll();
+            getAllPost();
         else
-            findAll();
+            getAllPost();
     }
 
     @Override

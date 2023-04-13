@@ -2,6 +2,7 @@ package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Until.formatTime;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,30 +35,23 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
-import com.tuplv.dforum.until.Until;
 
 import java.util.List;
 import java.util.Objects;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
-    private final Context context;
-    private final int layout;
+    Context context;
+    int layout;
     OnCommentClickListener listener;
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final Account[] account = new Account[1];
-    private final List<Comment> comments;
+    Account[] account = new Account[1];
+    List<Comment> comments;
 
     public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments) {
         this.context = context;
         this.layout = layout;
         this.listener = listener;
-        this.comments = comments;
-    }
-
-    public CommentAdapter(Context context, int layout, List<Comment> comments) {
-        this.context = context;
-        this.layout = layout;
         this.comments = comments;
     }
 
@@ -111,7 +104,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         });
 
         //format thời gian
-        holder.tvTimeComment.setText(Until.formatTime(comment.getCommentId()));
+        holder.tvTimeComment.setText(formatTime(comment.getCommentId()));
 
         View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
             @Override
@@ -126,10 +119,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        if (comments != null) {
+        if (comments != null)
             return comments.size();
-        }
-
         return 0;
     }
 
@@ -137,7 +128,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         TextView tvNameCommentator, tvTimeComment, tvContentComment;
         ImageView imvAvatar;
         Button btnReadMore;
-        LinearLayout llItemComment;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,7 +135,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tvTimeComment = itemView.findViewById(R.id.tvTimeComment);
             tvContentComment = itemView.findViewById(R.id.tvContentComment);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
-
             btnReadMore = itemView.findViewById(R.id.btn_read_more);
         }
     }
@@ -177,7 +166,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         break;
                     case R.id.mnuEditComment:
                         listener.goToActivityUpdate(comment, avatarUri);
-                        Toast.makeText(context, "Chỉnh sửa bình luận", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.mnuCopyComment:
                         copyCommentToClipboard(comment.getContent());

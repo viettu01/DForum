@@ -109,9 +109,9 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Sửa forum thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật forum thành công", Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Sửa forum thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật forum thất bại", Toast.LENGTH_SHORT).show();
                         pbForum.setVisibility(View.GONE);
                     }
                 });

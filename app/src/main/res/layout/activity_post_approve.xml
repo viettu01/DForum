@@ -14,7 +14,7 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/ic_arrow_back_white_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/kiem_duyet_bai_dang"
+        app:title="@string/kiem_duyet_bai_viet"
         app:titleTextColor="@android:color/white" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -10,9 +10,9 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import com.tuplv.dforum.activity.post.PostApproveActivity;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.forum.ListForumActivity;
+import com.tuplv.dforum.activity.post.PostApproveActivity;
 
 public class AdminFragment extends Fragment implements View.OnClickListener {
 
@@ -31,7 +31,7 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init(View view) {
-        btnPostsApprove = view.findViewById(R.id.btnPostsApprove);
+        btnPostsApprove = view.findViewById(R.id.btnPostApprove);
         btnShowListForum = view.findViewById(R.id.btnShowListForum);
     }
 
@@ -39,7 +39,7 @@ public class AdminFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnPostsApprove:
+            case R.id.btnPostApprove:
                 startActivity(new Intent(getActivity(), PostApproveActivity.class));
                 break;
             case R.id.btnShowListForum:
