@@ -8,6 +8,7 @@ import static com.tuplv.dforum.until.Until.formatTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
         Notify notify = notifies.get(position);
         if (notify.getStatus().equals(STATUS_ENABLE)) {
             holder.imvNotify.setVisibility(View.GONE);
+            holder.llNotify.setBackgroundColor(Color.WHITE);
         }
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
                 .addValueEventListener(new ValueEventListener() {
@@ -114,13 +116,14 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout llItemListNotify;
+        LinearLayout llItemListNotify, llNotify;
         ImageView imvAvatar, imvNotify;
         TextView tvContentNotify, tvDateNotify;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             llItemListNotify = itemView.findViewById(R.id.llItemListNotify);
+            llNotify = itemView.findViewById(R.id.llNotify);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
             imvNotify = itemView.findViewById(R.id.imvNotify);
             tvContentNotify = itemView.findViewById(R.id.tvContentNotify);

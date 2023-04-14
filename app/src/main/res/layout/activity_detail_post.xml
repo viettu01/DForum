@@ -25,7 +25,7 @@
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/svViewPosts"
             android:paddingTop="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -98,13 +98,13 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/gray_color" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_35sdp"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/_35sdp"/>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
             android:id="@+id/ll_comment"
