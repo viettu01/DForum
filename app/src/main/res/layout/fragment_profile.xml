@@ -27,25 +27,44 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_17sdp"
                     android:layout_marginTop="@dimen/_17sdp"
+                    android:layout_marginEnd="@dimen/_17sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imvAvatar"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_95sdp"
-                        android:layout_gravity="start"
-                        android:layout_weight="3"
-                        android:src="@drawable/no_avatar"
-                        app:civ_border_color="@color/gray_color"
-                        app:civ_border_width="2dp" />
+                    <RelativeLayout
+                        android:layout_marginEnd="@dimen/_17sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imvAvatar"
+                            android:layout_width="@dimen/_95sdp"
+                            android:layout_height="@dimen/_95sdp"
+                            android:src="@drawable/no_avatar"
+                            app:civ_border_color="@color/gray_color"
+                            app:civ_border_width="2dp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imvSetting"
+                            android:layout_alignEnd="@id/imvAvatar"
+                            android:layout_alignBottom="@id/imvAvatar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_dot_red_24"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            app:civ_border_color="@color/white"
+                            app:civ_border_width="2dp" />
+
+                    </RelativeLayout>
+
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:layout_weight="4"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -189,8 +208,8 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="4"
-                        android:letterSpacing="0.02"
                         android:backgroundTint="@color/gray"
+                        android:letterSpacing="0.02"
                         android:text="Đăng xuất"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
