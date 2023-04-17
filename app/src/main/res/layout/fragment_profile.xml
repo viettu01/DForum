@@ -183,37 +183,26 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnEditName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_3sdp"
-                        android:layout_weight="8"
-                        android:text="Chỉnh sửa thông tin"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/_11sdp"
-                        android:textStyle="bold" />
-
-                    <Button
                         android:id="@+id/btnLogout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="4"
-                        android:backgroundTint="#E1DEDE"
+                        android:letterSpacing="0.02"
+                        android:backgroundTint="@color/gray"
                         android:text="Đăng xuất"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp"
+                        android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@color/gray_color" />
 

@@ -7,7 +7,6 @@ public class Account implements Serializable {
     private String nickName;
     private String avatarUri;
     private String email;
-    private String password;
     private String role;
     private String status;
     private long createdDate;
@@ -15,12 +14,11 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(String accountId, String nickName, String avatarUri, String email, String password, String role, String status, long createdDate) {
+    public Account(String accountId, String nickName, String avatarUri, String email, String role, String status, long createdDate) {
         this.accountId = accountId;
         this.nickName = nickName;
         this.avatarUri = avatarUri;
         this.email = email;
-        this.password = password;
         this.role = role;
         this.status = status;
         this.createdDate = createdDate;
@@ -56,14 +54,6 @@ public class Account implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getRole() {

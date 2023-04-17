@@ -50,8 +50,6 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
     //firebase realtime
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
-    private Uri uri;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

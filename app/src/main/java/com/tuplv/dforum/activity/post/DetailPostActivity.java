@@ -60,7 +60,6 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     RecyclerView rvComment;
     EditText edtComment;
     ImageView imvAvatar, imvSendComment;
-    LinearLayout ll_comment;
     CommentAdapter commentAdapter;
     List<Comment> comments;
 
@@ -73,9 +72,6 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_post);
         init();
-
-        if (user == null)
-            ll_comment.setVisibility(View.GONE);
 
         getDetailPost();
         getAllComment();
@@ -91,8 +87,12 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             @Override
             public void onClick(View view) {
                 closeKeyBoard();
-                addComment();
-                edtComment.setText("");
+                if (user == null)
+                    Toast.makeText(DetailPostActivity.this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
+                else{
+                    addComment();
+                    edtComment.setText("");
+                }
             }
         });
     }
@@ -109,7 +109,6 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
 
         edtComment = findViewById(R.id.edtComment);
         imvSendComment = findViewById(R.id.imvSendComment);
-        ll_comment = findViewById(R.id.ll_comment);
 
         post = (Post) getIntent().getSerializableExtra("post");
     }

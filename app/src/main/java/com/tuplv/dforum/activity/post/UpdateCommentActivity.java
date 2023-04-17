@@ -59,6 +59,7 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
         btnUpdateComment = findViewById(R.id.btnUpdateComment);
         edtContentComment = findViewById(R.id.edtContentComment);
         tbUpdateComment = findViewById(R.id.tbUpdateComment);
+        setSupportActionBar(tbUpdateComment);
 
         comment = (Comment) getIntent().getSerializableExtra("comment");
 
@@ -67,8 +68,6 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
 
         btnCancel.setOnClickListener(this);
         btnUpdateComment.setOnClickListener(this);
-        tbUpdateComment = findViewById(R.id.tbUpdateProfile);
-        setSupportActionBar(tbUpdateComment);
     }
 
     private void updateComment() {
