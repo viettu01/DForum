@@ -62,5 +62,7 @@
     <string name="xoa_thong_bao_nay">Xoá thông báo này</string>
     <string name="danh_dau_tat_ca_la_da_doc">Đánh dấu tất cả là đã đọc</string>
     <string name="developer_forum">Developer Forum</string>
+    <string name="bai_viet">Bài viết</string>
+    <string name="loc">Lọc</string>
 
 </resources>

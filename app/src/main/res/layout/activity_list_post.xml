@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.post.ListPostActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbListPost"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationContentDescription="@string/quay_lai"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/bai_viet"
+        app:titleTextColor="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlShowListForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:backgroundTint="@color/main_color"
+            android:paddingVertical="@dimen/_5sdp"
+            tools:ignore="RtlSymmetry">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvNameForum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tat_ca"
+                    android:textSize="@dimen/_15sdp" />
+
+                <TextView
+                    android:id="@+id/tvTotalPostForum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:text="(0)"
+                    android:textSize="@dimen/_15sdp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imvShowMoreForum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/xem_them"
+                android:src="@drawable/ic_arrow_right_white_30" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvDesForum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:maxLines="3"
+            android:text="@string/mo_ta_dien_dan"
+            android:textSize="@dimen/_12sdp" />
+
+        <ImageView
+            android:id="@+id/imvFilterPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/loc"
+            android:src="@drawable/ic_tune_black_30" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvListPost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_15sdp" />
+    </LinearLayout>
+
+</LinearLayout>
