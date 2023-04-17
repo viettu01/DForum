@@ -124,7 +124,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
 
     private void getPostByForumId() {
         FirebaseDatabase.getInstance().getReference(OBJ_POST)
-                .orderByChild("status").equalTo(STATUS_ENABLE)
                 .orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
                 .addValueEventListener(new ValueEventListener() {
                     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
@@ -135,11 +134,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
                         tvTotalPostForum.setText("(" + dsPost.getChildrenCount() + ")");
                         for (DataSnapshot dataSnapshot : dsPost.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
-                            if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
-                                postsQA.add(post);
-                            }
-                            if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
-                                postsShareKnowledge.add(post);
+                            if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)) {
+                                if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
+                                    postsQA.add(post);
+                                }
+                                if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
+                                    postsShareKnowledge.add(post);
+                                }
                             }
                         }
                         Collections.reverse(postsQA);

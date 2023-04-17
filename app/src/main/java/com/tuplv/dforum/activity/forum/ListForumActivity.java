@@ -138,12 +138,12 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
         forumAdapter = new ForumAdapter(ListForumActivity.this, R.layout.item_forum, forums, this);
         rvListForum.setAdapter(forumAdapter);
         rvListForum.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        forums.add(new Forum(0, "Tất cả", ""));
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dsForum) {
                 forums.clear();
+                forums.add(new Forum(0, "Tất cả", ""));
                 for (DataSnapshot dataSnapshot : dsForum.getChildren()) {
                     Forum forum = dataSnapshot.getValue(Forum.class);
                     forums.add(forum);
