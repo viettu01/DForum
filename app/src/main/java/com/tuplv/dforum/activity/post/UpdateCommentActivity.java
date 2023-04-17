@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -24,9 +25,10 @@ import java.util.Objects;
 
 public class UpdateCommentActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView imvAvatar, imvCancel;
+    ImageView imvAvatar;
     Button btnCancel, btnUpdateComment;
     EditText edtContentComment;
+    Toolbar tbUpdateComment;
     Comment comment;
     String postId, avatarUri;
 
@@ -42,14 +44,21 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
         } else
             Picasso.get().load(Uri.parse(avatarUri)).into(imvAvatar);
         Objects.requireNonNull(edtContentComment).setText(comment.getContent());
+
+        tbUpdateComment.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void init() {
         imvAvatar = findViewById(R.id.imvAvatar);
-        imvCancel = findViewById(R.id.imvCancel);
         btnCancel = findViewById(R.id.btnCancel);
         btnUpdateComment = findViewById(R.id.btnUpdateComment);
         edtContentComment = findViewById(R.id.edtContentComment);
+        tbUpdateComment = findViewById(R.id.tbUpdateComment);
 
         comment = (Comment) getIntent().getSerializableExtra("comment");
 
@@ -58,7 +67,8 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
 
         btnCancel.setOnClickListener(this);
         btnUpdateComment.setOnClickListener(this);
-        imvCancel.setOnClickListener(this);
+        tbUpdateComment = findViewById(R.id.tbUpdateProfile);
+        setSupportActionBar(tbUpdateComment);
     }
 
     private void updateComment() {
@@ -78,7 +88,6 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imvCancel:
             case R.id.btnCancel:
                 finish();
                 break;

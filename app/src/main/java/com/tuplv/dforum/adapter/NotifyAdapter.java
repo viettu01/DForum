@@ -62,7 +62,6 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notify notify = notifies.get(position);
         if (notify.getStatus().equals(STATUS_ENABLE)) {
-            holder.imvNotify.setVisibility(View.GONE);
             holder.llNotify.setBackgroundColor(Color.WHITE);
         }
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
@@ -117,7 +116,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
 
     class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout llItemListNotify, llNotify;
-        ImageView imvAvatar, imvNotify;
+        ImageView imvAvatar;
         TextView tvContentNotify, tvDateNotify;
 
         public ViewHolder(@NonNull View itemView) {
@@ -125,7 +124,6 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
             llItemListNotify = itemView.findViewById(R.id.llItemListNotify);
             llNotify = itemView.findViewById(R.id.llNotify);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
-            imvNotify = itemView.findViewById(R.id.imvNotify);
             tvContentNotify = itemView.findViewById(R.id.tvContentNotify);
             tvDateNotify = itemView.findViewById(R.id.tvDateNotify);
         }

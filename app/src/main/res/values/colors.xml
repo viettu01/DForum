@@ -28,4 +28,7 @@
     <!--    background comment, button cancel-->
     <color name="gray">#f1f2f6</color>
 
+    <!--    background linlear, notify-->
+    <color name="bg_notify">#e7f3ff</color>
+
 </resources>

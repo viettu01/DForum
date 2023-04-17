@@ -100,18 +100,33 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvNickName"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_17sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_17sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:singleLine="true"
-                    android:textAlignment="textStart"
-                    android:textSize="@dimen/_18sdp"
-                    android:textStyle="bold" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvNickName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="11"
+                        android:singleLine="true"
+                        android:textAlignment="textStart"
+                        android:textSize="@dimen/_18sdp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imvUpdateName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_edit_24" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -168,7 +183,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnEditProfile"
+                        android:id="@+id/btnEditName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
@@ -212,12 +227,13 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvMyPost"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_10sdp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMyPost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

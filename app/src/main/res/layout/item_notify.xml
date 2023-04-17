@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llItemListNotify"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp"
     android:background="@drawable/custom_background_item_posts"
     android:elevation="@dimen/_2sdp"
     android:orientation="horizontal">
@@ -12,8 +12,8 @@
         android:id="@+id/llNotify"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_5sdp"
-        android:background="@color/gray"
+        android:padding="@dimen/_10sdp"
+        android:background="@color/bg_notify"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -35,7 +35,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:maxLines="3" />
+                android:textSize="@dimen/_13sdp"
+                android:maxLines="3"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/tvDateNotify"
@@ -43,15 +45,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:maxLines="1"
+                android:textStyle="bold"
+                android:textColor="@color/gray_color_icon_profile"
                 android:text="12/12/1212" />
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imvNotify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_dot_red_24" />
+            android:layout_marginEnd="@dimen/_1sdp"
+            android:src="@drawable/ic_more_horiz_24" />
     </LinearLayout>
 
 </LinearLayout>

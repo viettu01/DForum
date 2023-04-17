@@ -47,7 +47,7 @@ import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.account.LoginActivity;
 import com.tuplv.dforum.activity.account.ShowAvatarActivity;
-import com.tuplv.dforum.activity.account.UpdateProfileActivity;
+import com.tuplv.dforum.activity.account.UpdateNameActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
@@ -63,9 +63,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, OnPostClickListener {
-    Button btnLogout, btnEditProfile;
+    Button btnLogout;
     TextView tvNickName, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment;
-    ImageView imvAvatar;
+    ImageView imvAvatar, imvUpdateName;
     RecyclerView rvMyPost;
     List<Post> myPost;
     PostAdapter myPostAdapter;
@@ -93,8 +93,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
 
-        btnEditProfile = view.findViewById(R.id.btnEditProfile);
-        btnEditProfile.setOnClickListener(this);
+        imvUpdateName = view.findViewById(R.id.imvUpdateName);
+        imvUpdateName.setOnClickListener(this);
 
         tvNickName = view.findViewById(R.id.tvNickName);
 
@@ -331,9 +331,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                 requireContext().deleteSharedPreferences("account");
                 requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
                 break;
-            case R.id.btnEditProfile:
-                Intent intent = new Intent(getActivity(), UpdateProfileActivity.class);
-                intent.putExtra("account", account);
+            case R.id.imvUpdateName:
+                Intent intent = new Intent(getActivity(), UpdateNameActivity.class);
+                intent.putExtra("name", account.getNickName());
                 startActivity(intent);
                 break;
             case R.id.imvAvatar:

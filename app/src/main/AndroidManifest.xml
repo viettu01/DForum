@@ -33,7 +33,7 @@
             android:name=".activity.account.ShowAvatarActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.account.UpdateProfileActivity"
+            android:name=".activity.account.UpdateNameActivity"
             android:exported="false" />
         <activity
             android:name=".activity.main.StartActivity"

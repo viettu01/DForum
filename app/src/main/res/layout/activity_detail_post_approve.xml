@@ -99,26 +99,34 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnPostApprove"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="@drawable/edit_text_radius_5"
-               android:text="@string/duyet_bai_dang"
-                android:paddingStart="@dimen/_10sdp"
-                tools:ignore="RtlSymmetry" />
-            <Button
                 android:id="@+id/btnNoPostApprove"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@drawable/edit_text_radius_5"
-                android:text="Không duyệt bài"
-                android:paddingStart="@dimen/_10sdp"
-                tools:ignore="RtlSymmetry" />
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:backgroundTint="@color/gray"
+                android:letterSpacing="0.02"
+                android:text="@string/khong_duyet_bai_dang"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp"
+                android:elevation="@dimen/_10sdp"
+                android:translationZ="@dimen/_3sdp"
+                android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/btnPostApprove"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:letterSpacing="0.02"
+                android:layout_weight="1"
+                android:text="@string/duyet_bai_dang"
+                android:textAllCaps="false"
+                android:elevation="@dimen/_10sdp"
+                android:translationZ="@dimen/_3sdp"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

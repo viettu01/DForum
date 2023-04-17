@@ -34,7 +34,7 @@
     <string name="tieu_de_bai_viet_">Tiêu đề bài viết?</string>
     <string name="dang">Đăng</string>
     <string name="dang_bai">Đăng bài</string>
-    <string name="edit_profile">Chỉnh sửa thông tin cá nhân</string>
+    <string name="edit_name">Chỉnh sửa tên</string>
     <string name="chinh_sua">Chỉnh sửa</string>
     <string name="anh_dai_dien">Ảnh đại diện</string>
     <string name="nick_name">Tên hiển thị</string>
@@ -49,11 +49,14 @@
     <string name="remove_avatar">Gỡ ảnh đại diện</string>
     <string name="posts">Bài viết công khai</string>
     <string name="kiem_duyet_toan_bo">Kiểm duyệt toàn bộ</string>
-    <string name="duyet_bai_dang">Duyệt bài đăng</string>
-    <string name="khong_duyet_bai_dang">Không duyệt bài đăng</string>
+    <string name="duyet_bai_dang">Duyệt bài</string>
+    <string name="khong_duyet_bai_dang">Không duyệt</string>
     <string name="update">Cập nhật</string>
     <string name="cancel">Hủy</string>
     <string name="edit">Chỉnh sửa</string>
     <string name="tai_anh">Tải ảnh</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="confirm_password">Nhập lại mật khẩu</string>
 
 </resources>

@@ -156,7 +156,11 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            task.isSuccessful();
+                            if(task.isSuccessful()){
+                                Toast.makeText(DetailPostActivity.this, "Bình luận thành công!", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                Toast.makeText(DetailPostActivity.this, "Có lỗi xảy ra, thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
 

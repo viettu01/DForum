@@ -13,32 +13,32 @@
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         app:srcCompat="@drawable/ic_arrow_back_white_24" />
 
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:layout_below="@+id/ic_back_arrow_register"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/logo_white" />
 
     <TextView
         android:id="@+id/app_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold"
-        android:textAlignment="center"
+        android:layout_below="@+id/app_logo"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginBottom="@dimen/_15sdp"
-        android:layout_below="@+id/app_logo"
-        android:text="Đăng ký tài khoản DForum" />
+        android:text="Đăng ký tài khoản DForum"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/linear_register"
@@ -49,29 +49,11 @@
         android:orientation="vertical"
         android:padding="@dimen/_16sdp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textSize="@dimen/_13sdp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" *"
-                android:textColor="@color/error_color"
-                android:textSize="@dimen/_13sdp" />
-        </LinearLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/email"
             app:endIconMode="clear_text">
 
             <EditText
@@ -92,30 +74,12 @@
             android:textColor="@color/error_color"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mật khẩu"
-                android:textSize="@dimen/_13sdp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" *"
-                android:textColor="@color/error_color"
-                android:textSize="@dimen/_13sdp" />
-        </LinearLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="@string/password"
             app:passwordToggleEnabled="true">
 
             <EditText
@@ -137,30 +101,12 @@
             android:textColor="@color/error_color"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nhập lại mật khẩu"
-                android:textSize="@dimen/_13sdp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" *"
-                android:textColor="@color/error_color"
-                android:textSize="@dimen/_13sdp" />
-        </LinearLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="@string/confirm_password"
             app:passwordToggleEnabled="true">
 
             <EditText

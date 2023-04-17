@@ -14,13 +14,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_15sdp"
         android:background="@drawable/button_radius_10"
-        android:text="@string/kiem_duyet_bai_viet" />
+        android:elevation="@dimen/_10sdp"
+        android:letterSpacing="0.02"
+        android:text="@string/kiem_duyet_bai_viet"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        android:translationZ="@dimen/_3sdp" />
 
     <Button
         android:id="@+id/btnShowListForum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_radius_10"
-        android:text="@string/danh_sach_dien_dan" />
+        android:elevation="@dimen/_10sdp"
+        android:letterSpacing="0.02"
+        android:text="@string/danh_sach_dien_dan"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        android:translationZ="@dimen/_3sdp" />
 
 </LinearLayout>
