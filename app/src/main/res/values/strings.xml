@@ -62,7 +62,10 @@
     <string name="xoa_thong_bao_nay">Xoá thông báo này</string>
     <string name="danh_dau_tat_ca_la_da_doc">Đánh dấu tất cả là đã đọc</string>
     <string name="developer_forum">Developer Forum</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="remove_account">Xóa tài khoản</string>
+    <string name="rename">Chỉnh sửa tên</string>
+    <string name="lock_account">Khóa tài khoản</string>
     <string name="bai_viet">Bài viết</string>
     <string name="loc">Lọc</string>
-
 </resources>

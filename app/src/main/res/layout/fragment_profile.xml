@@ -33,10 +33,10 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_marginEnd="@dimen/_17sdp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_17sdp">
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/imvAvatar"
@@ -44,22 +44,27 @@
                             android:layout_height="@dimen/_95sdp"
                             android:src="@drawable/no_avatar"
                             app:civ_border_color="@color/gray_color"
-                            app:civ_border_width="2dp" />
+                            app:civ_border_width="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/imvSetting"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
                             android:layout_alignEnd="@id/imvAvatar"
                             android:layout_alignBottom="@id/imvAvatar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_dot_red_24"
-                            android:layout_marginEnd="@dimen/_7sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:src="@drawable/round_settings_24"
                             app:civ_border_color="@color/white"
-                            app:civ_border_width="2dp" />
+                            app:civ_circle_background_color="@color/white"
+                            app:civ_border_width="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
 
-                    </RelativeLayout>
-
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
