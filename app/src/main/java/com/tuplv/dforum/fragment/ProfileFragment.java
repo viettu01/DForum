@@ -30,9 +30,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -83,6 +87,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
 
         init(view);
 
+        if (user != null)
+            getProfile();
+        getMyPost();
+        getTotalComment();
         return view;
     }
 
@@ -137,7 +145,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(), "Có lỗi xảy ra vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Có lỗi xảy ra, thử lại sau", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -190,11 +198,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
 
-        HashMap<String, Object> updateProfile = new HashMap<>();
+        HashMap<String, Object> updateAvatarUri = new HashMap<>();
         if (!uri.equals("null")) {
-            updateProfile.put("avatarUri", uri);
-            reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updateProfile);
-            Toast.makeText(getContext(), "Cập nhật thông tin thành công !", Toast.LENGTH_SHORT).show();
+            updateAvatarUri.put("avatarUri", uri);
+            reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updateAvatarUri);
+            getProfile();
         }
     }
 
@@ -239,19 +247,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(getContext(), "Tải ảnh lên không thành công, vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Tải ảnh lên không thành công, thử lại sau", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (user != null)
-            getProfile();
-        getMyPost();
-        getTotalComment();
     }
 
     private void getTotalComment() {
@@ -320,6 +319,43 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         intent.putExtra("post", post);
 
         startActivity(intent);
+    }
+
+    private void changePassword() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Kiểm tra mật khẩu cũ
+        assert user != null;
+        AuthCredential credential = EmailAuthProvider.getCredential(Objects.requireNonNull(user.getEmail()), "newPassword");
+
+        // Yêu cầu người dùng xác thực lại danh tính bằng mật khẩu hiện tại của họ
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Người dùng đã xác thực lại danh tính thành công
+                            // Cập nhật mật khẩu mới của người dùng
+                            user.updatePassword("123456")
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                // Mật khẩu đã được cập nhật thành công
+                                                Toast.makeText(getContext(), "Mật khẩu đã được cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                // Có lỗi xảy ra khi cập nhật mật khẩu
+                                                Toast.makeText(getContext(), "Có lỗi xảy ra khi cập nhật mật khẩu", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // Có lỗi xảy ra khi xác thực lại danh tính
+                            Toast.makeText(getContext(), "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
     }
 
     @SuppressLint("NonConstantResourceId")

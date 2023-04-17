@@ -8,6 +8,8 @@ import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +19,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ListNotifyActivity extends AppCompatActivity implements OnNotifyClickListener {
 
@@ -65,19 +70,39 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
         rvListNotify = findViewById(R.id.rvListNotify);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar_notify, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.mnuCheckAllNotify) {
+            for (Notify notify : notifies) {
+                HashMap<String, Object> updateStatus = new HashMap<>();
+                updateStatus.put("status", STATUS_ENABLE);
+                FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                        .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId()))
+                        .updateChildren(updateStatus);
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void getAllNotify() {
         if (user != null) {
             notifies = new ArrayList<>();
-            notifyAdapter = new NotifyAdapter(this, R.layout.item_notify, notifies, this);
-            rvListNotify.setAdapter(notifyAdapter);
-            rvListNotify.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
             FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid()).child(OBJ_NOTIFY)
                     .addValueEventListener(new ValueEventListener() {
                         @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dsNotify) {
+                            notifyAdapter = new NotifyAdapter(ListNotifyActivity.this, R.layout.item_notify, notifies, ListNotifyActivity.this);
+                            rvListNotify.setAdapter(notifyAdapter);
+                            rvListNotify.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
                             notifies.clear();
                             for (DataSnapshot dataSnapshot : dsNotify.getChildren()) {
                                 Notify notify = dataSnapshot.getValue(Notify.class);
@@ -92,7 +117,6 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
 
                         }
                     });
-            notifyAdapter.notifyDataSetChanged();
         }
     }
 
@@ -119,5 +143,32 @@ public class ListNotifyActivity extends AppCompatActivity implements OnNotifyCli
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(user.getUid())
                 .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId()))
                 .updateChildren(updateView);
+    }
+
+    @Override
+    public void onCheckNotify(Notify notify) {
+        HashMap<String, Object> updateStatus = new HashMap<>();
+        updateStatus.put("status", STATUS_ENABLE);
+        FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId()))
+                .updateChildren(updateStatus);
+    }
+
+    @Override
+    public void onDeleteNotify(Notify notify) {
+        FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId()))
+                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            notifies.remove(notify);
+                            notifyAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(ListNotifyActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

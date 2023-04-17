@@ -9,7 +9,10 @@ import static com.tuplv.dforum.until.Until.formatTime;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +34,6 @@ import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Notify;
 import com.tuplv.dforum.model.Post;
-import com.tuplv.dforum.until.Until;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +66,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notify notify = notifies.get(position);
         if (notify.getStatus().equals(STATUS_ENABLE)) {
-            holder.llNotify.setBackgroundColor(Color.WHITE);
+            holder.llItemListNotify.setBackgroundColor(Color.WHITE);
         }
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
                 .addValueEventListener(new ValueEventListener() {
@@ -105,6 +109,13 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                 listener.goToDetailPostActivity(notify);
             }
         });
+
+        holder.imvShowMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(holder, notify);
+            }
+        });
     }
 
     @Override
@@ -115,17 +126,50 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout llItemListNotify, llNotify;
-        ImageView imvAvatar;
+        LinearLayout llItemListNotify;
+        ImageView imvAvatar, imvShowMore;
         TextView tvContentNotify, tvDateNotify;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             llItemListNotify = itemView.findViewById(R.id.llItemListNotify);
-            llNotify = itemView.findViewById(R.id.llNotify);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
+            imvShowMore = itemView.findViewById(R.id.imvShowMore);
             tvContentNotify = itemView.findViewById(R.id.tvContentNotify);
             tvDateNotify = itemView.findViewById(R.id.tvDateNotify);
         }
+    }
+
+    @SuppressLint("RestrictedApi, NonConstantResourceId")
+    private void showPopupMenu(ViewHolder holder, Notify notify) {
+        MenuBuilder menuBuilder = new MenuBuilder(context);
+        MenuInflater menuInflater = new MenuInflater(context);
+        menuInflater.inflate(R.menu.menu_popup_item_notify, menuBuilder);
+
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, menuBuilder, holder.itemView);
+        menuPopupHelper.setGravity(Gravity.END);
+        menuPopupHelper.setForceShowIcon(true);
+
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mnuCheckNotify:
+                        listener.onCheckNotify(notify);
+                        break;
+                    case R.id.mnuDeleteNotify:
+                        listener.onDeleteNotify(notify);
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onMenuModeChange(@NonNull MenuBuilder menu) {
+
+            }
+        });
+
+        menuPopupHelper.show();
     }
 }

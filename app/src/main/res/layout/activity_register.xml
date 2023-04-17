@@ -24,7 +24,6 @@
         android:layout_below="@+id/ic_back_arrow_register"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/logo_white" />
 
     <TextView

@@ -99,7 +99,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                changePasswordFirebaseRealtime(password);
 
                                 // kiểm tra email đã xác minh hay chưa
                                 if (user != null) {
@@ -117,30 +116,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     });
         } else
             Toast.makeText(this, "Vui lòng nhập Email và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
-    }
-
-    //Đổi mật khẩu trên authentication
-    private void changePasswordFirebaseAuth(String newPassword) {
-        FirebaseUser user = mAuth.getCurrentUser();
-        assert user != null;
-        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    // Đổi mật khẩu cũ trên realtime
-    private void changePasswordFirebaseRealtime(String newPassword) {
-        FirebaseUser user = mAuth.getCurrentUser();
-        assert user != null;
-
-        HashMap<String, Object> updatePassword = new HashMap<>();
-        updatePassword.put("password", newPassword);
-        reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updatePassword);
     }
 
     // Xử lý quên mật khẩu

@@ -163,10 +163,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnPo
             case R.id.fabAddPost:
                 if (FirebaseAuth.getInstance().getCurrentUser() != null)
                     startActivity(new Intent(getActivity(), AddPostActivity.class));
-                else {
+                else
                     Toast.makeText(getActivity(), "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                }
                 break;
             case R.id.rlShowListForum:
             case R.id.imgShowMoreForum:
