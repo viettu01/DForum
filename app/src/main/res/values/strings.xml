@@ -58,5 +58,8 @@
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="confirm_password">Nhập lại mật khẩu</string>
+    <string name="danh_dau_la_da_doc">Đánh dấu là đã đọc</string>
+    <string name="xoa_thong_bao_nay">Xoá thông báo này</string>
+    <string name="danh_dau_tat_ca_la_da_doc">Đánh dấu tất cả là đã đọc</string>
 
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mnuCheckNotify"
+        android:icon="@drawable/ic_check_black_24"
+        android:title="@string/danh_dau_la_da_doc" />
+    <item
+        android:id="@+id/mnuDeleteNotify"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/xoa_thong_bao_nay" />
+</menu>

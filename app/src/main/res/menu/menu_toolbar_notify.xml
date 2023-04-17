@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mnuCheckAllNotify"
+        android:icon="@drawable/ic_checklist_white_24"
+        android:title="@string/danh_dau_tat_ca_la_da_doc"
+        app:showAsAction="always" />
+</menu>

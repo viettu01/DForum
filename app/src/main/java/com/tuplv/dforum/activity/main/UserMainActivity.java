@@ -190,7 +190,10 @@ public class UserMainActivity extends AppCompatActivity implements NavigationVie
                 });
                 break;
             case R.id.mnuNotify:
-                startActivity(new Intent(UserMainActivity.this, ListNotifyActivity.class));
+                if (FirebaseAuth.getInstance().getCurrentUser() == null)
+                    Toast.makeText(this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
+                else
+                    startActivity(new Intent(UserMainActivity.this, ListNotifyActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -1,60 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llItemListNotify"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_background_item_posts"
+    android:background="@color/bg_notify"
     android:elevation="@dimen/_2sdp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="@dimen/_10sdp">
 
-    <LinearLayout
-        android:id="@+id/llNotify"
-        android:layout_width="match_parent"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imvAvatar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:src="@drawable/no_avatar" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:padding="@dimen/_10sdp"
-        android:background="@color/bg_notify"
-        android:orientation="horizontal">
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_weight="1">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imvAvatar"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/no_avatar" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvContentNotify"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textSize="@dimen/_13sdp"
-                android:maxLines="3"
-                tools:ignore="NestedWeights" />
-
-            <TextView
-                android:id="@+id/tvDateNotify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:textColor="@color/gray_color_icon_profile"
-                android:text="12/12/1212" />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvContentNotify"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_1sdp"
-            android:src="@drawable/ic_more_horiz_24" />
-    </LinearLayout>
+            android:layout_alignParentTop="true"
+            android:maxLines="2"
+            android:textSize="@dimen/_13sdp" />
 
+        <TextView
+            android:id="@+id/tvDateNotify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:maxLines="1"
+            android:text="12/12/1212"
+            android:textColor="@color/gray_color_icon_profile"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imvShowMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_1sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:src="@drawable/ic_more_horiz_24" />
 </LinearLayout>
