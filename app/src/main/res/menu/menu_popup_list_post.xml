@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mnuDeleteFilter"
+        android:title="@string/xoa_bo_loc" />
+    <item
+        android:id="@+id/mnuFilterQA"
+        android:title="@string/hoi_dap" />
+    <item
+        android:id="@+id/mnuFilterShareKnowledge"
+        android:title="@string/chia_se_kien_thuc" />
+</menu>

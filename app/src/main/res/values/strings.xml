@@ -80,4 +80,5 @@
     <string name="admin_dien_dan">Admin diễn đàn</string>
     <string name="cac_dien_dan_moi">Các diễn đàn mới</string>
     <string name="dien_dan_chua_co_bai_viet_nao">Diễn đàn chưa có bài viết nào</string>
+    <string name="xoa_bo_loc">Xóa bộ lọc</string>
 </resources>

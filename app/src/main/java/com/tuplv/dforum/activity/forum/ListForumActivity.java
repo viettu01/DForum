@@ -153,7 +153,6 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ListForumActivity.this, "Fail", Toast.LENGTH_SHORT).show();
             }
         });
     }
