@@ -1,8 +1,14 @@
 package com.tuplv.dforum.activity.forum;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +22,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Forum;
+import com.tuplv.dforum.model.Notify;
+import com.tuplv.dforum.model.Post;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class AddAndUpdateForumActivity extends AppCompatActivity {
 
@@ -29,6 +40,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     ProgressBar pbForum;
     Toolbar tbAddNewForum;
     Forum forum;
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -69,7 +69,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="error email"
             android:textColor="@color/error_color"
             android:visibility="gone" />
 
@@ -96,7 +95,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="error password"
             android:textColor="@color/error_color"
             android:visibility="gone" />
 
@@ -123,7 +121,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="error confirm password"
             android:textColor="@color/error_color"
             android:visibility="gone" />
 
@@ -133,9 +130,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/button_radius_10"
-            android:text="Đăng ký tài khoản"
+            android:text="@string/register"
+            android:textStyle="bold"
+            android:letterSpacing="0.02"
             android:textAllCaps="false"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_15sdp" />
     </LinearLayout>
 
 </RelativeLayout>

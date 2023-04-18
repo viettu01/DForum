@@ -58,7 +58,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(layout, parent, false);
 
-        return new NotifyAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @SuppressLint("SimpleDateFormat, SetTextI18n")
@@ -86,13 +86,13 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId()))
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId())).child("title")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Post post = snapshot.getValue(Post.class);
-                            holder.tvContentNotify.setText(holder.tvContentNotify.getText() + Objects.requireNonNull(post).getTitle());
+                            String title = snapshot.getValue(String.class);
+                            holder.tvContentNotify.setText(holder.tvContentNotify.getText() + title);
                         }
                     }
 
@@ -125,7 +125,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
         return 0;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout llItemListNotify;
         ImageView imvAvatar, imvShowMore;
         TextView tvContentNotify, tvDateNotify;

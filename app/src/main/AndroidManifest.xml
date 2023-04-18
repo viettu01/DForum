@@ -18,6 +18,9 @@
         android:theme="@style/Theme.DForum"
         tools:targetApi="31">
         <activity
+            android:name=".activity.account.UpdatePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.post.ListPostActivity"
             android:exported="false" />
         <activity
@@ -55,7 +58,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.account.LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.post.AddPostActivity"
             android:exported="false" />

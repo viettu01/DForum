@@ -68,4 +68,11 @@
     <string name="lock_account">Khóa tài khoản</string>
     <string name="bai_viet">Bài viết</string>
     <string name="loc">Lọc</string>
+    <string name="updatePassword">Đổi mật khẩu</string>
+    <string name="confirmNewPassword">Nhập lại mật khẩu mới</string>
+    <string name="newPassword">Mật khẩu mới</string>
+    <string name="oldPassword">Mật khẩu cũ</string>
+    <string name="noPost">Bạn chưa có bài viết nào trên diên đàn</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký tài khoản</string>
 </resources>
