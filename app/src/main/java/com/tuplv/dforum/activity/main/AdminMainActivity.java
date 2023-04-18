@@ -65,36 +65,6 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
 
         init();
         setSupportActionBar(tbMain);
-    }
-
-    private void init() {
-        tbMain = findViewById(R.id.tbMain);
-        viewPager = findViewById(R.id.viewPager);
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
-        rvSearchPost = findViewById(R.id.rvSearchPost);
-        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
-
-        posts = new ArrayList<>();
-        postsSearch = new ArrayList<>();
-    }
-
-    @Override
-    public void onBackPressed() {
-        Toast outToast = Toast.makeText(AdminMainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
-        if (outApp + 2000 > System.currentTimeMillis()) {
-            outToast.cancel();
-            super.onBackPressed();
-            return;
-        } else {
-            outToast.show();
-        }
-        outApp = System.currentTimeMillis();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        changeNotify();
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(adapter);
@@ -125,6 +95,36 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
             }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
+    }
+
+    private void init() {
+        tbMain = findViewById(R.id.tbMain);
+        viewPager = findViewById(R.id.viewPager);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        rvSearchPost = findViewById(R.id.rvSearchPost);
+        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+
+        posts = new ArrayList<>();
+        postsSearch = new ArrayList<>();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast outToast = Toast.makeText(AdminMainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
+        if (outApp + 2000 > System.currentTimeMillis()) {
+            outToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            outToast.show();
+        }
+        outApp = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeNotify();
     }
 
     @Override
