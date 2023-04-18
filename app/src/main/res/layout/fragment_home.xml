@@ -1,124 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="@dimen/_10sdp"
     tools:context=".fragment.HomeFragment">
 
-    <RelativeLayout
-        android:id="@+id/rlShowListForum"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_radius_10"
-        android:backgroundTint="@color/main_color"
-        android:paddingVertical="@dimen/_5sdp"
-        tools:ignore="RtlSymmetry">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tvNameForum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tat_ca"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp" />
-
-            <TextView
-                android:id="@+id/tvTotalPostForum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_3sdp"
-                android:text="(0)"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imgShowMoreForum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/xem_them"
-            android:src="@drawable/ic_arrow_right_white_30" />
-    </RelativeLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rlShowListForum"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/rlShowListForum"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_250sdp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/main_color"
+                android:paddingVertical="@dimen/_5sdp"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hoi_dap"
-                    android:textSize="@dimen/_15sdp" />
+                    android:text="@string/cac_dien_dan_moi"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvQA"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@color/gray_color" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_250sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/imvShowMoreForum"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chia_se_kien_thuc"
-                    android:textSize="@dimen/_15sdp" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/xem_them"
+                    android:src="@drawable/ic_arrow_right_white_30" />
+            </RelativeLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvShareKnowledge"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvListForumFeatured"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/noi_quy_dien_dan"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRulesContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/_3sdp"
+                android:text="1. Tôn trọng các thành viên: Điều này bao gồm việc không sử dụng ngôn ngữ thô tục hoặc xúc phạm bất kỳ thành viên nào trong diễn đàn. \n2. Không spam: Không được quảng cáo hay chia sẻ các nội dung không liên quan đến lập trình trên diễn đàn. Nếu bạn muốn quảng cáo sản phẩm hay dịch vụ của mình, hãy liên hệ với quản trị viên diễn đàn để biết thêm chi tiết."
+                android:textColor="@color/gray_color_icon_profile"
+                android:textSize="@dimen/_13sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/admin_dien_dan"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAdminForum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/_3sdp"
+                android:text="Nguyễn Văn Mạnh - manhnv291201@gmail.com \nNguyễn Thị Lê - nguyenthile050801@gmail.com \nPhạm Lê Việt Tú - tupham1120@gmail.com"
+                android:textColor="@color/gray_color_icon_profile"
+                android:textSize="@dimen/_12sdp" />
         </LinearLayout>
-    </ScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/main_color"
-        android:src="@drawable/ic_add_black_24"
-        app:elevation="0dp"
-        app:maxImageSize="@dimen/_22sdp"
-        app:tint="@color/white"
-        tools:ignore="ContentDescription,RelativeOverlap" />
-
-</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -75,4 +75,9 @@
     <string name="noPost">Bạn chưa có bài viết nào trên diên đàn</string>
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng ký tài khoản</string>
+    <string name="cac_dien_dan_noi_bat">Các diễn đàn nổi bật</string>
+    <string name="noi_quy_dien_dan">Nội quy diễn đàn</string>
+    <string name="admin_dien_dan">Admin diễn đàn</string>
+    <string name="cac_dien_dan_moi">Các diễn đàn mới</string>
+    <string name="dien_dan_chua_co_bai_viet_nao">Diễn đàn chưa có bài viết nào</string>
 </resources>

@@ -19,7 +19,7 @@
         android:textSize="@dimen/_14sdp" />
 
     <ImageView
-        android:id="@+id/imgShowForum"
+        android:id="@+id/imvShowForum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
