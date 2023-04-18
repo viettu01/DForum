@@ -102,6 +102,7 @@ public class UpdatePasswordActivity extends AppCompatActivity implements TextWat
                                                     if (task.isSuccessful()) {
                                                         // Mật khẩu đã được cập nhật thành công
                                                         Toast.makeText(UpdatePasswordActivity.this, "Mật khẩu đã được cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                                        finish();
                                                     } else {
                                                         // Có lỗi xảy ra khi cập nhật mật khẩu
                                                         Toast.makeText(UpdatePasswordActivity.this, "Có lỗi xảy ra khi cập nhật mật khẩu", Toast.LENGTH_SHORT).show();
