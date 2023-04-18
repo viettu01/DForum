@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -43,6 +44,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     Context context;
     int layout;
     OnCommentClickListener listener;
+    SharedPreferences sharedPreferences;
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Account[] account = new Account[1];
@@ -53,6 +55,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         this.layout = layout;
         this.listener = listener;
         this.comments = comments;
+        this.sharedPreferences = context.getSharedPreferences("account",Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -153,7 +156,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         if (!Objects.requireNonNull(mAuth.getCurrentUser()).getUid().equals(comment.getAccountId())) {
             mnuEditComment.setVisible(false);
             mnuDeleteComment.setVisible(false);
-            if (account[0].getRole().equals(ROLE_ADMIN))
+            if (sharedPreferences.getString("role","").equals(ROLE_ADMIN))
                 mnuDeleteComment.setVisible(true);
         }
 

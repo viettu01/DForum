@@ -92,7 +92,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             String title = snapshot.getValue(String.class);
-                            holder.tvContentNotify.setText(holder.tvContentNotify.getText() + title);
+                            holder.tvContentNotify.setText(holder.tvContentNotify.getText().toString() + title);
                         }
                     }
 

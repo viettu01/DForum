@@ -187,6 +187,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        // Xử lý khi người dùng nhấn nút quay lại ở đây
+        super.onBackPressed();
+        startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {

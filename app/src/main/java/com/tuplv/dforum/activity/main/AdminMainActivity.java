@@ -65,36 +65,6 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
 
         init();
         setSupportActionBar(tbMain);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
-                        break;
-                    case 2:
-                        bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
-                        break;
-                    default:
-                        bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
     }
 
     private void init() {
@@ -125,6 +95,36 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
     protected void onResume() {
         super.onResume();
         changeNotify();
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 1:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
+                        break;
+                    case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
+                        break;
+                    default:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
     }
 
     @Override
