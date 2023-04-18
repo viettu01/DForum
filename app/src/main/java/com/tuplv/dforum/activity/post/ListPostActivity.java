@@ -133,7 +133,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dsPost) {
                         posts.clear();
-                        tvTotalPostForum.setText("(" + dsPost.getChildrenCount() + ")");
                         if (dsPost.getChildrenCount() > 0) {
                             tvNoPost.setVisibility(View.GONE);
                             rvListPost.setVisibility(View.VISIBLE);
@@ -147,6 +146,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                                 posts.add(post);
                             }
                         }
+                        tvTotalPostForum.setText("(" + posts.size() + ")");
                         Collections.reverse(posts);
                         postAdapter.notifyDataSetChanged();
                     }
