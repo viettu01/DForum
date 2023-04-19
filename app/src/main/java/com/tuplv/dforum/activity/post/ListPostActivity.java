@@ -44,7 +44,7 @@ import java.util.Objects;
 public class ListPostActivity extends AppCompatActivity implements View.OnClickListener, OnPostClickListener {
 
     Toolbar tbListPost;
-    TextView tvNameForum, tvTotalPostForum, tvDesForum, tvNoPost, tvFilterPost;
+    TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost;
     ImageView imvFilterPost;
     RecyclerView rvListPost;
     FloatingActionButton fabAddPost;
@@ -80,7 +80,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         tbListPost = findViewById(R.id.tbListPost);
         setSupportActionBar(tbListPost);
         tvNameForum = findViewById(R.id.tvNameForum);
-        tvTotalPostForum = findViewById(R.id.tvTotalPostForum);
         tvDesForum = findViewById(R.id.tvDesForum);
         tvNoPost = findViewById(R.id.tvNoPost);
         tvFilterPost = findViewById(R.id.tvFilterPost);
@@ -93,7 +92,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         rvListPost.setAdapter(postAdapter);
         rvListPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         forum = (Forum) getIntent().getSerializableExtra("forum");
-        tvNameForum.setText(forum.getName());
+//        tvNameForum.setText(forum.getName());
         tvDesForum.setText(forum.getDescription());
         if (forum.getDescription().equals(""))
             tvDesForum.setVisibility(View.GONE);
@@ -133,7 +132,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                             tvNoPost.setVisibility(View.VISIBLE);
                             rvListPost.setVisibility(View.GONE);
                         }
-                        tvTotalPostForum.setText("(" + posts.size() + ")");
+                        tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
                         Collections.reverse(posts);
                         postAdapter.notifyDataSetChanged();
                     }
@@ -178,7 +177,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                             tvNoPost.setVisibility(View.VISIBLE);
                             rvListPost.setVisibility(View.GONE);
                         }
-                        tvTotalPostForum.setText("(" + posts.size() + ")");
+                        tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
                         Collections.reverse(posts);
                         postAdapter.notifyDataSetChanged();
                     }
