@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/mnuPostApprove"
-        android:icon="@drawable/ic_check_white_24"
+        android:icon="@drawable/ic_checklist_white_24"
         android:title="@string/kiem_duyet_toan_bo"
         app:showAsAction="always" />
 </menu>

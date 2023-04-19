@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -44,7 +47,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     TextView tvNameForum, tvTotalPostForum, tvDesForum, tvNoPost, tvFilterPost;
     ImageView imvFilterPost;
     RecyclerView rvListPost;
-
+    FloatingActionButton fabAddPost;
     PostAdapter postAdapter;
     List<Post> posts;
     Forum forum;
@@ -83,6 +86,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         tvFilterPost = findViewById(R.id.tvFilterPost);
         imvFilterPost = findViewById(R.id.imvFilterPost);
         rvListPost = findViewById(R.id.rvListPost);
+        fabAddPost = findViewById(R.id.fabAddPost);
 
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(this, R.layout.item_post, posts, this);
@@ -95,6 +99,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             tvDesForum.setVisibility(View.GONE);
 
         imvFilterPost.setOnClickListener(this);
+        fabAddPost.setOnClickListener(this);
     }
 
     private void getAllPost(String filter) {
@@ -188,8 +193,16 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.imvFilterPost) {
-            showPopupMenu();
+        switch (view.getId()) {
+            case R.id.imvFilterPost:
+                showPopupMenu();
+                break;
+            case R.id.fabAddPost:
+                if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                    startActivity(new Intent(this, AddPostActivity.class));
+                else
+                    Toast.makeText(this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 

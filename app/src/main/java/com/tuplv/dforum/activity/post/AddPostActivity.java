@@ -153,10 +153,10 @@ public class AddPostActivity extends AppCompatActivity {
         Post post = new Post();
         post.setPostId(new Date().getTime());
         post.setAccountId(user.getUid());
-        post.setCategoryName(spnCategory.getSelectedItem().toString());
+        post.setCategoryName(spnCategory.getSelectedItem().toString().trim());
         post.setForumId(forum.getForumId());
-        post.setTitle(edtTitlePost.getText().toString());
-        post.setContent(edtContentPost.getText().toString());
+        post.setTitle(edtTitlePost.getText().toString().trim());
+        post.setContent(edtContentPost.getText().toString().trim());
         post.setCreatedDate(new Date().getTime());
         post.setView(0);
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {

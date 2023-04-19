@@ -114,6 +114,20 @@
             android:text="@string/dien_dan_chua_co_bai_viet_nao"
             android:textColor="@color/gray_color_icon_profile"
             android:visibility="gone" />
-
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:backgroundTint="@color/main_color"
+        android:src="@drawable/ic_add_black_24"
+        app:elevation="0dp"
+        app:maxImageSize="@dimen/_22sdp"
+        app:tint="@color/white"
+        tools:ignore="ContentDescription,RelativeOverlap" />
 </RelativeLayout>
