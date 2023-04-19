@@ -52,12 +52,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         holder.tvTitlePost.setText(post.getTitle());
+        holder.tvCategoryName.setText("Chuyên mục: " + post.getCategoryName());
 
         if (layout == R.layout.item_post) {
             holder.tvView.setText(Until.formatNumber(post.getView()));
@@ -101,13 +102,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitlePost, tvView, tvApprovalDate, tvCreateDate;
+        TextView tvTitlePost, tvView, tvApprovalDate, tvCreateDate, tvCategoryName;
         LinearLayout llItemListPost, llItemListPostApprove;
         ImageView imvPostApprove, imvNoPostApprove;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitlePost = itemView.findViewById(R.id.tvTitlePost);
+            tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
             if (layout == R.layout.item_post) {
                 tvView = itemView.findViewById(R.id.tvView);
                 llItemListPost = itemView.findViewById(R.id.llItemListPost);

@@ -3,10 +3,10 @@
     android:id="@+id/llItemListPost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:layout_marginBottom="@dimen/_5sdp"
     android:layout_marginStart="@dimen/_1sdp"
+    android:layout_marginTop="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_1sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
     android:background="@drawable/custom_background_item_posts"
     android:elevation="@dimen/_2sdp"
     android:gravity="center"
@@ -29,12 +29,21 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:text="Chuyên mục:"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
             android:id="@+id/tvApprovalDate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:singleLine="true"
             android:text="10:10 10/10/1010"
-            android:textSize="@dimen/_12sdp" />
+            android:textColor="@color/gray_color_icon_profile"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 
 
