@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
+        android:singleLine="true"
         android:text="@string/tieu_de"
         android:textSize="@dimen/_14sdp" />
 

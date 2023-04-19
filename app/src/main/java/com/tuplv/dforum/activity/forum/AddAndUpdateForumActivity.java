@@ -94,9 +94,9 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm forum thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm diễn đàn thành công", Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm forum thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm diễn đàn thất bại", Toast.LENGTH_SHORT).show();
                         pbForum.setVisibility(View.GONE);
                     }
                 });
@@ -121,9 +121,9 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật forum thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật diễn đàn thành công", Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật forum thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật diễn đàn thất bại", Toast.LENGTH_SHORT).show();
                         pbForum.setVisibility(View.GONE);
                     }
                 });
