@@ -1,6 +1,9 @@
 package com.tuplv.dforum.adapter;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Until.formatTime;
 
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,8 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +43,7 @@ import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,16 +52,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     int layout;
     OnCommentClickListener listener;
     SharedPreferences sharedPreferences;
+    long postId;
+
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Account[] account = new Account[1];
     List<Comment> comments;
 
-    public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments) {
+    public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments, long postId) {
         this.context = context;
         this.layout = layout;
         this.listener = listener;
         this.comments = comments;
+        this.postId = postId;
         this.sharedPreferences = context.getSharedPreferences("account",Context.MODE_PRIVATE);
     }
 
@@ -118,6 +128,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         };
         holder.itemView.setOnLongClickListener(onLongClickListener);
         holder.tvContentComment.setOnLongClickListener(onLongClickListener);
+
+        holder.tvRepComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.edtComment != null){
+                    listener.goToActivityComment(comment, account[0].getNickName());
+                }
+            }
+        });
     }
 
     @Override
@@ -128,9 +147,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNameCommentator, tvTimeComment, tvContentComment;
+        TextView tvNameCommentator, tvTimeComment, tvContentComment, tvRepComment;
         ImageView imvAvatar;
-        Button btnReadMore;
+        EditText edtComment;
+        Button rep;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -138,7 +158,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tvTimeComment = itemView.findViewById(R.id.tvTimeComment);
             tvContentComment = itemView.findViewById(R.id.tvContentComment);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
-            btnReadMore = itemView.findViewById(R.id.btn_read_more);
+
+            tvRepComment = itemView.findViewById(R.id.tvRepComment);
         }
     }
 
@@ -176,7 +197,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 }
                 return false;
             }
-
             @Override
             public void onMenuModeChange(@NonNull MenuBuilder menu) {
 
@@ -196,4 +216,28 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Toast.makeText(context.getApplicationContext(), "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT).show();
     }
 
+    // Trả lời comment
+    private void addRepComment(EditText edtRepComment, long commentId) {
+        if (!edtRepComment.getText().toString().trim().isEmpty()) {
+            Comment repComment = new Comment();
+            repComment.setCommentId(new Date().getTime());
+            repComment.setAccountId(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+            repComment.setContent(edtRepComment.getText().toString().trim());
+
+            reference.child(OBJ_POST).child(String.valueOf(postId))
+                    .child(OBJ_COMMENT).child(String.valueOf(commentId))
+                    .child(OBJ_REP_COMMENT).child(String.valueOf(repComment.getCommentId())).setValue(repComment)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(context.getApplicationContext(), "Trả lời bình luận thành công!", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                Toast.makeText(context.getApplicationContext(), "Có lỗi xảy ra, thử lại sau!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            //sendNotifyToAuthor();
+        }
+    }
 }

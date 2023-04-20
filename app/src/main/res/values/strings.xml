@@ -40,7 +40,7 @@
     <string name="nick_name">Tên hiển thị</string>
     <string name="add">Thêm</string>
     <string name="length_story">0 / 100</string>
-    <string name="length_nickname">0 / 30</string>
+    <string name="length_nickname">0 / 25</string>
     <string name="xoa">Xóa</string>
     <string name="copy">Sao chép</string>
     <string name="quay_lai">Quay lại</string>
@@ -81,4 +81,8 @@
     <string name="cac_dien_dan_moi">Các diễn đàn mới</string>
     <string name="dien_dan_chua_co_bai_viet_nao">Diễn đàn chưa có bài viết nào</string>
     <string name="xoa_bo_loc">Xóa bộ lọc</string>
+    <string name="rep">Phản hồi</string>
+    <string name="datetime">17/03/2023 18:11</string>
+    <string name="huy">· Hủy</string>
+    <string name="reply">Đang phản hồi</string>
 </resources>

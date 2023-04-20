@@ -56,7 +56,8 @@ import java.util.Objects;
 public class DetailPostActivity extends AppCompatActivity implements OnCommentClickListener {
 
     Toolbar tbDetailPost;
-    TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPosts;
+    TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPosts, tvNameAuthorRepComment, tvCancelRepComment;
+    LinearLayout llRepComment;
     RecyclerView rvComment;
     EditText edtComment;
     ImageView imvAvatar, imvSendComment;
@@ -95,6 +96,13 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                 }
             }
         });
+
+        tvCancelRepComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llRepComment.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void init() {
@@ -109,6 +117,10 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
 
         edtComment = findViewById(R.id.edtComment);
         imvSendComment = findViewById(R.id.imvSendComment);
+
+        llRepComment = findViewById(R.id.llRepComment);
+        tvNameAuthorRepComment = findViewById(R.id.tvNameAuthorRepComment);
+        tvCancelRepComment = findViewById(R.id.tvCancelRepComment);
 
         post = (Post) getIntent().getSerializableExtra("post");
     }
@@ -200,7 +212,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     @SuppressLint("NotifyDataSetChanged")
     private void getAllComment() {
         comments = new ArrayList<>();
-        commentAdapter = new CommentAdapter(DetailPostActivity.this, R.layout.item_comment, this, comments);
+        commentAdapter = new CommentAdapter(DetailPostActivity.this, R.layout.item_comment, this, comments, post.getPostId());
         rvComment.setAdapter(commentAdapter);
         rvComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT)
@@ -266,5 +278,15 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void goToActivityComment(Comment comment, String nameAuthorRepComment) {
+        edtComment.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(edtComment, InputMethodManager.SHOW_IMPLICIT);
+
+        llRepComment.setVisibility(View.VISIBLE);
+        tvNameAuthorRepComment.setText(nameAuthorRepComment);
     }
 }
