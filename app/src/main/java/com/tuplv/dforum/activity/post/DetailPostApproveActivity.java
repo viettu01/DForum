@@ -64,7 +64,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         tvNameAuthor = findViewById(R.id.tvNameAuthor);
         tvCreatedDatePost = findViewById(R.id.tvCreatedDatePost);
         tvTitlePost = findViewById(R.id.tvTitlePost);
-        tvContentPost = findViewById(R.id.tvContentPosts);
+        tvContentPost = findViewById(R.id.tvContentPost);
         btnPostApprove = findViewById(R.id.btnPostApprove);
         btnNoPostApprove = findViewById(R.id.btnNoPostApprove);
 

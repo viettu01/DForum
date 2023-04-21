@@ -22,7 +22,10 @@ public class Constant {
     public static final String TYPE_NOTIFY_ADD_POST = "ADD_POST";
     public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT";
     public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT";
-    public static final String TYPE_NOTIFY_ADD_NEW_FORUM = "ADD_NEW_FORUM";
+    public static final String TYPE_NOTIFY_ADD_FORUM = "ADD_FORUM";
     public static final String TYPE_NOTIFY_ADD_POST_APPROVE = "ADD_POST_APPROVE";
-    public static final String TYPE_NOTIFY_POST_IS_APPROVE = "POST_IS_APPROVE";
+    public static final String TYPE_NOTIFY_NOT_APPROVE = "NOT_APPROVE";
+
+    public static final String TYPE_UPDATE_COMMENT = "UPDATE_COMMENT";
+    public static final String TYPE_UPDATE_REP_COMMENT = "UPDATE_REP_COMMENT";
 }

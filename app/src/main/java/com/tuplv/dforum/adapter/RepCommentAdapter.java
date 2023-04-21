@@ -5,12 +5,15 @@ import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_REP_COMMENT;
 import static com.tuplv.dforum.until.Until.formatTime;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -18,16 +21,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,53 +42,49 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.activity.post.UpdateCommentActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
+public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.ViewHolder> {
     Context context;
     int layout;
     OnCommentClickListener listener;
     SharedPreferences sharedPreferences;
     long postId;
+    long commentId;
 
-    RepCommentAdapter repCommentAdapter;
-    //List<Comment> repComments;
+    List<Comment> repComments;
 
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Account[] account = new Account[1];
-    List<Comment> comments;
 
-    public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments, long postId) {
+    public RepCommentAdapter(Context context, int layout, OnCommentClickListener listener, long postId, long commentId, List<Comment> repComments) {
         this.context = context;
         this.layout = layout;
         this.listener = listener;
-        this.comments = comments;
         this.postId = postId;
-        this.sharedPreferences = context.getSharedPreferences("account", Context.MODE_PRIVATE);
+        this.commentId = commentId;
+        this.repComments = repComments;
     }
-
     @NonNull
     @Override
-    public CommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RepCommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(layout, parent, false);
 
-        return new CommentAdapter.ViewHolder(view);
+        return new RepCommentAdapter.ViewHolder(view);
     }
 
     @Override
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
-    public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
-        Comment comment = comments.get(position);
+    public void onBindViewHolder(@NonNull RepCommentAdapter.ViewHolder holder, int position) {
+        Comment comment = repComments.get(position);
 
         holder.tvContentComment.setText(comment.getContent());
 
@@ -138,30 +136,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvRepComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.goToActivityComment(comment, account[0].getNickName());
+                //listener.goToActivityComment(comment, account[0].getNickName());
             }
         });
 
-        holder.tvShowRepComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getAllRepComment(holder.rvRepComment, comment.getCommentId());
-                holder.rvRepComment.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        if (comments != null)
-            return comments.size();
+        if (repComments != null)
+            return repComments.size();
         return 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNameCommentator, tvTimeComment, tvContentComment, tvRepComment, tvShowRepComment;
+        TextView tvNameCommentator, tvTimeComment, tvContentComment, tvRepComment;
         ImageView imvAvatar;
-        RecyclerView rvRepComment;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -169,16 +159,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tvTimeComment = itemView.findViewById(R.id.tvTimeComment);
             tvContentComment = itemView.findViewById(R.id.tvContentComment);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
-
             tvRepComment = itemView.findViewById(R.id.tvRepComment);
-            rvRepComment = itemView.findViewById(R.id.rvRepComment);
-
-            tvShowRepComment = itemView.findViewById(R.id.tvShowRepComment);
         }
     }
 
     @SuppressLint("RestrictedApi, NonConstantResourceId")
-    private void showPopupMenu(CommentAdapter.ViewHolder holder, Comment comment, Uri avatarUri) {
+    private void showPopupMenu(RepCommentAdapter.ViewHolder holder, Comment repComment, Uri avatarUri) {
         MenuBuilder menuBuilder = new MenuBuilder(context);
         MenuInflater menuInflater = new MenuInflater(context);
         menuInflater.inflate(R.menu.menu_popup_item_comment, menuBuilder);
@@ -188,7 +174,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         MenuItem mnuEditComment = menuBuilder.findItem(R.id.mnuEditComment);
         MenuItem mnuDeleteComment = menuBuilder.findItem(R.id.mnuDeleteComment);
 
-        if (!Objects.requireNonNull(mAuth.getCurrentUser()).getUid().equals(comment.getAccountId())) {
+        if (!Objects.requireNonNull(mAuth.getCurrentUser()).getUid().equals(repComment.getAccountId())) {
             mnuEditComment.setVisible(false);
             mnuDeleteComment.setVisible(false);
             if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
@@ -200,13 +186,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.mnuDeleteComment:
-                        listener.onDeleteClick(comment);
+                        deleteRepComment(repComment);
                         break;
                     case R.id.mnuEditComment:
-                        listener.goToActivityUpdate(comment, avatarUri);
+                        Intent intent = new Intent(context, UpdateCommentActivity.class);
+                        intent.putExtra("avatarUri", String.valueOf(avatarUri));
+                        intent.putExtra("comment", repComment);
+                        intent.putExtra("postId", String.valueOf(postId));
+                        intent.putExtra("commentId", String.valueOf(commentId));
+                        intent.putExtra("typeUpdate", TYPE_UPDATE_REP_COMMENT);
+                        context.startActivity(intent);
                         break;
                     case R.id.mnuCopyComment:
-                        copyCommentToClipboard(comment.getContent());
+                        copyRepCommentToClipboard(repComment.getContent());
                         break;
                 }
                 return false;
@@ -220,7 +212,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         menuPopupHelper.show();
     }
 
-    private void copyCommentToClipboard(String content) {
+    // Copy nội dung repComment
+    private void copyRepCommentToClipboard(String content) {
         // sao chép nội dung của bình luận vào clipboard
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("comment", content);
@@ -230,31 +223,41 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Toast.makeText(context.getApplicationContext(), "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT).show();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void getAllRepComment(RecyclerView rvRepComment, long commentId) {
-        List<Comment> repComments = new ArrayList<>();
-        repCommentAdapter = new RepCommentAdapter(context, R.layout.item_rep_comment, (OnCommentClickListener) context, postId, commentId, repComments);
-        rvRepComment.setAdapter(repCommentAdapter);
-        rvRepComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        reference.child(OBJ_POST).child(String.valueOf(postId))
-                .child(OBJ_COMMENT).child(String.valueOf(commentId))
-                .child(OBJ_REP_COMMENT)
-                .addValueEventListener(new ValueEventListener() {
+    // Xóa 1 repComment
+    public void deleteRepComment(Comment repComment) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Cảnh báo!");
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setMessage("Bạn có chắc chắn muốn xóa bình luận này?");
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                        .child(String.valueOf(postId))
+                        .child(OBJ_COMMENT)
+                        .child(String.valueOf(commentId))
+                        .child(OBJ_REP_COMMENT)
+                        .child(String.valueOf(repComment.getCommentId()));
+                databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dsRepComment) {
-                        repComments.clear();
-                        for (DataSnapshot dataSnapshot : dsRepComment.getChildren()) {
-                            Comment comment = dataSnapshot.getValue(Comment.class);
-                            repComments.add(comment);
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(context, "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
+                            repComments.remove(repComment);
+                            //commentAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(context, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                         }
-                        repCommentAdapter.notifyDataSetChanged();
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
-        repCommentAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
     }
 }

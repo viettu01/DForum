@@ -82,18 +82,18 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
                     android:text="@string/tieu_de_bai_viet"
-                    android:textSize="@dimen/_16sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvContentPosts"
+                    android:id="@+id/tvContentPost"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
                     android:text="@string/noi_dung"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                     android:paddingEnd="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_35sdp" />
+                    android:paddingBottom="@dimen/_60sdp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -144,7 +144,6 @@
                     android:id="@+id/tvNameAuthorRepComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nguyễn Văn Mạnh Nguyễn Van"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_4sdp"
                     android:textStyle="bold" />
