@@ -113,6 +113,8 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         tvCancelRepComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                closeKeyBoard();
+                edtComment.clearFocus();
                 llRepComment.setVisibility(View.GONE);
             }
         });

@@ -29,12 +29,11 @@
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            tools:ignore="RtlSymmetry">
+            android:paddingBottom="@dimen/_5sdp">
 
             <TextView
                 android:id="@+id/tvNameCommentator"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
                 android:textSize="@dimen/_12sdp"
@@ -42,17 +41,10 @@
 
             <TextView
                 android:id="@+id/tvContentComment"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="7" />
-
-            <Button
-                android:id="@+id/btn_read_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Xem thêm" />
         </LinearLayout>
 
         <LinearLayout

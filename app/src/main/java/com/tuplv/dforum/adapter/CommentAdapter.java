@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +28,6 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,14 +36,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,7 +52,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     long postId;
 
     RepCommentAdapter repCommentAdapter;
-    //List<Comment> repComments;
 
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -142,6 +135,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
+        //getCountRepComment(holder.tvShowRepComment, comment.getCommentId());
         holder.tvShowRepComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +244,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         }
                         repCommentAdapter.notifyDataSetChanged();
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
@@ -257,4 +252,68 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 });
         repCommentAdapter.notifyDataSetChanged();
     }
+
+//    @SuppressLint("NotifyDataSetChanged")
+//    private void getAllRepComment(RecyclerView rvRepComment, long commentId) {
+//        List<Comment> repComments = new ArrayList<>();
+//        repCommentAdapter = new RepCommentAdapter(context, R.layout.item_rep_comment, (OnCommentClickListener) context, postId, commentId, repComments);
+//        rvRepComment.setAdapter(repCommentAdapter);
+//        rvRepComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+//        reference.child(OBJ_POST).child(String.valueOf(postId))
+//                .child(OBJ_COMMENT).child(String.valueOf(commentId))
+//                .child(OBJ_REP_COMMENT)
+//                .addValueEventListener(new ValueEventListener() {
+//                    @SuppressLint("NotifyDataSetChanged")
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dsRepComment) {
+//                        repComments.clear();
+//                        for (DataSnapshot dataSnapshot : dsRepComment.getChildren()) {
+//                            Comment comment = dataSnapshot.getValue(Comment.class);
+//                            repComments.add(comment);
+//                        }
+//                        repCommentAdapter.notifyDataSetChanged();
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//        repCommentAdapter.notifyDataSetChanged();
+//    }
+
+    private void getCountRepComment(TextView tvShowRepComment, long commentId) {
+        reference.child(OBJ_POST).child(String.valueOf(postId))
+                .child(OBJ_COMMENT).child(String.valueOf(commentId))
+                .child(OBJ_REP_COMMENT).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        long countRepComment = dataSnapshot.getChildrenCount();
+                        if(countRepComment == 0)
+                            tvShowRepComment.setVisibility(View.GONE);
+                        else
+                            tvShowRepComment.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+    }
+
+//    public void continuousLoading() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//
+//                    try {
+//                        Thread.sleep(1000); // Dừng 1 giây trước khi thực hiện lại
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }).start();
+//    }
+
 }
