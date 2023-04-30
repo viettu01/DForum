@@ -56,7 +56,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Account[] account = new Account[1];
-    List<Comment> comments;
+    List<Comment> comments, repComments;
+    long countRepComment;
 
     public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments, long postId) {
         this.context = context;
@@ -135,12 +136,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
-        //getCountRepComment(holder.tvShowRepComment, comment.getCommentId());
+        getCountRepComment(holder.tvShowRepComment, comment.getCommentId());
+        getAllRepComment(holder.rvRepComment, comment.getCommentId());
+
         holder.tvShowRepComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getAllRepComment(holder.rvRepComment, comment.getCommentId());
-                holder.rvRepComment.setVisibility(View.VISIBLE);
+                if (holder.tvShowRepComment.getText().equals("Ẩn")) {
+                    getCountRepComment(holder.tvShowRepComment, comment.getCommentId());
+                    holder.rvRepComment.setVisibility(View.GONE);
+                } else {
+                    getAllRepComment(holder.rvRepComment, comment.getCommentId());
+                    holder.rvRepComment.setVisibility(View.VISIBLE);
+                    holder.tvShowRepComment.setText("Ẩn");
+                }
+
             }
         });
     }
@@ -226,7 +236,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @SuppressLint("NotifyDataSetChanged")
     private void getAllRepComment(RecyclerView rvRepComment, long commentId) {
-        List<Comment> repComments = new ArrayList<>();
+        repComments = new ArrayList<>();
         repCommentAdapter = new RepCommentAdapter(context, R.layout.item_rep_comment, (OnCommentClickListener) context, postId, commentId, repComments);
         rvRepComment.setAdapter(repCommentAdapter);
         rvRepComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
@@ -259,12 +269,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .child(OBJ_REP_COMMENT).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        long countRepComment = dataSnapshot.getChildrenCount();
-                        if(countRepComment == 0)
+                        countRepComment = dataSnapshot.getChildrenCount();
+                        if (countRepComment == 0)
                             tvShowRepComment.setVisibility(View.GONE);
-                        else
+                        else {
+                            tvShowRepComment.setText("Xem " + countRepComment + " phản hồi");
                             tvShowRepComment.setVisibility(View.VISIBLE);
+                        }
+
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
