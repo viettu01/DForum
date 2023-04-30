@@ -131,7 +131,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvRepComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.goToActivityComment(comment, account[0].getNickName());
+                listener.goToActivityComment(comment, holder.tvNameCommentator.getText().toString().trim());
             }
         });
 
@@ -252,35 +252,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 });
         repCommentAdapter.notifyDataSetChanged();
     }
-
-//    @SuppressLint("NotifyDataSetChanged")
-//    private void getAllRepComment(RecyclerView rvRepComment, long commentId) {
-//        List<Comment> repComments = new ArrayList<>();
-//        repCommentAdapter = new RepCommentAdapter(context, R.layout.item_rep_comment, (OnCommentClickListener) context, postId, commentId, repComments);
-//        rvRepComment.setAdapter(repCommentAdapter);
-//        rvRepComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-//        reference.child(OBJ_POST).child(String.valueOf(postId))
-//                .child(OBJ_COMMENT).child(String.valueOf(commentId))
-//                .child(OBJ_REP_COMMENT)
-//                .addValueEventListener(new ValueEventListener() {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dsRepComment) {
-//                        repComments.clear();
-//                        for (DataSnapshot dataSnapshot : dsRepComment.getChildren()) {
-//                            Comment comment = dataSnapshot.getValue(Comment.class);
-//                            repComments.add(comment);
-//                        }
-//                        repCommentAdapter.notifyDataSetChanged();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//        repCommentAdapter.notifyDataSetChanged();
-//    }
 
     private void getCountRepComment(TextView tvShowRepComment, long commentId) {
         reference.child(OBJ_POST).child(String.valueOf(postId))
