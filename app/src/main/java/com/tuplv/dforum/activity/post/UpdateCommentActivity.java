@@ -2,6 +2,9 @@ package com.tuplv.dforum.activity.post;
 
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
+import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_COMMENT;
+import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_REP_COMMENT;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -30,7 +33,7 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
     EditText edtContentComment;
     Toolbar tbUpdateComment;
     Comment comment;
-    String postId, avatarUri;
+    String postId, commentId, avatarUri, typeUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,8 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
 
         avatarUri = String.valueOf(getIntent().getStringExtra("avatarUri"));
         postId = getIntent().getStringExtra("postId");
+        commentId = getIntent().getStringExtra("commentId");
+        typeUpdate = getIntent().getStringExtra("typeUpdate");
 
         btnCancel.setOnClickListener(this);
         btnUpdateComment.setOnClickListener(this);
@@ -75,11 +80,22 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
         HashMap<String, Object> updateComment = new HashMap<>();
         updateComment.put("content", newComment);
 
-        FirebaseDatabase.getInstance().getReference(OBJ_POST)
-                .child(Objects.requireNonNull(postId))
-                .child(OBJ_COMMENT)
-                .child(String.valueOf(comment.getCommentId()))
-                .updateChildren(updateComment);
+        if (typeUpdate.equals(TYPE_UPDATE_COMMENT)){
+            FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                    .child(Objects.requireNonNull(postId))
+                    .child(OBJ_COMMENT)
+                    .child(String.valueOf(comment.getCommentId()))
+                    .updateChildren(updateComment);
+        } else if (typeUpdate.equals(TYPE_UPDATE_REP_COMMENT)) {
+            FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                    .child(Objects.requireNonNull(postId))
+                    .child(OBJ_COMMENT)
+                    .child(String.valueOf(commentId))
+                    .child(OBJ_REP_COMMENT)
+                    .child(String.valueOf(comment.getCommentId()))
+                    .updateChildren(updateComment);
+        }
+
         Toast.makeText(this, "Cập nhật bình luận thành công", Toast.LENGTH_SHORT).show();
     }
 

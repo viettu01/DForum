@@ -4,10 +4,14 @@ import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
+import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_COMMENT;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,7 +60,8 @@ import java.util.Objects;
 public class DetailPostActivity extends AppCompatActivity implements OnCommentClickListener {
 
     Toolbar tbDetailPost;
-    TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPosts;
+    TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPost, tvNameAuthorRepComment, tvCancelRepComment;
+    LinearLayout llRepComment;
     RecyclerView rvComment;
     EditText edtComment;
     ImageView imvAvatar, imvSendComment;
@@ -66,6 +71,8 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Post post;
+
+    long commentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,18 +90,45 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             }
         });
 
+        // Kiểm tra xem người dùng đang bình luận hay trả lời bình luận
         imvSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 closeKeyBoard();
+                edtComment.clearFocus();
                 if (user == null)
                     Toast.makeText(DetailPostActivity.this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
-                else{
-                    addComment();
-                    edtComment.setText("");
+                else {
+                    if (llRepComment.getVisibility() == View.VISIBLE){
+                        addRepComment(commentId);
+                        llRepComment.setVisibility(View.GONE);
+                    }
+                    else if (llRepComment.getVisibility() == View.GONE)
+                        addComment();
                 }
             }
         });
+
+        // Tắt chế độ trả lời comment
+        tvCancelRepComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeKeyBoard();
+                edtComment.clearFocus();
+                llRepComment.setVisibility(View.GONE);
+            }
+        });
+
+        // Copy tiêu đề và nội dung bài viết vào bộ nhớ tạm
+        View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                copyPostToClipboard(tvTitlePost.getText().toString().trim() + " " + tvContentPost.getText().toString().trim());
+                return false;
+            }
+        };
+        tvContentPost.setOnLongClickListener(onLongClickListener);
+        tvTitlePost.setOnLongClickListener(onLongClickListener);
     }
 
     private void init() {
@@ -104,11 +138,15 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         tvNameAuthor = findViewById(R.id.tvNameAuthor);
         tvDatePost = findViewById(R.id.tvDatePost);
         tvTitlePost = findViewById(R.id.tvTitlePost);
-        tvContentPosts = findViewById(R.id.tvContentPosts);
+        tvContentPost = findViewById(R.id.tvContentPost);
         rvComment = findViewById(R.id.rvComment);
 
         edtComment = findViewById(R.id.edtComment);
         imvSendComment = findViewById(R.id.imvSendComment);
+
+        llRepComment = findViewById(R.id.llRepComment);
+        tvNameAuthorRepComment = findViewById(R.id.tvNameAuthorRepComment);
+        tvCancelRepComment = findViewById(R.id.tvCancelRepComment);
 
         post = (Post) getIntent().getSerializableExtra("post");
     }
@@ -138,7 +176,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm");
             tvDatePost.setText(dateFormat.format(new Date(post.getApproveDate())));
             tvTitlePost.setText(post.getTitle());
-            tvContentPosts.setText(post.getContent());
+            tvContentPost.setText(post.getContent());
         }
     }
 
@@ -155,10 +193,10 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Toast.makeText(DetailPostActivity.this, "Bình luận thành công!", Toast.LENGTH_SHORT).show();
-                            }
-                            else
+                                edtComment.setText("");
+                            } else
                                 Toast.makeText(DetailPostActivity.this, "Có lỗi xảy ra, thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -200,7 +238,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     @SuppressLint("NotifyDataSetChanged")
     private void getAllComment() {
         comments = new ArrayList<>();
-        commentAdapter = new CommentAdapter(DetailPostActivity.this, R.layout.item_comment, this, comments);
+        commentAdapter = new CommentAdapter(DetailPostActivity.this, R.layout.item_comment, this, comments, post.getPostId());
         rvComment.setAdapter(commentAdapter);
         rvComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).child(OBJ_COMMENT)
@@ -231,6 +269,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         intent.putExtra("avatarUri", String.valueOf(avatarUri));
         intent.putExtra("comment", comment);
         intent.putExtra("postId", String.valueOf(post.getPostId()));
+        intent.putExtra("typeUpdate", TYPE_UPDATE_COMMENT);
         startActivity(intent);
     }
 
@@ -266,5 +305,51 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void goToActivityComment(Comment comment, String nameAuthorRepComment) {
+        edtComment.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(edtComment, InputMethodManager.SHOW_IMPLICIT);
+
+        llRepComment.setVisibility(View.VISIBLE);
+        tvNameAuthorRepComment.setText(nameAuthorRepComment);
+        commentId = comment.getCommentId();
+    }
+
+    // Trả lời comment
+    public void addRepComment(long commentId) {
+        if (!edtComment.getText().toString().trim().isEmpty()) {
+            Comment repComment = new Comment();
+            repComment.setCommentId(new Date().getTime());
+            repComment.setAccountId(Objects.requireNonNull(user.getUid()));
+            repComment.setContent(edtComment.getText().toString().trim());
+
+            reference.child(OBJ_POST).child(String.valueOf(post.getPostId()))
+                    .child(OBJ_COMMENT).child(String.valueOf(commentId))
+                    .child(OBJ_REP_COMMENT).child(String.valueOf(repComment.getCommentId())).setValue(repComment)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(DetailPostActivity.this, "Trả lời bình luận thành công!", Toast.LENGTH_SHORT).show();
+                                edtComment.setText("");
+                            } else
+                                Toast.makeText(DetailPostActivity.this, "Có lỗi xảy ra, thử lại sau!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            //sendNotifyToAuthor();
+        }
+    }
+
+    private void copyPostToClipboard(String content) {
+        // sao chép nội dung của bài viết vào clipboard
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("comment", content);
+        clipboard.setPrimaryClip(clip);
+
+        // hiển thị thông báo cho người dùng
+        Toast.makeText(DetailPostActivity.this, "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT).show();
     }
 }

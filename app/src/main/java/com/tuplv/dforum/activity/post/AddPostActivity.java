@@ -12,6 +12,8 @@ import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -150,10 +153,10 @@ public class AddPostActivity extends AppCompatActivity {
         Post post = new Post();
         post.setPostId(new Date().getTime());
         post.setAccountId(user.getUid());
-        post.setCategoryName(spnCategory.getSelectedItem().toString());
+        post.setCategoryName(spnCategory.getSelectedItem().toString().trim());
         post.setForumId(forum.getForumId());
-        post.setTitle(edtTitlePost.getText().toString());
-        post.setContent(edtContentPost.getText().toString());
+        post.setTitle(edtTitlePost.getText().toString().trim());
+        post.setContent(edtContentPost.getText().toString().trim());
         post.setCreatedDate(new Date().getTime());
         post.setView(0);
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {

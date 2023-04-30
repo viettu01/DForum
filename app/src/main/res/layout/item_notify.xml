@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_notify"
-    android:elevation="@dimen/_2sdp"
     android:orientation="horizontal"
     android:padding="@dimen/_10sdp">
 
@@ -14,31 +13,29 @@
         android:layout_height="@dimen/_50sdp"
         android:src="@drawable/no_avatar" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvContentNotify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:maxLines="2"
+            android:maxLines="3"
             android:textSize="@dimen/_13sdp" />
 
         <TextView
             android:id="@+id/tvDateNotify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/_3sdp"
-            android:maxLines="1"
             android:text="12/12/1212"
             android:textColor="@color/gray_color_icon_profile"
             android:textStyle="bold" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imvShowMore"

@@ -11,8 +11,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvAvatar"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:src="@drawable/no_avatar" />
 
@@ -71,20 +71,5 @@
                 android:textColor="@color/gray_color_icon_profile"
                 android:text="@string/rep" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvShowRepComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Xem các phản hồi"
-            android:textStyle="bold"
-            android:textColor="@color/gray_color_icon_profile"
-            android:textSize="@dimen/_12sdp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRepComment"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

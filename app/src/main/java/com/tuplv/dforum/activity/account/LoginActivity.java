@@ -3,6 +3,7 @@ package com.tuplv.dforum.activity.account;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.ROLE_USER;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -37,7 +38,6 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.main.AdminMainActivity;
 import com.tuplv.dforum.activity.main.UserMainActivity;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (user != null) {
                                     boolean emailVerified = user.isEmailVerified();
                                     if (emailVerified) {
-                                        getAccountRole();
+                                        getAccountRoleAndStatus();
                                     } else
                                         Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước", Toast.LENGTH_SHORT).show();
                                 }
@@ -161,30 +161,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         dialog.show();
     }
 
-    private void getAccountRole() {
-        reference.child(OBJ_ACCOUNT).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child("role")
+    // Lấy quyền và trạng thái tài khoản muốn đăng nhập để kiểm tra
+    private void getAccountRoleAndStatus() {
+        reference.child(OBJ_ACCOUNT).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            String role = snapshot.getValue(String.class);
+                            String role = snapshot.child("role").getValue(String.class);
+                            String status = snapshot.child("status").getValue(String.class);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("role", role);
                             editor.apply();
-                            if (role != null) {
-                                if (role.equals(ROLE_ADMIN))
-                                    startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
-                                if (role.equals(ROLE_USER))
-                                    startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
-                                finish();
+
+                            if(Objects.requireNonNull(status).equals(STATUS_ENABLE)){
+                                if (role != null) {
+                                    if (role.equals(ROLE_ADMIN))
+                                        startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
+                                    if (role.equals(ROLE_USER))
+                                        startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+                                    finish();
+                                }
                             }
+                            else
+                                Toast.makeText(LoginActivity.this, "Tài khoản này đang bị khóa, liên hệ quản trị viên để được hỗ trợ !", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Xử lý khi người dùng nhấn nút quay lại ở đây
+        super.onBackPressed();
+        startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
     }
 
     @SuppressLint("NonConstantResourceId")

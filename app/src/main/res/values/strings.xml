@@ -40,7 +40,7 @@
     <string name="nick_name">Tên hiển thị</string>
     <string name="add">Thêm</string>
     <string name="length_story">0 / 100</string>
-    <string name="length_nickname">0 / 30</string>
+    <string name="length_nickname">0 / 25</string>
     <string name="xoa">Xóa</string>
     <string name="copy">Sao chép</string>
     <string name="quay_lai">Quay lại</string>
@@ -62,5 +62,27 @@
     <string name="xoa_thong_bao_nay">Xoá thông báo này</string>
     <string name="danh_dau_tat_ca_la_da_doc">Đánh dấu tất cả là đã đọc</string>
     <string name="developer_forum">Developer Forum</string>
-
+    <string name="logout">Đăng xuất</string>
+    <string name="remove_account">Xóa tài khoản</string>
+    <string name="rename">Chỉnh sửa tên</string>
+    <string name="lock_account">Khóa tài khoản</string>
+    <string name="bai_viet">Bài viết</string>
+    <string name="loc">Lọc</string>
+    <string name="updatePassword">Đổi mật khẩu</string>
+    <string name="confirmNewPassword">Nhập lại mật khẩu mới</string>
+    <string name="newPassword">Mật khẩu mới</string>
+    <string name="oldPassword">Mật khẩu cũ</string>
+    <string name="noPost">Bạn chưa có bài viết nào trên diên đàn</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký tài khoản</string>
+    <string name="cac_dien_dan_noi_bat">Các diễn đàn nổi bật</string>
+    <string name="noi_quy_dien_dan">Nội quy diễn đàn</string>
+    <string name="admin_dien_dan">Admin diễn đàn</string>
+    <string name="cac_dien_dan_moi">Các diễn đàn mới</string>
+    <string name="dien_dan_chua_co_bai_viet_nao">Diễn đàn chưa có bài viết nào</string>
+    <string name="xoa_bo_loc">Xóa bộ lọc</string>
+    <string name="rep">Phản hồi</string>
+    <string name="datetime">17/03/2023 18:11</string>
+    <string name="huy">· Hủy</string>
+    <string name="reply">Đang phản hồi</string>
 </resources>

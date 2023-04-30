@@ -6,7 +6,6 @@ import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,7 +59,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.goToHomeFragment(forum);
+                listener.goToListPostOfForum(forum);
             }
         };
         holder.llItemListForum.setOnClickListener(onClickListener);
@@ -93,7 +92,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
             super(itemView);
             llItemListForum = itemView.findViewById(R.id.llItemListForum);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            imgShowForum = itemView.findViewById(R.id.imgShowForum);
+            imgShowForum = itemView.findViewById(R.id.imvShowForum);
         }
     }
 

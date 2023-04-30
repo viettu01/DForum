@@ -3,6 +3,7 @@ package com.tuplv.dforum.activity.forum;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -75,16 +76,16 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     public void addForum() {
         forum = new Forum();
         forum.setForumId(new Date().getTime());
-        forum.setName(edtNameForum.getText().toString());
-        forum.setDescription(edtDesForum.getText().toString());
+        forum.setName(edtNameForum.getText().toString().trim());
+        forum.setDescription(edtDesForum.getText().toString().trim());
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forum.getForumId())).setValue(forum)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm forum thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm diễn đàn thành công", Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm forum thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Thêm diễn đàn thất bại", Toast.LENGTH_SHORT).show();
                         pbForum.setVisibility(View.GONE);
                     }
                 });
@@ -102,16 +103,16 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     }
 
     public void updateForum() {
-        forum.setName(edtNameForum.getText().toString());
-        forum.setDescription(edtDesForum.getText().toString());
+        forum.setName(edtNameForum.getText().toString().trim());
+        forum.setDescription(edtDesForum.getText().toString().trim());
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forum.getForumId())).setValue(forum)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật forum thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật diễn đàn thành công", Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật forum thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddAndUpdateForumActivity.this, "Cập nhật diễn đàn thất bại", Toast.LENGTH_SHORT).show();
                         pbForum.setVisibility(View.GONE);
                     }
                 });

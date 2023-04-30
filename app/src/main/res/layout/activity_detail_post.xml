@@ -15,19 +15,17 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/ic_arrow_back_white_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Bài viết"
+        app:title="Chi tiết bài viết"
         app:titleTextColor="@android:color/white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/_10sdp"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp">
+        android:background="@color/white"
+        android:paddingBottom="@dimen/_5sdp">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/svViewPosts"
-            android:paddingTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -35,13 +33,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_10sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imvAvatar"
@@ -78,18 +79,21 @@
                     android:id="@+id/tvTitlePost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:text="@string/tieu_de_bai_viet"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvContentPosts"
+                    android:id="@+id/tvContentPost"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:text="@string/noi_dung"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -98,38 +102,89 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/gray_color" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvComment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/_35sdp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_60sdp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
-            android:id="@+id/ll_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edtComment"
-                android:layout_width="0dp"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/gray_color" />
+
+            <LinearLayout
+                android:id="@+id/llRepComment"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="@drawable/edit_text_radius_5"
-                android:hint="@string/viet_binh_luan"
-                android:paddingStart="@dimen/_10sdp"
-                tools:ignore="RtlSymmetry" />
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/imvSendComment"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_send_main_color_24" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reply" />
+
+                <TextView
+                    android:id="@+id/tvNameAuthorRepComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvCancelRepComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/huy"
+                    android:textColor="@color/gray_color_icon_profile"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_30sdp"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp">
+
+                <EditText
+                    android:id="@+id/edtComment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_comment_radius"
+                    android:hint="@string/viet_binh_luan"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    tools:ignore="RtlSymmetry" />
+
+                <ImageView
+                    android:id="@+id/imvSendComment"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_send_main_color_24" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

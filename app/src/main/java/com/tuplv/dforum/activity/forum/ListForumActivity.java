@@ -27,11 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.post.ListPostActivity;
 import com.tuplv.dforum.adapter.ForumAdapter;
 import com.tuplv.dforum.interf.OnForumClickListener;
 import com.tuplv.dforum.model.Forum;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,9 +126,10 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
     }
 
     @Override
-    public void goToHomeFragment(Forum forum) {
-        EventBus.getDefault().post(forum);
-        finish();
+    public void goToListPostOfForum(Forum forum) {
+        Intent intent = new Intent(this, ListPostActivity.class);
+        intent.putExtra("forum", forum);
+        startActivity(intent);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -153,7 +153,6 @@ public class ListForumActivity extends AppCompatActivity implements OnForumClick
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ListForumActivity.this, "Fail", Toast.LENGTH_SHORT).show();
             }
         });
     }

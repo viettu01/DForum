@@ -96,8 +96,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/button_radius_10"
-            android:text="Đăng nhập"
+            android:text="@string/login"
+            android:letterSpacing="0.02"
             android:textAllCaps="false"
+            android:textStyle="bold"
             android:textSize="@dimen/_15sdp" />
 
         <TextView

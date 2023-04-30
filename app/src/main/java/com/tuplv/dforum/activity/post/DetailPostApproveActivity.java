@@ -38,7 +38,7 @@ import java.util.Objects;
 public class DetailPostApproveActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar tbDetailPostApprove;
     ImageView imvAvatar;
-    TextView tvNameAuthor, tvDatePostApprove, tvTitlePost, tvContentPost;
+    TextView tvNameAuthor, tvCreatedDatePost, tvTitlePost, tvContentPost;
     Button btnPostApprove, btnNoPostApprove;
     Post post;
     AlertDialog.Builder builder;
@@ -62,9 +62,9 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         setSupportActionBar(tbDetailPostApprove);
         imvAvatar = findViewById(R.id.imvAvatar);
         tvNameAuthor = findViewById(R.id.tvNameAuthor);
-        tvDatePostApprove = findViewById(R.id.tvDatePostApprove);
+        tvCreatedDatePost = findViewById(R.id.tvCreatedDatePost);
         tvTitlePost = findViewById(R.id.tvTitlePost);
-        tvContentPost = findViewById(R.id.tvContentPosts);
+        tvContentPost = findViewById(R.id.tvContentPost);
         btnPostApprove = findViewById(R.id.btnPostApprove);
         btnNoPostApprove = findViewById(R.id.btnNoPostApprove);
 
@@ -100,7 +100,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                     });
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm");
-            tvDatePostApprove.setText(dateFormat.format(new Date(post.getApproveDate())));
+            tvCreatedDatePost.setText(dateFormat.format(new Date(post.getCreatedDate())));
             tvTitlePost.setText(post.getTitle());
             tvContentPost.setText(post.getContent());
         }

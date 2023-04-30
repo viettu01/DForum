@@ -116,7 +116,7 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (charSequence == edtNickName.getText()) {
             int lengthNickName = edtNickName.getText().toString().trim().length();
-            tvLengthNickName.setText(lengthNickName + " / 30");
+            tvLengthNickName.setText(lengthNickName + " / 25");
         }
     }
 

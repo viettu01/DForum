@@ -8,10 +8,9 @@ import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -52,6 +52,7 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.account.LoginActivity;
 import com.tuplv.dforum.activity.account.ShowAvatarActivity;
 import com.tuplv.dforum.activity.account.UpdateNameActivity;
+import com.tuplv.dforum.activity.account.UpdatePasswordActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
@@ -66,10 +67,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements View.OnClickListener, OnPostClickListener {
-    Button btnLogout;
-    TextView tvNickName, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment;
-    ImageView imvAvatar, imvUpdateName;
+public class ProfileFragment extends Fragment implements OnPostClickListener {
+    TextView tvNickName, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment, tvNoPost;
+    ImageView imvAvatar, imvUpdateName, imvSetting;
+    ProgressDialog progressDialog;
     RecyclerView rvMyPost;
     List<Post> myPost;
     PostAdapter myPostAdapter;
@@ -91,27 +92,44 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
             getProfile();
         getMyPost();
         getTotalComment();
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBottomSheetDialogAvatar();
+            }
+        };
+        imvAvatar.setOnClickListener(listener);
+        imvSetting.setOnClickListener(listener);
+
+        imvUpdateName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UpdateNameActivity.class);
+                intent.putExtra("name", account.getNickName());
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
     private void init(View view) {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCreatedDate = view.findViewById(R.id.tvCreatedDate);
-
-        btnLogout = view.findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(this);
-
         imvUpdateName = view.findViewById(R.id.imvUpdateName);
-        imvUpdateName.setOnClickListener(this);
-
         tvNickName = view.findViewById(R.id.tvNickName);
-
         imvAvatar = view.findViewById(R.id.imvAvatar);
-        imvAvatar.setOnClickListener(this);
+        imvSetting = view.findViewById(R.id.imvSetting);
 
         rvMyPost = view.findViewById(R.id.rvMyPost);
         tvTotalPost = view.findViewById(R.id.tvTotalPost);
         tvTotalComment = view.findViewById(R.id.tvTotalComment);
+        tvNoPost = view.findViewById(R.id.tvNoPost);
+
+        progressDialog = new ProgressDialog(getContext());
+        //progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressDialog.setMessage("Đang tải ảnh lên");
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -159,6 +177,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         LinearLayout llChooseAvatar = bottomSheetDialog.findViewById(R.id.llChooseAvatar);
         LinearLayout llShowAvatar = bottomSheetDialog.findViewById(R.id.llShowAvatar);
         LinearLayout llRemoveAvatar = bottomSheetDialog.findViewById(R.id.llRemoveAvatar);
+        LinearLayout llRemoveAccount = bottomSheetDialog.findViewById(R.id.llRemoveAccount);
+        LinearLayout llUpdateName = bottomSheetDialog.findViewById(R.id.llUpdateName);
+        LinearLayout llLockAccount = bottomSheetDialog.findViewById(R.id.llLockAccount);
+        LinearLayout llUpdatePassword = bottomSheetDialog.findViewById(R.id.llUpdatePassword);
+        LinearLayout llLogout = bottomSheetDialog.findViewById(R.id.llLogout);
 
         Objects.requireNonNull(llChooseAvatar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +194,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         Objects.requireNonNull(llShowAvatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getProfile();
                 Intent intent = new Intent(getActivity(), ShowAvatarActivity.class);
                 intent.putExtra("avatarUri", account.getAvatarUri());
                 startActivity(intent);
@@ -189,7 +213,40 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
             }
         });
 
-        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //
+        Objects.requireNonNull(llRemoveAccount).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+        Objects.requireNonNull(llUpdateName).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UpdateNameActivity.class);
+                intent.putExtra("name", account.getNickName());
+                startActivity(intent);
+                bottomSheetDialog.dismiss();
+            }
+        });
+        Objects.requireNonNull(llUpdatePassword).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), UpdatePasswordActivity.class));
+                bottomSheetDialog.dismiss();
+            }
+        });
+        Objects.requireNonNull(llLogout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                requireContext().deleteSharedPreferences("account");
+                requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetDialog.show();
     }
 
@@ -234,6 +291,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
 
+            progressDialog.show();
             StorageReference imgRef = storageRef.child("images/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "." + getFileNameExtension(uri));
 
             UploadTask uploadTask = imgRef.putFile(uri);
@@ -242,6 +300,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Picasso.get().load(uri).into(imvAvatar);
+                    progressDialog.dismiss();
                     Toast.makeText(getContext(), "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -299,6 +358,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
                         }
                         tvTotalPost.setText(String.valueOf(myPost.size()));
                         myPostAdapter.notifyDataSetChanged();
+
+                        if(myPost.size()==0)
+                            tvNoPost.setVisibility(View.VISIBLE);
+                        else
+                            tvNoPost.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -319,62 +383,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, O
         intent.putExtra("post", post);
 
         startActivity(intent);
-    }
-
-    private void changePassword() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        // Kiểm tra mật khẩu cũ
-        assert user != null;
-        AuthCredential credential = EmailAuthProvider.getCredential(Objects.requireNonNull(user.getEmail()), "newPassword");
-
-        // Yêu cầu người dùng xác thực lại danh tính bằng mật khẩu hiện tại của họ
-        user.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // Người dùng đã xác thực lại danh tính thành công
-                            // Cập nhật mật khẩu mới của người dùng
-                            user.updatePassword("123456")
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                // Mật khẩu đã được cập nhật thành công
-                                                Toast.makeText(getContext(), "Mật khẩu đã được cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                // Có lỗi xảy ra khi cập nhật mật khẩu
-                                                Toast.makeText(getContext(), "Có lỗi xảy ra khi cập nhật mật khẩu", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                        } else {
-                            // Có lỗi xảy ra khi xác thực lại danh tính
-                            Toast.makeText(getContext(), "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnLogout:
-                mAuth.signOut();
-                requireContext().deleteSharedPreferences("account");
-                requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
-                break;
-            case R.id.imvUpdateName:
-                Intent intent = new Intent(getActivity(), UpdateNameActivity.class);
-                intent.putExtra("name", account.getNickName());
-                startActivity(intent);
-                break;
-            case R.id.imvAvatar:
-                showBottomSheetDialogAvatar();
-                break;
-        }
     }
 }

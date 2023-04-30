@@ -1,10 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rlDialogBottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbUpdateComment"
@@ -17,17 +15,10 @@
         app:title="Chỉnh sửa bình luận"
         app:titleTextColor="@android:color/white" />
 
-    <View
-        android:id="@+id/b"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:layout_below="@+id/tbUpdateComment"
-        android:background="@color/gray_color" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/b"
+        android:layout_below="@+id/tbUpdateComment"
         android:scrollbars="none">
 
         <LinearLayout

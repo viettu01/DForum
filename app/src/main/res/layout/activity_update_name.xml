@@ -64,7 +64,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/edit_text_radius_5"
                 android:inputType="text"
-                android:maxLength="30"
+                android:maxLength="25"
                 android:textColorHint="@color/gray_color"
                 tools:ignore="Autofill,LabelFor" />
 
