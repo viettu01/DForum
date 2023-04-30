@@ -45,7 +45,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
 
     Toolbar tbListPost;
     TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost;
-    ImageView imvFilterPost;
+    ImageView imvFilterPost, imvSortPost;
     RecyclerView rvListPost;
     FloatingActionButton fabAddPost;
     PostAdapter postAdapter;
@@ -86,6 +86,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         imvFilterPost = findViewById(R.id.imvFilterPost);
         rvListPost = findViewById(R.id.rvListPost);
         fabAddPost = findViewById(R.id.fabAddPost);
+        imvSortPost = findViewById(R.id.imvSortPost);
 
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(this, R.layout.item_post, posts, this);
@@ -98,6 +99,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             tvDesForum.setVisibility(View.GONE);
 
         imvFilterPost.setOnClickListener(this);
+        imvSortPost.setOnClickListener(this);
         fabAddPost.setOnClickListener(this);
     }
 
@@ -196,6 +198,9 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             case R.id.imvFilterPost:
                 showPopupMenu();
                 break;
+            case R.id.imvSortPost:
+                showPopupMenuSort();
+                break;
             case R.id.fabAddPost:
                 if (FirebaseAuth.getInstance().getCurrentUser() != null)
                     startActivity(new Intent(this, AddPostActivity.class));
@@ -262,6 +267,40 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        menuPopupHelper.show();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showPopupMenuSort() {
+        MenuBuilder menuBuilder = new MenuBuilder(this);
+        MenuInflater menuInflater = new MenuInflater(this);
+        menuInflater.inflate(R.menu.menu_popup_sort_post, menuBuilder);
+
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(this, menuBuilder, imvSortPost);
+        menuPopupHelper.setForceShowIcon(true);
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mnuDeleteSort:
+                        break;
+                    case R.id.mnuSortEarliest:
+                        break;
+                    case R.id.mnuSortOldest:
+                        break;
+                    case R.id.mnuSortIncreaseViews:
+                        break;
+                    case R.id.mnuSortDecreaseViews:
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onMenuModeChange(@NonNull MenuBuilder menu) {
+
+            }
+        });
         menuPopupHelper.show();
     }
 }

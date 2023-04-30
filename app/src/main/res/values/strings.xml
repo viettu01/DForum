@@ -85,4 +85,10 @@
     <string name="datetime">17/03/2023 18:11</string>
     <string name="huy">· Hủy</string>
     <string name="reply">Đang phản hồi</string>
+    <string name="moi_nhat">Mới nhất</string>
+    <string name="sap_xep">Sắp xếp</string>
+    <string name="cu_nhat">Cũ nhất</string>
+    <string name="xoa_sap_xep">Xóa sắp xếp</string>
+    <string name="luot_xem_tang_dan">Lượt xem tăng dần</string>
+    <string name="luot_xem_giam_dan">Lượt xem giảm dần</string>
 </resources>

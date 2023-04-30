@@ -9,4 +9,5 @@
     <item
         android:id="@+id/mnuFilterShareKnowledge"
         android:title="@string/chia_se_kien_thuc" />
+
 </menu>

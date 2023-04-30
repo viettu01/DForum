@@ -65,7 +65,15 @@
                 android:clickable="true"
                 android:contentDescription="@string/loc"
                 android:src="@drawable/ic_tune_black_30" />
-
+            <ImageView
+                android:id="@+id/imvSortPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/sap_xep"
+                android:src="@drawable/ic_sort_black_24" />
             <TextView
                 android:id="@+id/tvFilterPost"
                 android:layout_width="match_parent"

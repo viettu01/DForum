@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mnuDeleteSort"
+        android:title="@string/xoa_sap_xep" />
+    <item
+        android:id="@+id/mnuSortEarliest"
+        android:title="@string/moi_nhat" />
+    <item
+        android:id="@+id/mnuSortOldest"
+        android:title="@string/cu_nhat" />
+    <item
+        android:id="@+id/mnuSortIncreaseViews"
+        android:title="@string/luot_xem_tang_dan" />
+    <item
+        android:id="@+id/mnuSortDecreaseViews"
+        android:title="@string/luot_xem_giam_dan" />
+
+</menu>
