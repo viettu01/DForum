@@ -76,7 +76,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     public void onResume() {
         super.onResume();
         if (forum != null && forum.getForumId() != 0)
-            getPostByForumId(null);
+            getPostByForumId(null,null);
         else if (forum != null && forum.getForumId() == 0)
             getAllPost(filter, sort);
         else
@@ -168,7 +168,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 });
     }
 
-    private void getPostByForumId(String filter) {
+    private void getPostByForumId(String filter, String sort) {
         FirebaseDatabase.getInstance().getReference(OBJ_POST)
                 .orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
                 .addValueEventListener(new ValueEventListener() {
@@ -204,6 +204,22 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         }
                         tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
                         Collections.reverse(posts);
+
+                        Collections.reverse(posts);
+
+                        if (sort != null) {
+                            if (sort.equals(SORT_INCREASE_VIEWS)) // Sắp xếp bài viết có lượt xem tăng dần
+                                posts.sort((p1, p2) -> Math.toIntExact(p1.getView() - p2.getView()));
+
+                            if (sort.equals(SORT_DECREASE_VIEWS)) // Sắp xếp bài viết có lượt xem giảm dần
+                                posts.sort((p1, p2) -> Math.toIntExact(p2.getView() - p1.getView()));
+
+                            if (sort.equals(SORT_OLDEST)) // Bài viết cũ nhất đầu tiên
+                                posts.sort((p1, p2) -> Math.toIntExact(p1.getPostId() - p2.getPostId()));
+
+                            if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
+                                posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
+                        }
                         postAdapter.notifyDataSetChanged();
                     }
 
@@ -275,7 +291,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 if (forum.getForumId() == 0)
                     getAllPost(filter, sort);
                 else
-                    getPostByForumId(filter);
+                    getPostByForumId(filter,sort);
 
                 return false;
             }
@@ -306,21 +322,25 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.mnuSortEarliest:
                         sort = SORT_EARLIEST;
+                        tvFilterPost.setText(tvFilterPost.getText()+ " Mới nhất ");
                         break;
                     case R.id.mnuSortOldest:
                         sort = SORT_OLDEST;
+                        tvFilterPost.setText(tvFilterPost.getText()+ " Cũ nhất ");
                         break;
                     case R.id.mnuSortIncreaseViews:
                         sort = SORT_INCREASE_VIEWS;
+                        tvFilterPost.setText(tvFilterPost.getText()+ " Lượt xem tăng dần ");
                         break;
                     case R.id.mnuSortDecreaseViews:
                         sort = SORT_DECREASE_VIEWS;
+                        tvFilterPost.setText(tvFilterPost.getText()+ " Lượt xem giảm dần ");
                         break;
                 }
                 if (forum.getForumId() == 0)
                     getAllPost(filter, sort);
                 else
-                    getPostByForumId(filter);
+                    getPostByForumId(filter,sort);
 
                 return false;
             }
