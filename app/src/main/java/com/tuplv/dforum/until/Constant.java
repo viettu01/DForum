@@ -16,6 +16,10 @@ public class Constant {
 
     public static final String CHIA_SE_KIEN_THUC = "Chia sẻ kiến thức";
     public static final String HOI_DAP = "Hỏi đáp";
+    public static final String SORT_EARLIEST = "Sort Earliest"; // Bài viết mới nhất đầu tiên
+    public static final String SORT_OLDEST = "Sort Oldest"; // Bài viết cữ nhất đầu tiên
+    public static final String SORT_DECREASE_VIEWS = "Sort Decrease Views"; // Sắp xếp bài viết có lượt xem giảm dần
+    public static final String SORT_INCREASE_VIEWS = "Sort Increase Views"; // Sắp xếp bài viết có lượt xem tăng dần
     public static final int PICK_IMAGE_REQUEST = 111;
 
     public static final String TYPE_NOTIFY_APPROVE = "APPROVE";
