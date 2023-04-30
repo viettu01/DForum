@@ -239,8 +239,11 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 showPopupMenuSort();
                 break;
             case R.id.fabAddPost:
-                if (FirebaseAuth.getInstance().getCurrentUser() != null)
-                    startActivity(new Intent(this, AddPostActivity.class));
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    Intent intent = new Intent(this, AddPostActivity.class);
+                    intent.putExtra("forum", forum);
+                    startActivity(intent);
+                }
                 else
                     Toast.makeText(this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
                 break;

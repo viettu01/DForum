@@ -12,8 +12,6 @@ import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,7 +24,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,6 +55,7 @@ public class AddPostActivity extends AppCompatActivity {
     ForumSpinnerAdapter forumSpinnerAdapter;
     CategorySpinnerAdapter categorySpinnerAdapter;
     List<Forum> forums;
+    Forum forum;
     SharedPreferences sharedPreferences;
     Account currentAccountLogin;
     List<Account> accounts;
@@ -91,6 +89,8 @@ public class AddPostActivity extends AppCompatActivity {
         tbAddPost = findViewById(R.id.tbAddPost);
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
         accounts = new ArrayList<>();
+
+        forum = (Forum) getIntent().getSerializableExtra("forum");
     }
 
     //Đổ dữ liệu ra spinner chuyên mục
@@ -117,6 +117,16 @@ public class AddPostActivity extends AppCompatActivity {
                     forums.add(forum);
                 }
                 forumSpinnerAdapter.notifyDataSetChanged();
+
+                if (forum != null){
+                    int index = 0;
+                    for (int i = 0; i < spnForum.getCount(); i++) {
+                        Forum f = (Forum) spnForum.getItemAtPosition(i);
+                        if (f.getName().equals(forum.getName()))
+                            index = i;
+                    }
+                    spnForum.setSelection(index);
+                }
             }
 
             @Override
@@ -184,7 +194,7 @@ public class AddPostActivity extends AppCompatActivity {
         sendNotifyAllAccount(post);
     }
 
-    // Thông báo cho tất cả người dùng là admin đã đăng bài
+    // Thông báo cho tất cả người dùng khi admin đăng bài
     private void sendNotifyAllAccount(Post post) {
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
             Notify notify = new Notify();
