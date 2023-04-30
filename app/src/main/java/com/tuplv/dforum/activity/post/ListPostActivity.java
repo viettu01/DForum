@@ -41,7 +41,6 @@ import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +48,7 @@ import java.util.Objects;
 public class ListPostActivity extends AppCompatActivity implements View.OnClickListener, OnPostClickListener {
 
     Toolbar tbListPost;
-    TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost;
+    TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost, tvSortPost;
     ImageView imvFilterPost, imvSortPost;
     RecyclerView rvListPost;
     FloatingActionButton fabAddPost;
@@ -76,7 +75,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     public void onResume() {
         super.onResume();
         if (forum != null && forum.getForumId() != 0)
-            getPostByForumId(null,null);
+            getPostByForumId(null, null);
         else if (forum != null && forum.getForumId() == 0)
             getAllPost(filter, sort);
         else
@@ -90,6 +89,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         tvDesForum = findViewById(R.id.tvDesForum);
         tvNoPost = findViewById(R.id.tvNoPost);
         tvFilterPost = findViewById(R.id.tvFilterPost);
+        tvSortPost = findViewById(R.id.tvSortPost);
         imvFilterPost = findViewById(R.id.imvFilterPost);
         rvListPost = findViewById(R.id.rvListPost);
         fabAddPost = findViewById(R.id.fabAddPost);
@@ -100,7 +100,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         rvListPost.setAdapter(postAdapter);
         rvListPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         forum = (Forum) getIntent().getSerializableExtra("forum");
-//        tvNameForum.setText(forum.getName());
         tvDesForum.setText(forum.getDescription());
         if (forum.getDescription().equals(""))
             tvDesForum.setVisibility(View.GONE);
@@ -205,8 +204,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
                         Collections.reverse(posts);
 
-                        Collections.reverse(posts);
-
                         if (sort != null) {
                             if (sort.equals(SORT_INCREASE_VIEWS)) // Sắp xếp bài viết có lượt xem tăng dần
                                 posts.sort((p1, p2) -> Math.toIntExact(p1.getView() - p2.getView()));
@@ -220,6 +217,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                             if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
                                 posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
                         }
+
                         postAdapter.notifyDataSetChanged();
                     }
 
@@ -276,22 +274,20 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.mnuDeleteFilter:
-                        tvFilterPost.setText("");
                         filter = null;
                         break;
                     case R.id.mnuFilterQA:
-                        tvFilterPost.setText("Đang lọc theo: " + HOI_DAP);
                         filter = HOI_DAP;
                         break;
                     case R.id.mnuFilterShareKnowledge:
-                        tvFilterPost.setText("Đang lọc theo: " + CHIA_SE_KIEN_THUC);
                         filter = CHIA_SE_KIEN_THUC;
                         break;
                 }
+                tvFilterPost.setText(filter);
                 if (forum.getForumId() == 0)
                     getAllPost(filter, sort);
                 else
-                    getPostByForumId(filter,sort);
+                    getPostByForumId(filter, sort);
 
                 return false;
             }
@@ -322,25 +318,22 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.mnuSortEarliest:
                         sort = SORT_EARLIEST;
-                        tvFilterPost.setText(tvFilterPost.getText()+ " Mới nhất ");
                         break;
                     case R.id.mnuSortOldest:
                         sort = SORT_OLDEST;
-                        tvFilterPost.setText(tvFilterPost.getText()+ " Cũ nhất ");
                         break;
                     case R.id.mnuSortIncreaseViews:
                         sort = SORT_INCREASE_VIEWS;
-                        tvFilterPost.setText(tvFilterPost.getText()+ " Lượt xem tăng dần ");
                         break;
                     case R.id.mnuSortDecreaseViews:
                         sort = SORT_DECREASE_VIEWS;
-                        tvFilterPost.setText(tvFilterPost.getText()+ " Lượt xem giảm dần ");
                         break;
                 }
+                tvSortPost.setText(sort);
                 if (forum.getForumId() == 0)
                     getAllPost(filter, sort);
                 else
-                    getPostByForumId(filter,sort);
+                    getPostByForumId(filter, sort);
 
                 return false;
             }
