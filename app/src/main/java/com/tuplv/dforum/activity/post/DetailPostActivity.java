@@ -72,6 +72,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     Post post;
 
     long commentId;
+    String accountIdComment; // id của tài khoản bình luận
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +200,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                         }
                     });
 
-            sendNotifyToAuthor(post, TYPE_NOTIFY_ADD_COMMENT);
+            sendNotifyToAuthor(post, TYPE_NOTIFY_ADD_COMMENT, null);
         }
     }
 
@@ -315,6 +316,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         llRepComment.setVisibility(View.VISIBLE);
         tvNameAuthorRepComment.setText(nameAuthorRepComment);
         commentId = comment.getCommentId();
+        accountIdComment = comment.getAccountId();
     }
 
     // Trả lời comment
@@ -338,6 +340,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                                 Toast.makeText(DetailPostActivity.this, "Có lỗi xảy ra, thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
+            sendNotifyToAuthor(post, TYPE_NOTIFY_REPLY_COMMENT, accountIdComment);
             //sendNotifyToAuthor();
         }
     }

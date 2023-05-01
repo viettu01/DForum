@@ -91,13 +91,13 @@ public class Until {
             message = " đã bình luận bài vết của bạn: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_REPLY_COMMENT))
-            message = " đã trả lời bình luận của bạn: ";
+            message = " đã trả lời bình luận của bạn về bài viết: ";
 
         return message;
     }
 
     // Gửi thông báo cho chủ bài viết
-    public static void sendNotifyToAuthor(Post post, String typeNotify) {
+    public static void sendNotifyToAuthor(Post post, String typeNotify, String accountIdComment) {
         if (!post.getAccountId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
             Notify notify = new Notify();
             notify.setNotifyId(new Date().getTime());
@@ -113,6 +113,16 @@ public class Until {
                             task.isSuccessful();
                         }
                     });
+            if (accountIdComment != null) {
+                FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(accountIdComment)
+                        .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                task.isSuccessful();
+                            }
+                        });
+            }
         }
     }
 
