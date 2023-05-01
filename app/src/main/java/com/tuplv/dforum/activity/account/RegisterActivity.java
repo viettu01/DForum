@@ -1,5 +1,6 @@
 package com.tuplv.dforum.activity.account;
 
+import static com.tuplv.dforum.until.Constant.IS_LOGIN_TRUE;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
@@ -175,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     assert user != null;
                                     long createdDate = new Date().getTime();
                                     //khởi tạo một đối tượng account
-                                    Account account = new Account(user.getUid(), "user" + createdDate, "null", email, ROLE_USER, STATUS_ENABLE, createdDate);
+                                    Account account = new Account(user.getUid(), "user" + createdDate, "null", email, ROLE_USER, STATUS_ENABLE, createdDate, IS_LOGIN_TRUE, 0, 0);
 
                                     // gọi hàm thêm dữ liệu vào firebase
                                     reference.child(OBJ_ACCOUNT).child(user.getUid()).setValue(account);
