@@ -2,12 +2,12 @@ package com.tuplv.dforum.activity.post;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
-import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
-import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_REPLY_COMMENT;
 import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_COMMENT;
+import static com.tuplv.dforum.until.Until.sendNotifyToAuthor;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -47,7 +47,6 @@ import com.tuplv.dforum.adapter.CommentAdapter;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
-import com.tuplv.dforum.model.Notify;
 import com.tuplv.dforum.model.Post;
 
 import java.text.SimpleDateFormat;
@@ -99,11 +98,10 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                 if (user == null)
                     Toast.makeText(DetailPostActivity.this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
                 else {
-                    if (llRepComment.getVisibility() == View.VISIBLE){
+                    if (llRepComment.getVisibility() == View.VISIBLE) {
                         addRepComment(commentId);
                         llRepComment.setVisibility(View.GONE);
-                    }
-                    else if (llRepComment.getVisibility() == View.GONE)
+                    } else if (llRepComment.getVisibility() == View.GONE)
                         addComment();
                 }
             }
@@ -201,29 +199,29 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                         }
                     });
 
-            sendNotifyToAuthor();
+            sendNotifyToAuthor(post, TYPE_NOTIFY_ADD_COMMENT);
         }
     }
 
     // Gửi thông báo cho chủ bài viết
-    private void sendNotifyToAuthor() {
-        if (!post.getAccountId().equals(user.getUid())) {
-            Notify notify = new Notify();
-            notify.setNotifyId(new Date().getTime());
-            notify.setPostId(post.getPostId());
-            notify.setAccountId(user.getUid());
-            notify.setStatus(STATUS_DISABLE);
-            notify.setTypeNotify(TYPE_NOTIFY_ADD_COMMENT);
-            reference.child(OBJ_ACCOUNT).child(post.getAccountId())
-                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            task.isSuccessful();
-                        }
-                    });
-        }
-    }
+//    private void sendNotifyToAuthor() {
+//        if (!post.getAccountId().equals(user.getUid())) {
+//            Notify notify = new Notify();
+//            notify.setNotifyId(new Date().getTime());
+//            notify.setPostId(post.getPostId());
+//            notify.setAccountId(user.getUid());
+//            notify.setStatus(STATUS_DISABLE);
+//            notify.setTypeNotify(TYPE_NOTIFY_ADD_COMMENT);
+//            reference.child(OBJ_ACCOUNT).child(post.getAccountId())
+//                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            task.isSuccessful();
+//                        }
+//                    });
+//        }
+//    }
 
     // Đóng bàn phím
     private void closeKeyBoard() {

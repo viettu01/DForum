@@ -1,5 +1,9 @@
 package com.tuplv.dforum.until;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE;
@@ -7,8 +11,21 @@ import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_REPLY_COMMENT;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.tuplv.dforum.model.Account;
+import com.tuplv.dforum.model.Notify;
+import com.tuplv.dforum.model.Post;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Until {
@@ -25,7 +42,7 @@ public class Until {
         }
     }
 
-    public static String formatTime(long time){
+    public static String formatTime(long time) {
         Date commentDate = new Date(time);
         long diffInMillis = new Date().getTime() - commentDate.getTime();
         long secondsAgo = TimeUnit.SECONDS.convert(diffInMillis, TimeUnit.MILLISECONDS);
@@ -77,5 +94,42 @@ public class Until {
             message = " đã trả lời bình luận của bạn: ";
 
         return message;
+    }
+
+    // Gửi thông báo cho chủ bài viết
+    public static void sendNotifyToAuthor(Post post, String typeNotify) {
+        if (!post.getAccountId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
+            Notify notify = new Notify();
+            notify.setNotifyId(new Date().getTime());
+            notify.setPostId(post.getPostId());
+            notify.setAccountId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            notify.setStatus(STATUS_DISABLE);
+            notify.setTypeNotify(typeNotify);
+            FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(post.getAccountId())
+                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            task.isSuccessful();
+                        }
+                    });
+        }
+    }
+
+    // Thông báo cho tất cả người dùng khi admin đăng bài
+    public static void sendNotifyAllAccount(String role, Post post, List<Account> accounts, String typeNotify) {
+        if (role.equals(ROLE_ADMIN)) {
+            Notify notify = new Notify();
+            notify.setNotifyId(new Date().getTime());
+            notify.setPostId(post.getPostId());
+            notify.setAccountId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            notify.setStatus(STATUS_DISABLE);
+            notify.setTypeNotify(typeNotify);
+            for (Account account : accounts) {
+                if (!account.getAccountId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
+                            .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
+import static com.tuplv.dforum.until.Until.sendNotifyAllAccount;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -191,25 +192,25 @@ public class AddPostActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(post);
+        sendNotifyAllAccount(sharedPreferences.getString("role", ""), post, accounts, TYPE_NOTIFY_ADD_POST);
     }
 
     // Thông báo cho tất cả người dùng khi admin đăng bài
-    private void sendNotifyAllAccount(Post post) {
-        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
-            Notify notify = new Notify();
-            notify.setNotifyId(new Date().getTime());
-            notify.setPostId(post.getPostId());
-            notify.setAccountId(user.getUid());
-            notify.setStatus(STATUS_DISABLE);
-            notify.setTypeNotify(TYPE_NOTIFY_ADD_POST);
-            for (Account account : accounts) {
-                if (!account.getAccountId().equals(user.getUid()))
-                    FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
-                            .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
-            }
-        }
-    }
+//    private void sendNotifyAllAccount(Post post) {
+//        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
+//            Notify notify = new Notify();
+//            notify.setNotifyId(new Date().getTime());
+//            notify.setPostId(post.getPostId());
+//            notify.setAccountId(user.getUid());
+//            notify.setStatus(STATUS_DISABLE);
+//            notify.setTypeNotify(TYPE_NOTIFY_ADD_POST);
+//            for (Account account : accounts) {
+//                if (!account.getAccountId().equals(user.getUid()))
+//                    FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
+//                            .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
+//            }
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

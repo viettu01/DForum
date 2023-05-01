@@ -170,6 +170,7 @@ public class UserMainActivity extends AppCompatActivity implements NavigationVie
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public boolean onQueryTextChange(String newText) {
+                        postsSearch.clear();
                         searchPost(newText);
                         return true;
                     }
@@ -250,7 +251,6 @@ public class UserMainActivity extends AppCompatActivity implements NavigationVie
         rvSearchPost.setAdapter(postAdapter);
         rvSearchPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
-        postsSearch.clear();
         if (!search.isBlank()) {
             for (Post post : posts) {
                 if (post.getTitle().toLowerCase().contains(search.toLowerCase()) || post.getContent().toLowerCase().contains(search.toLowerCase())) {
