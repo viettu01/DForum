@@ -1,6 +1,8 @@
 package com.tuplv.dforum.activity.forum;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static com.tuplv.dforum.until.Until.sendNotifyAllAccount;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -17,11 +19,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Forum;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 public class AddAndUpdateForumActivity extends AppCompatActivity {
 
@@ -30,6 +40,9 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     ProgressBar pbForum;
     Toolbar tbAddNewForum;
     Forum forum;
+    SharedPreferences sharedPreferences;
+    Account currentAccountLogin;
+    List<Account> accounts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
             }
         });
 
+        getAllAccount();
         checkUpdate();
     }
 
@@ -71,6 +85,8 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
         tbAddNewForum = findViewById(R.id.tbAddNewForum);
         setSupportActionBar(tbAddNewForum);
         pbForum = findViewById(R.id.pbForum);
+        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+        accounts = new ArrayList<>();
     }
 
     public void addForum() {
@@ -89,6 +105,8 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                         pbForum.setVisibility(View.GONE);
                     }
                 });
+
+        sendNotifyAllAccount(sharedPreferences.getString("role", ""), forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
     }
 
     @SuppressLint("SetTextI18n")
@@ -103,6 +121,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     }
 
     public void updateForum() {
+        String oldName = forum.getName();
         forum.setName(edtNameForum.getText().toString().trim());
         forum.setDescription(edtDesForum.getText().toString().trim());
         FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forum.getForumId())).setValue(forum)
@@ -116,6 +135,28 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                         pbForum.setVisibility(View.GONE);
                     }
                 });
+
+        sendNotifyAllAccount(sharedPreferences.getString("role", ""), forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
     }
 
+    // Lấy danh sách tài khoản và lấy thông tin tài khoản đang đăng nhập
+    private void getAllAccount() {
+        FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            Account account = ds.getValue(Account.class);
+                            if (Objects.requireNonNull(account).getAccountId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()))
+                                currentAccountLogin = account;
+                            accounts.add(account);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+    }
 }

@@ -32,7 +32,6 @@ public class Constant {
     public static final String TYPE_NOTIFY_ADMIN_ADD_POST = "ADMIN_ADD_POST";
     public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT";
     public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT";
-    public static final String TYPE_NOTIFY_ADD_NEW_FORUM = "ADD_NEW_FORUM";
     public static final String TYPE_NOTIFY_NEW_POST_NEED_APPROVE = "NEW_POST_NEED_APPROVE";
     public static final String TYPE_NOTIFY_APPROVE_POST = "APPROVE_POST";
     public static final String TYPE_NOTIFY_NOT_APPROVE_POST = "NOT_APPROVE_POST";

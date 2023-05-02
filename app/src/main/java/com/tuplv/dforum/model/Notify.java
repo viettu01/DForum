@@ -4,6 +4,7 @@ public class Notify {
     private long notifyId;
     private String accountId;
     private long postId;
+    private long forumId;
     private String status;
     private String typeNotify;
 
@@ -29,6 +30,14 @@ public class Notify {
 
     public void setPostId(long postId) {
         this.postId = postId;
+    }
+
+    public long getForumId() {
+        return forumId;
+    }
+
+    public void setForumId(long forumId) {
+        this.forumId = forumId;
     }
 
     public String getStatus() {

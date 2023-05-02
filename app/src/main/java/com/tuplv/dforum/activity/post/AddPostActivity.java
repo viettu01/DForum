@@ -190,7 +190,7 @@ public class AddPostActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(sharedPreferences.getString("role", ""), post, accounts, TYPE_NOTIFY_ADMIN_ADD_POST);
+        sendNotifyAllAccount(sharedPreferences.getString("role", ""), null, post, accounts, TYPE_NOTIFY_ADMIN_ADD_POST);
     }
 
     // Thông báo cho tất cả người dùng khi admin đăng bài

@@ -85,27 +85,39 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId())).child("title")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            String title = snapshot.getValue(String.class);
-                            holder.tvContentNotify.setText(holder.tvContentNotify.getText().toString() + title);
+
+        if (notify.getPostId() != 0)
+            FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId())).child("title")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                String title = snapshot.getValue(String.class);
+                                holder.tvContentNotify.setText(holder.tvContentNotify.getText().toString() + title);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+                        }
+                    });
+
+        if (notify.getForumId() != 0) {
+            holder.tvContentNotify.setText(holder.tvContentNotify.getText().toString() + notify.getTypeNotify());
+        }
+
+
         holder.tvDateNotify.setText(formatTime(notify.getNotifyId()));
 
         holder.llItemListNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.goToDetailPostActivity(notify);
+                if (notify.getPostId() != 0)
+                    listener.goToDetailPostActivity(notify);
+
+                if (notify.getForumId() != 0)
+                    listener.goToListPostActivity(notify);
             }
         });
 

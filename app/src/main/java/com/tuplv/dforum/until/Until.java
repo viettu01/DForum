@@ -6,7 +6,6 @@ import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
-import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_NEW_FORUM;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADMIN_ADD_POST;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE_POST;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_NEW_POST_NEED_APPROVE;
@@ -22,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.model.Account;
+import com.tuplv.dforum.model.Forum;
 import com.tuplv.dforum.model.Notify;
 import com.tuplv.dforum.model.Post;
 
@@ -84,11 +84,8 @@ public class Until {
     public static String formatNotify(String typeNotify) {
         String message = "";
 
-        if (typeNotify.equals(TYPE_NOTIFY_ADD_NEW_FORUM))
-            message = " đã thêm một diễn đàn mới: ";
-
         if (typeNotify.equals(TYPE_NOTIFY_NEW_POST_NEED_APPROVE))
-            message = " có bài viết mới cần phê duyệt: ";
+            message = " đã thêm một bài viết mới cần phê duyệt: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_APPROVE_POST))
             message = " đã phê duyệt bài vết của bạn: ";
@@ -104,6 +101,9 @@ public class Until {
 
         if (typeNotify.equals(TYPE_NOTIFY_REPLY_COMMENT))
             message = " đã trả lời bình luận của bạn về bài viết: ";
+
+        if (message.equals(""))
+            message = typeNotify;
 
         return message;
     }
@@ -139,10 +139,16 @@ public class Until {
     }
 
     // Thông báo cho tất cả người dùng khi admin đăng bài
-    public static void sendNotifyAllAccount(String role, Post post, List<Account> accounts, String typeNotify) {
+    public static void sendNotifyAllAccount(String role, Forum forum, Post post, List<Account> accounts, String typeNotify) {
         Notify notify = new Notify();
         notify.setNotifyId(new Date().getTime());
-        notify.setPostId(post.getPostId());
+
+        if (post != null)
+            notify.setPostId(post.getPostId());
+
+        if (forum != null)
+            notify.setForumId(forum.getForumId());
+
         notify.setAccountId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         notify.setStatus(STATUS_DISABLE);
         if (role.equals(ROLE_ADMIN))
