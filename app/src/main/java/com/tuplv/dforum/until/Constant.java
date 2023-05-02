@@ -26,6 +26,9 @@ public class Constant {
     public static final int PICK_IMAGE_REQUEST = 111;
     public static final int ONE_MINUTE = 65000;
 
+    public static final int MAX_LOGIN_ATTEMPTS = 6;
+    public static final long LOCK_DURATION_MS = 70 * 1000; // 70 giây
+
     public static final String TYPE_NOTIFY_ADMIN_ADD_POST = "ADMIN_ADD_POST";
     public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT";
     public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT";

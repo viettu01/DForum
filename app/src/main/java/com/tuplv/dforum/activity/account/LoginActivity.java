@@ -1,6 +1,8 @@
 package com.tuplv.dforum.activity.account;
 
 import static com.tuplv.dforum.until.Constant.IS_LOGIN_TRUE;
+import static com.tuplv.dforum.until.Constant.LOCK_DURATION_MS;
+import static com.tuplv.dforum.until.Constant.MAX_LOGIN_ATTEMPTS;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.ONE_MINUTE;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
@@ -48,6 +50,8 @@ import com.tuplv.dforum.activity.main.AdminMainActivity;
 import com.tuplv.dforum.activity.main.UserMainActivity;
 import com.tuplv.dforum.model.Account;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,10 +61,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView tvRegister, tvForgotPassword;
     Button btnLogin;
     EditText edtLoginEmail, edtLoginPassword;
-    ImageView ic_back_arrow_login;
+    ImageView ic_back_arrow_login, app_logo;
     ProgressDialog progressDialog;
     private String email, password, message;
     int count = 0;
+    boolean countDown = false;
     SharedPreferences sharedPreferences;
     //firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -84,6 +89,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ic_back_arrow_login = findViewById(R.id.ic_back_arrow_login);
         ic_back_arrow_login.setOnClickListener(this);
 
+        app_logo = findViewById(R.id.app_logo);
+        app_logo.setOnClickListener(this);
+
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
@@ -103,9 +111,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password = edtLoginPassword.getText().toString().trim();
     }
 
-    private void login(String accountId, String status, String role, String isLogin, long countLoginFail) {
-        if (!status.equals(STATUS_ENABLE)) {
-            alertNotify("Tài khoản của bạn đã bị khóa !");
+    private void login(String accountId, String status, String role, String isLogin, long countLoginFail, long lockedDate) {
+        if (new Date().getTime() >= (lockedDate + LOCK_DURATION_MS))
+            updateIsLoginAndStatus("status", accountId, STATUS_ENABLE);
+        else if (status.equals(STATUS_DISABLE)) {
+
+            Date date = new Date(lockedDate + LOCK_DURATION_MS);
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+            String unlockDate = simpleDateFormat.format(date);
+            alertNotify("Tài khoản của bạn đã bị khóa " + LOCK_DURATION_MS / (60000) + " phút đến " + unlockDate);
+
+            //alertNotify("Tài khoản của bạn đã bị khóa !");
             progressDialog.dismiss();
             return;
         }
@@ -129,21 +145,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         } else {
                             Exception exception = task.getException();
-                            int countLock = 6;
                             if (exception instanceof FirebaseAuthException) {
                                 String errorCode = ((FirebaseAuthException) exception).getErrorCode();
                                 if (errorCode.equals("ERROR_WRONG_PASSWORD")) {
-                                    lockAndUnLockAccount(countLoginFail, countLock, accountId, STATUS_DISABLE);
+                                    lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
                                     alertNotify(message);
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Đã xảy ra lỗi không xác định thử lại sau !", Toast.LENGTH_SHORT).show();
                                 }
                             } else if (exception instanceof FirebaseTooManyRequestsException) {
-                                lockAndUnLockAccount(countLoginFail, countLock, accountId, STATUS_DISABLE);
-                                alertNotify(message);
-//                                if (countLock > 5) {
-//                                    //countDownOneMinute(countLoginFail, countLock, accountId, role);
-//                                }
+                                if (countDown) {
+                                    countDownOneMinute(countLoginFail, accountId, role);
+                                    countDown = false;
+                                    return;
+                                } else {
+                                    lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
+                                    alertNotify(message);
+                                }
+
                             } else {
                                 Toast.makeText(LoginActivity.this, "lỗi khác!", Toast.LENGTH_SHORT).show();
                             }
@@ -153,15 +172,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    private void lockAndUnLockAccount(long countLoginFail, String accountId, String status, long lockedDate) {
+        if (countLoginFail + 1 >= MAX_LOGIN_ATTEMPTS) {
 
-    private void lockAndUnLockAccount(long countLoginFail, long countLock, String accountId, String status) {
-        if (countLoginFail + 1 >= countLock) {
-            message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Tài khoản của bạn đã bị khóa.";
+            Date date = new Date(lockedDate + LOCK_DURATION_MS);
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+            String unlockDate = simpleDateFormat.format(date);
+
+            //message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Tài khoản của bạn đã bị khóa.";
+            message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Tài khoản của bạn đã bị khóa " + (LOCK_DURATION_MS / 60000) + " phút đến " + unlockDate;
+            updateCountLoginFailAndLockedDate("lockedDate", accountId, new Date().getTime()); // cập nhật giờ hiện tại
             updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
             updateIsLoginAndStatus("status", accountId, status);
         } else {
+            message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Đến lần thứ " + MAX_LOGIN_ATTEMPTS + " tài khoản của bạn sẽ bị khóa.";
             updateCountLoginFailAndLockedDate("countLoginFail", accountId, countLoginFail + 1);
-            message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Đến lần thứ " + countLock + " tài khoản của bạn sẽ bị khóa.";
         }
     }
 
@@ -183,7 +208,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             count++;
 
-                            login(accountId, status, role, isLogin, countLoginFail);
+                            login(accountId, status, role, isLogin, countLoginFail, lockedDate);
                             break;
                         }
                     }
@@ -273,39 +298,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
-    private void countDownOneMinute(long countLoginFail, long countLock, String accountId, String role) {
+    private void countDownOneMinute(long countLoginFail, String accountId, String role) {
         progressDialog.show();
-        lockAndUnLockAccount(countLoginFail, countLock, accountId, STATUS_DISABLE);
-        Timer RunSplash = new Timer();
-        TimerTask timerTask = new TimerTask() {
+        lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, 0);
+        new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
+                lockAndUnLockAccount(countLoginFail, accountId, STATUS_ENABLE, 0);
+                updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void run() {
-                        lockAndUnLockAccount(countLoginFail, countLock, accountId, STATUS_ENABLE);
-                        updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
-                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null && user.isEmailVerified()) {
-                                        checkRole(role);
-                                        updateIsLoginAndStatus("isLogin", accountId, IS_LOGIN_TRUE);
-                                        updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
-                                    } else {
-                                        Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước !", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null && user.isEmailVerified()) {
+                                checkRole(role);
+                                updateIsLoginAndStatus("isLogin", accountId, IS_LOGIN_TRUE);
+                                updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước !", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                        progressDialog.dismiss();
+                        }
                     }
                 });
+                progressDialog.dismiss();
             }
-        };
-        RunSplash.schedule(timerTask, ONE_MINUTE);
+        }, ONE_MINUTE);
     }
 
     // Đóng bàn phím
@@ -344,6 +362,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.ic_back_arrow_login:
                 startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+                break;
+            case R.id.app_logo:
+                countDown = true;
                 break;
             case R.id.btnLogin:
                 closeKeyBoard();
