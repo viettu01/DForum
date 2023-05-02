@@ -3,10 +3,14 @@ package com.tuplv.dforum.until;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
-import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
-import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_NEW_FORUM;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADMIN_ADD_POST;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE_POST;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_NEW_POST_NEED_APPROVE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_NOT_APPROVE_POST;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_REPLY_COMMENT;
 
 import android.annotation.SuppressLint;
@@ -16,7 +20,6 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Notify;
@@ -81,11 +84,20 @@ public class Until {
     public static String formatNotify(String typeNotify) {
         String message = "";
 
-        if (typeNotify.equals(TYPE_NOTIFY_APPROVE))
+        if (typeNotify.equals(TYPE_NOTIFY_ADD_NEW_FORUM))
+            message = " đã thêm một diễn đàn mới: ";
+
+        if (typeNotify.equals(TYPE_NOTIFY_NEW_POST_NEED_APPROVE))
+            message = " có bài viết mới cần phê duyệt: ";
+
+        if (typeNotify.equals(TYPE_NOTIFY_APPROVE_POST))
             message = " đã phê duyệt bài vết của bạn: ";
 
-        if (typeNotify.equals(TYPE_NOTIFY_ADD_POST))
-            message = " đã thêm một bài viết mới: ";
+        if (typeNotify.equals(TYPE_NOTIFY_NOT_APPROVE_POST))
+            message = " bài viết của bạn không được phê duyệt: ";
+
+        if (typeNotify.equals(TYPE_NOTIFY_ADMIN_ADD_POST))
+            message = " (Admin) đã thêm một bài viết mới: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_ADD_COMMENT))
             message = " đã bình luận bài vết của bạn: ";
@@ -128,15 +140,23 @@ public class Until {
 
     // Thông báo cho tất cả người dùng khi admin đăng bài
     public static void sendNotifyAllAccount(String role, Post post, List<Account> accounts, String typeNotify) {
-        if (role.equals(ROLE_ADMIN)) {
-            Notify notify = new Notify();
-            notify.setNotifyId(new Date().getTime());
-            notify.setPostId(post.getPostId());
-            notify.setAccountId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-            notify.setStatus(STATUS_DISABLE);
+        Notify notify = new Notify();
+        notify.setNotifyId(new Date().getTime());
+        notify.setPostId(post.getPostId());
+        notify.setAccountId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        notify.setStatus(STATUS_DISABLE);
+        if (role.equals(ROLE_ADMIN))
             notify.setTypeNotify(typeNotify);
-            for (Account account : accounts) {
-                if (!account.getAccountId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+
+        if (role.equals(ROLE_USER))
+            notify.setTypeNotify(TYPE_NOTIFY_NEW_POST_NEED_APPROVE);
+
+        for (Account account : accounts) {
+            if (!account.getAccountId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                if (role.equals(ROLE_ADMIN))
+                    FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
+                            .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
+                if (role.equals(ROLE_USER) && account.getRole().equals(ROLE_ADMIN))
                     FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
                             .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
             }

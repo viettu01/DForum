@@ -4,12 +4,11 @@ import static com.tuplv.dforum.until.Constant.CHIA_SE_KIEN_THUC;
 import static com.tuplv.dforum.until.Constant.HOI_DAP;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
-import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
-import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_POST;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADMIN_ADD_POST;
 import static com.tuplv.dforum.until.Until.sendNotifyAllAccount;
 
 import android.annotation.SuppressLint;
@@ -39,7 +38,6 @@ import com.tuplv.dforum.adapter.CategorySpinnerAdapter;
 import com.tuplv.dforum.adapter.ForumSpinnerAdapter;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Forum;
-import com.tuplv.dforum.model.Notify;
 import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
@@ -192,7 +190,7 @@ public class AddPostActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(sharedPreferences.getString("role", ""), post, accounts, TYPE_NOTIFY_ADD_POST);
+        sendNotifyAllAccount(sharedPreferences.getString("role", ""), post, accounts, TYPE_NOTIFY_ADMIN_ADD_POST);
     }
 
     // Thông báo cho tất cả người dùng khi admin đăng bài

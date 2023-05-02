@@ -33,7 +33,6 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Notify;
-import com.tuplv.dforum.model.Post;
 
 import java.util.List;
 import java.util.Objects;
@@ -65,9 +64,9 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notify notify = notifies.get(position);
-        if (notify.getStatus().equals(STATUS_ENABLE)) {
+        if (notify.getStatus().equals(STATUS_ENABLE))
             holder.llItemListNotify.setBackgroundColor(Color.WHITE);
-        }
+
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
