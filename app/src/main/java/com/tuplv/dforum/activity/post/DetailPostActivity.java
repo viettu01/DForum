@@ -168,9 +168,11 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         imvNotify = findViewById(R.id.imvNotify);
 
         post = (Post) getIntent().getSerializableExtra("post");
-        if (post.getStatusNotify() == null)
+        if (post.getStatusNotify() == null){
             updateStatusNotifyPost(STATUS_ENABLE);
-        post.setStatusNotify(STATUS_ENABLE);
+            post.setStatusNotify(STATUS_ENABLE);
+        }
+
         if (post.getStatusNotify().equals(STATUS_DISABLE))
             imvNotify.setImageResource(R.drawable.notifications_active_24);
         else
