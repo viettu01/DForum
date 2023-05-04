@@ -86,10 +86,11 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
         rvListPostApprove.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST)
                 .orderByChild("status").equalTo(STATUS_DISABLE)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dsPost) {
+                        posts.clear();
                         for (DataSnapshot dataSnapshot : dsPost.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
                             posts.add(post);

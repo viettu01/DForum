@@ -107,24 +107,23 @@ public class AddPostActivity extends AppCompatActivity {
         forumSpinnerAdapter = new ForumSpinnerAdapter(this, forums);
         spnForum.setAdapter(forumSpinnerAdapter);
 
-        FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference(OBJ_FORUM).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                forums.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Forum forum = dataSnapshot.getValue(Forum.class);
                     forums.add(forum);
                 }
                 forumSpinnerAdapter.notifyDataSetChanged();
 
-                if (forum != null){
-                    int index = 0;
+                if (forum != null) {
                     for (int i = 0; i < spnForum.getCount(); i++) {
                         Forum f = (Forum) spnForum.getItemAtPosition(i);
                         if (f.getName().equals(forum.getName()))
-                            index = i;
+                            spnForum.setSelection(i);
                     }
-                    spnForum.setSelection(index);
                 }
             }
 
@@ -193,23 +192,6 @@ public class AddPostActivity extends AppCompatActivity {
         sendNotifyAllAccount(sharedPreferences.getString("role", ""), null, post, accounts, TYPE_NOTIFY_ADMIN_ADD_POST);
     }
 
-    // Thông báo cho tất cả người dùng khi admin đăng bài
-//    private void sendNotifyAllAccount(Post post) {
-//        if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
-//            Notify notify = new Notify();
-//            notify.setNotifyId(new Date().getTime());
-//            notify.setPostId(post.getPostId());
-//            notify.setAccountId(user.getUid());
-//            notify.setStatus(STATUS_DISABLE);
-//            notify.setTypeNotify(TYPE_NOTIFY_ADD_POST);
-//            for (Account account : accounts) {
-//                if (!account.getAccountId().equals(user.getUid()))
-//                    FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(account.getAccountId())
-//                            .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify);
-//            }
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar_add_post, menu);
@@ -221,11 +203,10 @@ public class AddPostActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mnuSavePost) {
-            if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty()) {
+            if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty())
                 Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
-            } else {
+            else
                 addPost();
-            }
         }
         return super.onOptionsItemSelected(item);
     }

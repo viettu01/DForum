@@ -29,12 +29,12 @@ public class Constant {
     public static final int MAX_LOGIN_ATTEMPTS = 6;
     public static final long LOCK_DURATION_MS = 70 * 1000; // 70 giây
 
-    public static final String TYPE_NOTIFY_ADMIN_ADD_POST = "ADMIN_ADD_POST";
-    public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT";
-    public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT";
-    public static final String TYPE_NOTIFY_NEW_POST_NEED_APPROVE = "NEW_POST_NEED_APPROVE";
-    public static final String TYPE_NOTIFY_APPROVE_POST = "APPROVE_POST";
-    public static final String TYPE_NOTIFY_NOT_APPROVE_POST = "NOT_APPROVE_POST";
+    public static final String TYPE_NOTIFY_ADMIN_ADD_POST = "ADMIN_ADD_POST"; // Admin thêm bài viết mới
+    public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT"; // khi bình luận
+    public static final String TYPE_NOTIFY_REPLY_COMMENT = "REPLY_COMMENT"; // Khi trả lời bình luận
+    public static final String TYPE_NOTIFY_NEW_POST_NEED_APPROVE = "NEW_POST_NEED_APPROVE"; // Khi user thêm bài viết mới cần admin duyệt
+    public static final String TYPE_NOTIFY_APPROVE_POST = "APPROVE_POST"; // Khi duyệt bài viết
+    public static final String TYPE_NOTIFY_NOT_APPROVE_POST = "NOT_APPROVE_POST"; // Khi không duyệt bài viết
 
     public static final String TYPE_UPDATE_COMMENT = "UPDATE_COMMENT";
     public static final String TYPE_UPDATE_REP_COMMENT = "UPDATE_REP_COMMENT";

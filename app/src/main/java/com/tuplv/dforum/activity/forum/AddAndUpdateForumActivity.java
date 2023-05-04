@@ -2,6 +2,7 @@ package com.tuplv.dforum.activity.forum;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
+import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Until.sendNotifyAllAccount;
 
 import android.annotation.SuppressLint;
@@ -40,7 +41,6 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
     ProgressBar pbForum;
     Toolbar tbAddNewForum;
     Forum forum;
-    SharedPreferences sharedPreferences;
     Account currentAccountLogin;
     List<Account> accounts;
 
@@ -85,7 +85,6 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
         tbAddNewForum = findViewById(R.id.tbAddNewForum);
         setSupportActionBar(tbAddNewForum);
         pbForum = findViewById(R.id.pbForum);
-        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
         accounts = new ArrayList<>();
     }
 
@@ -106,7 +105,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(sharedPreferences.getString("role", ""), forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
+        sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
     }
 
     @SuppressLint("SetTextI18n")
@@ -136,7 +135,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(sharedPreferences.getString("role", ""), forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
+        sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
     }
 
     // Lấy danh sách tài khoản và lấy thông tin tài khoản đang đăng nhập

@@ -109,7 +109,7 @@ public class Until {
         return message;
     }
 
-    // Gửi thông báo cho chủ bài viết
+    // Gửi thông báo cho chủ bài viết và chủ bình luận
     public static void sendNotifyToAuthor(Post post, String typeNotify, String accountIdComment) {
         if (!post.getAccountId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
             Notify notify = new Notify();
@@ -144,7 +144,7 @@ public class Until {
         }
     }
 
-    // Thông báo cho tất cả người dùng khi admin đăng bài
+    // Thông báo cho tất cả người dùng
     public static void sendNotifyAllAccount(String role, Forum forum, Post post, List<Account> accounts, String typeNotify) {
         Notify notify = new Notify();
         notify.setNotifyId(new Date().getTime());
