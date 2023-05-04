@@ -71,6 +71,7 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
         this.postId = postId;
         this.commentId = commentId;
         this.repComments = repComments;
+        this.sharedPreferences = context.getSharedPreferences("account", Context.MODE_PRIVATE);
     }
     @NonNull
     @Override
@@ -126,20 +127,12 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
         View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
+                showPopupMenu(holder, comment);
                 return false;
             }
         };
         holder.itemView.setOnLongClickListener(onLongClickListener);
         holder.tvContentComment.setOnLongClickListener(onLongClickListener);
-
-        holder.tvRepComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //listener.goToActivityComment(comment, account[0].getNickName());
-            }
-        });
-
     }
 
     @Override
@@ -164,7 +157,7 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
     }
 
     @SuppressLint("RestrictedApi, NonConstantResourceId")
-    private void showPopupMenu(RepCommentAdapter.ViewHolder holder, Comment repComment, Uri avatarUri) {
+    private void showPopupMenu(RepCommentAdapter.ViewHolder holder, Comment repComment) {
         MenuBuilder menuBuilder = new MenuBuilder(context);
         MenuInflater menuInflater = new MenuInflater(context);
         menuInflater.inflate(R.menu.menu_popup_item_comment, menuBuilder);
@@ -190,7 +183,6 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
                         break;
                     case R.id.mnuEditComment:
                         Intent intent = new Intent(context, UpdateCommentActivity.class);
-                        intent.putExtra("avatarUri", String.valueOf(avatarUri));
                         intent.putExtra("comment", repComment);
                         intent.putExtra("postId", String.valueOf(postId));
                         intent.putExtra("commentId", String.valueOf(commentId));

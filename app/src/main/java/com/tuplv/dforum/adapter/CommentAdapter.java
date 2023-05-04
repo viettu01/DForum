@@ -122,7 +122,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                showPopupMenu(holder, comment, Uri.parse(account[0].getAvatarUri()));
+                showPopupMenu(holder, comment);
                 return false;
             }
         };
@@ -182,7 +182,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @SuppressLint("RestrictedApi, NonConstantResourceId")
-    private void showPopupMenu(CommentAdapter.ViewHolder holder, Comment comment, Uri avatarUri) {
+    private void showPopupMenu(CommentAdapter.ViewHolder holder, Comment comment) {
         MenuBuilder menuBuilder = new MenuBuilder(context);
         MenuInflater menuInflater = new MenuInflater(context);
         menuInflater.inflate(R.menu.menu_popup_item_comment, menuBuilder);
@@ -207,7 +207,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         listener.onDeleteClick(comment);
                         break;
                     case R.id.mnuEditComment:
-                        listener.goToActivityUpdate(comment, avatarUri);
+                        listener.goToActivityUpdate(comment);
                         break;
                     case R.id.mnuCopyComment:
                         copyCommentToClipboard(comment.getContent());

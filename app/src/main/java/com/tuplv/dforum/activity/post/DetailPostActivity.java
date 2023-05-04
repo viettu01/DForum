@@ -316,9 +316,8 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     }
 
     @Override
-    public void goToActivityUpdate(Comment comment, Uri avatarUri) {
+    public void goToActivityUpdate(Comment comment) {
         Intent intent = new Intent(this, UpdateCommentActivity.class);
-        intent.putExtra("avatarUri", String.valueOf(avatarUri));
         intent.putExtra("comment", comment);
         intent.putExtra("postId", String.valueOf(post.getPostId()));
         intent.putExtra("typeUpdate", TYPE_UPDATE_COMMENT);

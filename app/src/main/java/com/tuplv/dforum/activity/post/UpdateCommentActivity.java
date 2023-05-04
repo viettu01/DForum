@@ -1,5 +1,6 @@
 package com.tuplv.dforum.activity.post;
 
+import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
@@ -15,12 +16,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
 
 import java.util.HashMap;
@@ -42,10 +49,25 @@ public class UpdateCommentActivity extends AppCompatActivity implements View.OnC
 
         init();
 
-        if (avatarUri.equals("null")) {
-            Objects.requireNonNull(imvAvatar).setImageResource(R.drawable.no_avatar);
-        } else
-            Picasso.get().load(Uri.parse(avatarUri)).into(imvAvatar);
+        FirebaseDatabase.getInstance().getReference()
+                .child(OBJ_ACCOUNT)
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .child("avatarUri")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            if (Objects.equals(snapshot.getValue(String.class), "null"))
+                                imvAvatar.setImageResource(R.drawable.no_avatar);
+                            else
+                                Picasso.get().load(Uri.parse(snapshot.getValue(String.class))).into(imvAvatar);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
         Objects.requireNonNull(edtContentComment).setText(comment.getContent());
 
         tbUpdateComment.setNavigationOnClickListener(new View.OnClickListener() {
