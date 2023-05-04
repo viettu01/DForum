@@ -5,6 +5,7 @@ import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADMIN_ADD_POST;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE_POST;
@@ -117,15 +118,20 @@ public class Until {
             notify.setAccountId(FirebaseAuth.getInstance().getCurrentUser().getUid());
             notify.setStatus(STATUS_DISABLE);
             notify.setTypeNotify(typeNotify);
-            FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(post.getAccountId())
-                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            task.isSuccessful();
-                        }
-                    });
+
+            if (post.getStatusNotify().equals(STATUS_ENABLE)){
+                FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(post.getAccountId())
+                        .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                task.isSuccessful();
+                            }
+                        });
+            }
+
             if (accountIdComment != null) {
+                notify.setTypeNotify(TYPE_NOTIFY_REPLY_COMMENT);
                 FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(accountIdComment)
                         .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

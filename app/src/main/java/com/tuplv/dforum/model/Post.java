@@ -15,8 +15,17 @@ public class Post implements Serializable {
     private long createdDate; //Ngày tạo
     private long view;
     private String status;
+    private String statusNotify;
 
     public Post() {
+    }
+
+    public String getStatusNotify() {
+        return statusNotify;
+    }
+
+    public void setStatusNotify(String statusNotify) {
+        this.statusNotify = statusNotify;
     }
 
     public long getPostId() {

@@ -4,6 +4,8 @@ import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
+import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_REPLY_COMMENT;
 import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_COMMENT;
@@ -53,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +66,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
     LinearLayout llRepComment;
     RecyclerView rvComment;
     EditText edtComment;
-    ImageView imvAvatar, imvSendComment;
+    ImageView imvAvatar, imvSendComment, imvNotify;
     CommentAdapter commentAdapter;
     List<Comment> comments;
 
@@ -80,7 +83,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         setContentView(R.layout.activity_detail_post);
         init();
 
-        getDetailPost();
+        getAuthorPost();
         getAllComment();
 
         tbDetailPost.setNavigationOnClickListener(new View.OnClickListener() {
@@ -128,6 +131,21 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         };
         tvContentPost.setOnLongClickListener(onLongClickListener);
         tvTitlePost.setOnLongClickListener(onLongClickListener);
+
+        imvNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (post.getStatusNotify().equals(STATUS_ENABLE)) {
+                    post.setStatusNotify(STATUS_DISABLE);
+                    imvNotify.setImageResource(R.drawable.notifications_active_24);
+                }
+                else {
+                    post.setStatusNotify(STATUS_ENABLE);
+                    imvNotify.setImageResource(R.drawable.notifications_off_24);
+                }
+                updateStatusNotifyPost(post.getStatusNotify());
+            }
+        });
     }
 
     private void init() {
@@ -147,12 +165,24 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         tvNameAuthorRepComment = findViewById(R.id.tvNameAuthorRepComment);
         tvCancelRepComment = findViewById(R.id.tvCancelRepComment);
 
+        imvNotify = findViewById(R.id.imvNotify);
+
         post = (Post) getIntent().getSerializableExtra("post");
+        if (post.getStatusNotify() == null)
+            updateStatusNotifyPost(STATUS_ENABLE);
+        post.setStatusNotify(STATUS_ENABLE);
+        if (post.getStatusNotify().equals(STATUS_DISABLE))
+            imvNotify.setImageResource(R.drawable.notifications_active_24);
+        else
+            imvNotify.setImageResource(R.drawable.notifications_off_24);
+
+        if (!user.getUid().equals(post.getAccountId()))
+            imvNotify.setVisibility(View.GONE);
     }
 
     // Lấy thông tin chi tiết bài viết
     @SuppressLint("SimpleDateFormat")
-    private void getDetailPost() {
+    private void getAuthorPost() {
         if (post != null) {
             reference.child(OBJ_ACCOUNT).child(post.getAccountId())
                     .addValueEventListener(new ValueEventListener() {
@@ -340,7 +370,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                                 Toast.makeText(DetailPostActivity.this, "Có lỗi xảy ra, thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
-            sendNotifyToAuthor(post, TYPE_NOTIFY_REPLY_COMMENT, accountIdComment);
+            sendNotifyToAuthor(post, TYPE_NOTIFY_ADD_COMMENT, accountIdComment);
             //sendNotifyToAuthor();
         }
     }
@@ -353,5 +383,12 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
 
         // hiển thị thông báo cho người dùng
         Toast.makeText(DetailPostActivity.this, "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT).show();
+    }
+
+    //cập nhật trạng thái thông bái bài viết
+    private void updateStatusNotifyPost(String statusNotify) {
+        HashMap<String, Object> updateStatusNotifyPost = new HashMap<>();
+        updateStatusNotifyPost.put("statusNotify", statusNotify);
+        reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).updateChildren(updateStatusNotifyPost);
     }
 }
