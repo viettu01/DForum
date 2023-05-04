@@ -233,7 +233,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
 
         Intent intent = new Intent(this, DetailPostActivity.class);
         intent.putExtra("post", post);
-
         startActivity(intent);
     }
 
@@ -254,6 +253,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         filter = null;
                         break;
                     case R.id.mnuFilterQA:
+//                        filter = "Hỏi đáp";
                         filter = HOI_DAP;
                         break;
                     case R.id.mnuFilterShareKnowledge:

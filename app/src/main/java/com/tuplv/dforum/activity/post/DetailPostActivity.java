@@ -4,6 +4,10 @@ import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
+import static com.tuplv.dforum.until.Constant.SORT_DECREASE_VIEWS;
+import static com.tuplv.dforum.until.Constant.SORT_EARLIEST;
+import static com.tuplv.dforum.until.Constant.SORT_INCREASE_VIEWS;
+import static com.tuplv.dforum.until.Constant.SORT_OLDEST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
@@ -172,6 +176,22 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             updateStatusNotifyPost(STATUS_ENABLE);
             post.setStatusNotify(STATUS_ENABLE);
         }
+
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).child("statusNotify")
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dsPost) {
+                        if (dsPost.exists()) {
+                            post.setStatusNotify(dsPost.getValue(String.class));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         if (post.getStatusNotify().equals(STATUS_DISABLE))
             imvNotify.setImageResource(R.drawable.notifications_active_24);
