@@ -118,20 +118,8 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         posts.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
-                            if (filter == null) {
+                            if (filter == null || post.getCategoryName().equals(filter))
                                 posts.add(post);
-                            } else {
-                                if (filter.equals(HOI_DAP)) {
-                                    if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
-                                        posts.add(post);
-                                    }
-                                }
-                                if (filter.equals(CHIA_SE_KIEN_THUC)) {
-                                    if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
-                                        posts.add(post);
-                                    }
-                                }
-                            }
                         }
                         if (posts.size() > 0) {
                             tvNoPost.setVisibility(View.GONE);
@@ -177,22 +165,9 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         posts.clear();
                         for (DataSnapshot dataSnapshot : dsPost.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
-                            if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE)) {
-                                if (filter == null) {
+                            if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE))
+                                if (filter == null || post.getCategoryName().equals(filter))
                                     posts.add(post);
-                                } else {
-                                    if (filter.equals(HOI_DAP)) {
-                                        if (post.getCategoryName().equalsIgnoreCase(HOI_DAP)) {
-                                            posts.add(post);
-                                        }
-                                    }
-                                    if (filter.equals(CHIA_SE_KIEN_THUC)) {
-                                        if (post.getCategoryName().equalsIgnoreCase(CHIA_SE_KIEN_THUC)) {
-                                            posts.add(post);
-                                        }
-                                    }
-                                }
-                            }
                         }
                         if (posts.size() > 0) {
                             tvNoPost.setVisibility(View.GONE);
@@ -243,8 +218,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                     Intent intent = new Intent(this, AddPostActivity.class);
                     intent.putExtra("forum", forum);
                     startActivity(intent);
-                }
-                else
+                } else
                     Toast.makeText(this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
                 break;
         }

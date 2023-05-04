@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
         forums = new ArrayList<>();
     }
 
+    // Hiển thị 5 danh sách diễn đàn mới nhất
     private void getListForumFeatured() {
         forumAdapter = new ForumAdapter(requireActivity(), R.layout.item_forum, forums, this);
         rvListForumFeatured.setAdapter(forumAdapter);
