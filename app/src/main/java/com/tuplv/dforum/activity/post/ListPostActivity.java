@@ -8,13 +8,18 @@ import static com.tuplv.dforum.until.Constant.SORT_EARLIEST;
 import static com.tuplv.dforum.until.Constant.SORT_INCREASE_VIEWS;
 import static com.tuplv.dforum.until.Constant.SORT_OLDEST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+import static com.tuplv.dforum.until.Constant.TYPE_END_DATE;
+import static com.tuplv.dforum.until.Constant.TYPE_START_DATE;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,22 +44,31 @@ import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Forum;
 import com.tuplv.dforum.model.Post;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ListPostActivity extends AppCompatActivity implements View.OnClickListener, OnPostClickListener {
 
     Toolbar tbListPost;
-    TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost, tvSortPost;
+    TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost, tvSortPost, tvStartDate, tvEndDate;
     ImageView imvFilterPost, imvSortPost;
     RecyclerView rvListPost;
     FloatingActionButton fabAddPost;
     PostAdapter postAdapter;
     List<Post> posts;
     Forum forum;
+    Button btnFilterDate;
+    int typeDatePicker;
+
+    private final Calendar startDate = Calendar.getInstance();
+    private final Calendar endDate = Calendar.getInstance();
 
     String filter, sort;
 
@@ -69,6 +83,41 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             }
         });
+    }
+
+    // hiện dialog để chọn ngày
+    private void showDatePickerDialog() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                if (typeDatePicker == TYPE_START_DATE) {
+                    startDate.set(year, month, dayOfMonth);
+                    tvStartDate.setText(formatDate(startDate.getTime()));
+                } else if (typeDatePicker == TYPE_END_DATE) {
+                    endDate.set(year, month, dayOfMonth);
+                    tvEndDate.setText(formatDate(endDate.getTime()));
+                }
+            }
+        };
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                dateSetListener,
+                startDate.get(Calendar.YEAR),
+                startDate.get(Calendar.MONTH),
+                startDate.get(Calendar.DAY_OF_MONTH)
+        );
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.show();
+        }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        return sdf.format(date);
+    }
+
+    private boolean checkDate(long startDate, long centerDate, long endDate) {
+        return startDate <= centerDate && endDate >= centerDate;
     }
 
     @Override
@@ -95,6 +144,10 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         fabAddPost = findViewById(R.id.fabAddPost);
         imvSortPost = findViewById(R.id.imvSortPost);
 
+        btnFilterDate = findViewById(R.id.btnFilterDate);
+        tvStartDate = findViewById(R.id.tvStartDate);
+        tvEndDate = findViewById(R.id.tvEndDate);
+
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(this, R.layout.item_post, posts, this);
         rvListPost.setAdapter(postAdapter);
@@ -107,6 +160,10 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         imvFilterPost.setOnClickListener(this);
         imvSortPost.setOnClickListener(this);
         fabAddPost.setOnClickListener(this);
+
+        btnFilterDate.setOnClickListener(this);
+        tvStartDate.setOnClickListener(this);
+        tvEndDate.setOnClickListener(this);
     }
 
     private void getAllPost(String filter, String sort) {
@@ -118,7 +175,9 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         posts.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
-                            if (filter == null || post.getCategoryName().equals(filter))
+                            if (filter == null || Objects.requireNonNull(post).getCategoryName().equals(filter))
+                                posts.add(post);
+                            else if (filter.equals("filterDate") && checkDate(startDate.getTimeInMillis(), post.getCreatedDate(), endDate.getTimeInMillis()))
                                 posts.add(post);
                         }
                         if (posts.size() > 0) {
@@ -168,6 +227,8 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                             if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE))
                                 if (filter == null || post.getCategoryName().equals(filter))
                                     posts.add(post);
+                                else if (filter.equals("filterDate") && checkDate(startDate.getTimeInMillis(), post.getCreatedDate(), endDate.getTimeInMillis()))
+                                    posts.add(post);
                         }
                         if (posts.size() > 0) {
                             tvNoPost.setVisibility(View.GONE);
@@ -213,6 +274,21 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             case R.id.imvSortPost:
                 showPopupMenuSort();
                 break;
+            case R.id.tvStartDate:
+                typeDatePicker = TYPE_START_DATE;
+                showDatePickerDialog();
+                break;
+            case R.id.tvEndDate:
+                typeDatePicker = TYPE_END_DATE;
+                showDatePickerDialog();
+                break;
+            case R.id.btnFilterDate:
+                filter = "filterDate";
+                if (forum.getForumId() == 0)
+                    getAllPost(filter, sort);
+                else
+                    getPostByForumId(filter, sort);
+                break;
             case R.id.fabAddPost:
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                     Intent intent = new Intent(this, AddPostActivity.class);
@@ -253,7 +329,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         filter = null;
                         break;
                     case R.id.mnuFilterQA:
-//                        filter = "Hỏi đáp";
                         filter = HOI_DAP;
                         break;
                     case R.id.mnuFilterShareKnowledge:
@@ -323,3 +398,18 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         menuPopupHelper.show();
     }
 }
+
+//    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//try {
+//        Date d1 = sdf.parse(date1);
+//        Date d2 = sdf.parse(date2);
+//        if (d1.compareTo(d2) < 0) {
+//        // date1 < date2
+//        } else if (d1.compareTo(d2) > 0) {
+//        // date1 > date2
+//        } else {
+//        // date1 == date2
+//        }
+//        } catch (ParseException e) {
+//        e.printStackTrace();
+//        }
