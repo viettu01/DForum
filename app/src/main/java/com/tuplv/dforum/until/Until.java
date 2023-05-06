@@ -89,7 +89,7 @@ public class Until {
             message = " đã thêm một bài viết mới cần phê duyệt: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_APPROVE_POST))
-            message = " đã phê duyệt bài vết của bạn: ";
+            message = " đã phê duyệt bài viết của bạn: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_NOT_APPROVE_POST))
             message = " bài viết của bạn không được phê duyệt: ";
@@ -98,7 +98,7 @@ public class Until {
             message = " (Admin) đã thêm một bài viết mới: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_ADD_COMMENT))
-            message = " đã bình luận bài vết của bạn: ";
+            message = " đã bình luận bài viết của bạn: ";
 
         if (typeNotify.equals(TYPE_NOTIFY_REPLY_COMMENT))
             message = " đã trả lời bình luận của bạn về bài viết: ";
