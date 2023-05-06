@@ -204,7 +204,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                             .updateChildren(updateView);
                     Toast.makeText(PostApproveActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
                     getAllPostApprove();
-                    sendNotifyToAuthor(post, "Bài viết của bạn không được duyệt vì lý do: " + reason, null);
+                    sendNotifyToAuthor(post, " (Admin) không duyệt bài viết của bạn vì lý do: " + reason, null);
                     dialog.dismiss();
                 }
             }
