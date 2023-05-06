@@ -3,6 +3,7 @@ package com.tuplv.dforum.until;
 public class Constant {
     public static final String STATUS_ENABLE = "ENABLE";
     public static final String STATUS_DISABLE = "DISABLE";
+    public static final String STATUS_NO_APPROVE_POST = "NO_APPROVE_POST";
 
     public static final String IS_LOGIN_TRUE = "TRUE";
     public static final String IS_LOGIN_FALSE = "FALSE";

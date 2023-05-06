@@ -119,7 +119,7 @@ public class Until {
             notify.setStatus(STATUS_DISABLE);
             notify.setTypeNotify(typeNotify);
 
-            if (post.getStatusNotify().equals(STATUS_ENABLE)){
+            if (post.getStatusNotify() == null || post.getStatusNotify().equals(STATUS_ENABLE)) {
                 FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(post.getAccountId())
                         .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

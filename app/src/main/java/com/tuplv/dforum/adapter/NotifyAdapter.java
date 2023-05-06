@@ -3,6 +3,7 @@ package com.tuplv.dforum.adapter;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+import static com.tuplv.dforum.until.Constant.STATUS_NO_APPROVE_POST;
 import static com.tuplv.dforum.until.Until.formatNotify;
 import static com.tuplv.dforum.until.Until.formatTime;
 
@@ -33,6 +34,7 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnNotifyClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Notify;
+import com.tuplv.dforum.model.Post;
 
 import java.util.List;
 import java.util.Objects;
@@ -87,14 +89,13 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
                 });
 
         if (notify.getPostId() != 0)
-            FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId())).child("title")
+            FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(notify.getPostId()))
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                String title = snapshot.getValue(String.class);
-                                holder.tvContentNotify.setText(holder.tvContentNotify.getText().toString() + title);
-                            }
+                            Post post = snapshot.getValue(Post.class);
+                            if (!Objects.requireNonNull(post).getStatus().equals(STATUS_NO_APPROVE_POST))
+                                holder.tvContentNotify.setText(holder.tvContentNotify.getText().toString() + post.getTitle());
                         }
 
                         @Override
