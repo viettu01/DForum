@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
 
         init(view);
 
-        getListForumById();
+
         return view;
     }
 
@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
         rvListForumFeatured.setAdapter(forumAdapter);
         rvListForumFeatured.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
-        Toast.makeText(getActivity(), "forumIds: " + forumIds.size(), Toast.LENGTH_SHORT).show();
+
         forums.clear();
         for (long forumId : forumIds) {
             FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forumId))
@@ -150,7 +150,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
     @Override
     public void onResume() {
         super.onResume();
-//        getListForumFeatured();
+        getListForumFeatured();
 //        getListForumById();
     }
 

@@ -135,13 +135,13 @@ public class AddPostActivity extends AppCompatActivity {
                 }
                 forumSpinnerAdapter.notifyDataSetChanged();
 
-                if (forum != null) {
-                    for (int i = 0; i < spnForum.getCount(); i++) {
-                        Forum f = (Forum) spnForum.getItemAtPosition(i);
-                        if (f.getName().equals(forum.getName()))
-                            spnForum.setSelection(i);
-                    }
-                }
+//                if (forum != null) {
+//                    for (int i = 0; i < spnForum.getCount(); i++) {
+//                        Forum f = (Forum) spnForum.getItemAtPosition(i);
+//                        if (f.getName().equals(forum.getName()))
+//                            spnForum.setSelection(i);
+//                    }
+//                }
             }
 
             @Override
