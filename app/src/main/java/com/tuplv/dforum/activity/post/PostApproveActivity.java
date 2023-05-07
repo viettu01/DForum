@@ -4,6 +4,7 @@ import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_NO_APPROVE_POST;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE_POST;
 import static com.tuplv.dforum.until.Until.sendNotifyToAuthor;
 
 import android.annotation.SuppressLint;
@@ -133,6 +134,7 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                 Toast.makeText(PostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                 posts.clear();
                 getAllPostApprove();
+                sendNotifyToAuthor(post, TYPE_NOTIFY_APPROVE_POST,null);
             }
         });
         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -234,9 +236,11 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                     for (Post post : posts) {
                         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                                 .updateChildren(updateView);
+                        sendNotifyToAuthor(post, TYPE_NOTIFY_APPROVE_POST,null);
                     }
                     Toast.makeText(PostApproveActivity.this, "Tất cả bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                     getAllPostApprove();
+
                 }
             });
             builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

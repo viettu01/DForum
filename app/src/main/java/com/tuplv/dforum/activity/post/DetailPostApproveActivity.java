@@ -3,6 +3,8 @@ package com.tuplv.dforum.activity.post;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE_POST;
+import static com.tuplv.dforum.until.Until.sendNotifyToAuthor;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -118,6 +120,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                 updateView.put("approveDate", new Date().getTime());
                 FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                         .updateChildren(updateView);
+                sendNotifyToAuthor(post, TYPE_NOTIFY_APPROVE_POST,null);
                 Toast.makeText(DetailPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                 finish();
             }
