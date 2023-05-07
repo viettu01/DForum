@@ -130,7 +130,7 @@ public class Until {
                         });
             }
 
-            if (accountIdComment != null) {
+            if (accountIdComment != null && !accountIdComment.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 notify.setTypeNotify(TYPE_NOTIFY_REPLY_COMMENT);
                 FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(accountIdComment)
                         .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)

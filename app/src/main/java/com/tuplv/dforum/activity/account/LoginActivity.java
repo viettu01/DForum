@@ -100,7 +100,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
-        //progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressDialog.setMessage("Đang đăng nhập");
 
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
@@ -110,18 +109,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         email = edtLoginEmail.getText().toString().trim();
         password = edtLoginPassword.getText().toString().trim();
     }
-
     private void login(String accountId, String status, String role, String isLogin, long countLoginFail, long lockedDate) {
-        if (new Date().getTime() >= (lockedDate + LOCK_DURATION_MS))
-            updateIsLoginAndStatus("status", accountId, STATUS_ENABLE);
-        else if (status.equals(STATUS_DISABLE)) {
+//        if (new Date().getTime() >= (lockedDate + LOCK_DURATION_MS))
+//            updateIsLoginAndStatus("status", accountId, STATUS_ENABLE);
+//        else
+            if (status.equals(STATUS_DISABLE)) {
 
-            Date date = new Date(lockedDate + LOCK_DURATION_MS);
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-            String unlockDate = simpleDateFormat.format(date);
-            alertNotify("Tài khoản của bạn đã bị khóa " + LOCK_DURATION_MS / (60000) + " phút đến " + unlockDate);
+//            Date date = new Date(lockedDate + LOCK_DURATION_MS);
+//            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+//            String unlockDate = simpleDateFormat.format(date);
+//            alertNotify("Tài khoản của bạn đã bị khóa " + LOCK_DURATION_MS / (60000) + " phút đến " + unlockDate);
 
-            //alertNotify("Tài khoản của bạn đã bị khóa !");
+            alertNotify("Tài khoản của bạn đã bị khóa !");
             progressDialog.dismiss();
             return;
         }
@@ -149,8 +148,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (exception instanceof FirebaseAuthException) {
                                 String errorCode = ((FirebaseAuthException) exception).getErrorCode();
                                 if (errorCode.equals("ERROR_WRONG_PASSWORD")) {
-                                    //lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
-                                    alertNotify(message);
+//                                    lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
+//                                    alertNotify(message);
+                                    alertNotify("Mật khẩu không chính xác");
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Đã xảy ra lỗi không xác định thử lại sau !", Toast.LENGTH_SHORT).show();
                                 }
@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     countDown = false;
                                     return;
                                 } else {
-                                   // lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
+                                    //lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
                                     alertNotify(message);
                                 }
 
@@ -181,8 +181,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String unlockDate = simpleDateFormat.format(date);
 
             //message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Tài khoản của bạn đã bị khóa.";
-            message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Tài khoản của bạn đã bị khóa " + (LOCK_DURATION_MS / 60000) + " phút đến " + unlockDate;
-            updateCountLoginFailAndLockedDate("lockedDate", accountId, new Date().getTime()); // cập nhật giờ hiện tại
+
+//            message = "Bạn đã nhập sai " + (countLoginFail + 1) + " lần liên tiếp. Tài khoản của bạn đã bị khóa " + (LOCK_DURATION_MS / 60000) + " phút đến " + unlockDate;
+//            updateCountLoginFailAndLockedDate("lockedDate", accountId, new Date().getTime());
+
             updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
             updateIsLoginAndStatus("status", accountId, status);
         } else {
