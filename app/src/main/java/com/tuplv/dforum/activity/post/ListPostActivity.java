@@ -120,7 +120,6 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private boolean checkDate(long startDate, long centerDate, long endDate) {
-//        Toast.makeText(this, "start: " + startDate + "\n center: " + centerDate + "\n end: " + endDate, Toast.LENGTH_SHORT).show();
         if (!tvStartDate.getText().toString().equals("Ngày bắt đầu") && tvEndDate.getText().toString().equals("Ngày kết thúc"))
             return centerDate >= startDate;
 
@@ -310,6 +309,10 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnFilterDate:
                 filter = "filterDate";
+                if (tvStartDate.getText().toString().equals("Ngày bắt đầu") && tvEndDate.getText().toString().equals("Ngày kết thúc")) {
+                    Toast.makeText(ListPostActivity.this, "Vui lòng nhập ngày bắt đầu hoặc ngày kết thúc!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (forum.getForumId() == 0)
                     getAllPost(filter, sort);
                 else
