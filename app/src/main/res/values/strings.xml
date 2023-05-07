@@ -91,4 +91,6 @@
     <string name="xoa_sap_xep">Xóa sắp xếp</string>
     <string name="luot_xem_tang_dan">Lượt xem tăng dần</string>
     <string name="luot_xem_giam_dan">Lượt xem giảm dần</string>
+    <string name="tieu_de_az">Tiêu đề từ A-Z</string>
+    <string name="tieu_de_za">Tiêu đề từ Z-A</string>
 </resources>

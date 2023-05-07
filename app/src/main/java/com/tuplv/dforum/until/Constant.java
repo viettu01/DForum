@@ -24,6 +24,8 @@ public class Constant {
     public static final String SORT_OLDEST = "Cũ nhất"; // Bài viết cữ nhất đầu tiên
     public static final String SORT_DECREASE_VIEWS = "Lượt xem giảm dần"; // Sắp xếp bài viết có lượt xem giảm dần
     public static final String SORT_INCREASE_VIEWS = "Lượt xem tăng dần"; // Sắp xếp bài viết có lượt xem tăng dần
+    public static final String SORT_TITLE_AZ = "Tiêu đề từ A-Z";
+    public static final String SORT_TITLE_ZA = "Tiêu đề từ Z-A";
     public static final int PICK_IMAGE_REQUEST = 111;
     public static final int ONE_MINUTE = 65000;
     public static final int TYPE_START_DATE = 0;

@@ -7,6 +7,8 @@ import static com.tuplv.dforum.until.Constant.SORT_DECREASE_VIEWS;
 import static com.tuplv.dforum.until.Constant.SORT_EARLIEST;
 import static com.tuplv.dforum.until.Constant.SORT_INCREASE_VIEWS;
 import static com.tuplv.dforum.until.Constant.SORT_OLDEST;
+import static com.tuplv.dforum.until.Constant.SORT_TITLE_AZ;
+import static com.tuplv.dforum.until.Constant.SORT_TITLE_ZA;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_END_DATE;
 import static com.tuplv.dforum.until.Constant.TYPE_START_DATE;
@@ -203,6 +205,12 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
 
                             if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
                                 posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
+
+                            if (sort.equals(SORT_TITLE_AZ))
+                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
+
+                            if (sort.equals(SORT_TITLE_ZA))
+                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
                         }
 
                         postAdapter.notifyDataSetChanged();
@@ -252,6 +260,12 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
 
                             if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
                                 posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
+
+                            if (sort.equals(SORT_TITLE_AZ))
+                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
+
+                            if (sort.equals(SORT_TITLE_ZA))
+                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
                         }
 
                         postAdapter.notifyDataSetChanged();
@@ -379,6 +393,12 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.mnuSortDecreaseViews:
                         sort = SORT_DECREASE_VIEWS;
+                        break;
+                    case R.id.mnuSortTitleAZ:
+                        sort = SORT_TITLE_AZ;
+                        break;
+                    case R.id.mnuSortTitleZA:
+                        sort = SORT_TITLE_ZA;
                         break;
                 }
                 tvSortPost.setText(sort);

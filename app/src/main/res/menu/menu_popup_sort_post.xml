@@ -15,5 +15,10 @@
     <item
         android:id="@+id/mnuSortDecreaseViews"
         android:title="@string/luot_xem_giam_dan" />
-
+    <item
+        android:id="@+id/mnuSortTitleAZ"
+        android:title="@string/tieu_de_az" />
+    <item
+        android:id="@+id/mnuSortTitleZA"
+        android:title="@string/tieu_de_za" />
 </menu>
