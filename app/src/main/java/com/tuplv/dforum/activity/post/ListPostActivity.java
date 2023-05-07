@@ -46,6 +46,7 @@ import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Forum;
 import com.tuplv.dforum.model.Post;
 
+import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +74,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     private final Calendar endDate = Calendar.getInstance();
 
     String filter, sort;
+    Collator collator = Collator.getInstance(new Locale("vi", "VN"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +111,9 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 startDate.get(Calendar.MONTH),
                 startDate.get(Calendar.DAY_OF_MONTH)
         );
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-            datePickerDialog.show();
-        }
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.show();
+    }
 
     private String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -207,10 +209,12 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                                 posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
 
                             if (sort.equals(SORT_TITLE_AZ))
-                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
+                                posts.sort((p1, p2) -> collator.compare(p1.getTitle(), p2.getTitle()));
+//                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
 
                             if (sort.equals(SORT_TITLE_ZA))
-                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
+                                posts.sort((p1, p2) -> collator.compare(p2.getTitle(), p1.getTitle()));
+//                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
                         }
 
                         postAdapter.notifyDataSetChanged();
@@ -262,10 +266,12 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                                 posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
 
                             if (sort.equals(SORT_TITLE_AZ))
-                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
+                                posts.sort((p1, p2) -> collator.compare(p1.getTitle(), p2.getTitle()));
+//                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
 
                             if (sort.equals(SORT_TITLE_ZA))
-                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
+                                posts.sort((p1, p2) -> collator.compare(p2.getTitle(), p1.getTitle()));
+//                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
                         }
 
                         postAdapter.notifyDataSetChanged();
