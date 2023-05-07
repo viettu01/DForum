@@ -49,6 +49,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.account.ProfileUserActivity;
 import com.tuplv.dforum.adapter.CommentAdapter;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
@@ -148,6 +149,15 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                     imvNotify.setImageResource(R.drawable.notifications_off_24);
                 }
                 updateStatusNotifyPost(post.getStatusNotify());
+            }
+        });
+
+        tvNameAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailPostActivity.this, ProfileUserActivity.class);
+                intent.putExtra("userId", post.getAccountId());
+                startActivity(intent);
             }
         });
     }
@@ -255,26 +265,6 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             sendNotifyToAuthor(post, TYPE_NOTIFY_ADD_COMMENT, null);
         }
     }
-
-    // Gửi thông báo cho chủ bài viết
-//    private void sendNotifyToAuthor() {
-//        if (!post.getAccountId().equals(user.getUid())) {
-//            Notify notify = new Notify();
-//            notify.setNotifyId(new Date().getTime());
-//            notify.setPostId(post.getPostId());
-//            notify.setAccountId(user.getUid());
-//            notify.setStatus(STATUS_DISABLE);
-//            notify.setTypeNotify(TYPE_NOTIFY_ADD_COMMENT);
-//            reference.child(OBJ_ACCOUNT).child(post.getAccountId())
-//                    .child(OBJ_NOTIFY).child(String.valueOf(notify.getNotifyId())).setValue(notify)
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            task.isSuccessful();
-//                        }
-//                    });
-//        }
-//    }
 
     // Đóng bàn phím
     private void closeKeyBoard() {

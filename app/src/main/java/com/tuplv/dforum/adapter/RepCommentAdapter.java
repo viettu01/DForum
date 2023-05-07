@@ -41,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.account.ProfileUserActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.activity.post.UpdateCommentActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
@@ -133,6 +134,15 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
         };
         holder.itemView.setOnLongClickListener(onLongClickListener);
         holder.tvContentComment.setOnLongClickListener(onLongClickListener);
+
+        holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProfileUserActivity.class);
+                intent.putExtra("userId", comment.getAccountId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

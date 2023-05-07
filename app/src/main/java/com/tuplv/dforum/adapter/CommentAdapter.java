@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -36,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.account.ProfileUserActivity;
+import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
@@ -151,6 +154,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     holder.tvShowRepComment.setText("Ẩn");
                 }
 
+            }
+        });
+
+        holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProfileUserActivity.class);
+                intent.putExtra("userId", comment.getAccountId());
+                context.startActivity(intent);
             }
         });
     }
