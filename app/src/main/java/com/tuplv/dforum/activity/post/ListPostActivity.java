@@ -95,18 +95,17 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 if (typeDatePicker == TYPE_START_DATE) {
-                    startDate.set(year, month, dayOfMonth);
+                    startDate.set(year, month, dayOfMonth, 0, 0, 0);
                     tvStartDate.setText(formatDate(startDate.getTime()));
                 } else if (typeDatePicker == TYPE_END_DATE) {
-                    endDate.set(year, month, dayOfMonth);
+                    endDate.set(year, month, dayOfMonth, 23, 59, 59);
                     tvEndDate.setText(formatDate(endDate.getTime()));
                 }
             }
         };
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                dateSetListener,
+                this, dateSetListener,
                 startDate.get(Calendar.YEAR),
                 startDate.get(Calendar.MONTH),
                 startDate.get(Calendar.DAY_OF_MONTH)
@@ -121,6 +120,13 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private boolean checkDate(long startDate, long centerDate, long endDate) {
+//        Toast.makeText(this, "start: " + startDate + "\n center: " + centerDate + "\n end: " + endDate, Toast.LENGTH_SHORT).show();
+        if (!tvStartDate.getText().toString().equals("Ngày bắt đầu") && tvEndDate.getText().toString().equals("Ngày kết thúc"))
+            return centerDate >= startDate;
+
+        if (tvStartDate.getText().toString().equals("Ngày bắt đầu") && !tvEndDate.getText().toString().equals("Ngày kết thúc"))
+            return centerDate <= endDate;
+
         return startDate <= centerDate && endDate >= centerDate;
     }
 
@@ -181,7 +187,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                             Post post = dataSnapshot.getValue(Post.class);
                             if (filter == null || Objects.requireNonNull(post).getCategoryName().equals(filter))
                                 posts.add(post);
-                            else if (filter.equals("filterDate") && checkDate(startDate.getTimeInMillis(), post.getCreatedDate(), endDate.getTimeInMillis()))
+                            else if (filter.equals("filterDate") && checkDate(startDate.getTimeInMillis(), post.getApproveDate(), endDate.getTimeInMillis()))
                                 posts.add(post);
                         }
                         if (posts.size() > 0) {
@@ -347,6 +353,8 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                 switch (item.getItemId()) {
                     case R.id.mnuDeleteFilter:
                         filter = null;
+                        tvStartDate.setText("Ngày bắt đầu");
+                        tvEndDate.setText("Ngày kết thúc");
                         break;
                     case R.id.mnuFilterQA:
                         filter = HOI_DAP;
