@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
     FloatingActionButton fabAddPost;
     ForumAdapter forumAdapter;
     List<Forum> forums;
+    List<Long> forumId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
         fabAddPost.setOnClickListener(this);
 
         forums = new ArrayList<>();
+        forumId = new ArrayList<>();
     }
 
     // Hiển thị 5 danh sách diễn đàn mới nhất
