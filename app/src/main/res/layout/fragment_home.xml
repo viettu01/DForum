@@ -29,7 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cac_dien_dan_moi"
+                    android:text="@string/danh_sach_dien_dan"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 

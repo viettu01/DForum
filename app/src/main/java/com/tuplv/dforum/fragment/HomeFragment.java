@@ -1,11 +1,13 @@
 package com.tuplv.dforum.fragment;
 
+import static com.tuplv.dforum.activity.main.StartActivity.forumIds;
 import static com.tuplv.dforum.until.Constant.OBJ_FORUM;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
     FloatingActionButton fabAddPost;
     ForumAdapter forumAdapter;
     List<Forum> forums;
-    List<Long> forumId;
+//    List<Integer> forumIds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
 
         init(view);
 
+        getListForumById();
         return view;
     }
 
@@ -71,7 +74,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
         fabAddPost.setOnClickListener(this);
 
         forums = new ArrayList<>();
-        forumId = new ArrayList<>();
+//        forumIds = new ArrayList<>();
+//        forumIds = forumIds;
+//        Toast.makeText(getActivity(), "" + forumIds.size(), Toast.LENGTH_SHORT).show();
     }
 
     // Hiển thị 5 danh sách diễn đàn mới nhất
@@ -100,6 +105,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
                 });
     }
 
+    private void getListForumById() {
+        forumAdapter = new ForumAdapter(requireActivity(), R.layout.item_forum, forums, this);
+        rvListForumFeatured.setAdapter(forumAdapter);
+        rvListForumFeatured.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        Toast.makeText(getActivity(), "forumIds: " + forumIds.size(), Toast.LENGTH_SHORT).show();
+        forums.clear();
+        for (long forumId : forumIds) {
+            FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forumId))
+                    .addValueEventListener(new ValueEventListener() {
+                        @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Forum forum = snapshot.getValue(Forum.class);
+                            forums.add(forum);
+                            forumAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -120,7 +150,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
     @Override
     public void onResume() {
         super.onResume();
-        getListForumFeatured();
+//        getListForumFeatured();
+//        getListForumById();
     }
 
     @Override
