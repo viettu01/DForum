@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class AddPostActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Account currentAccountLogin;
     List<Account> accounts;
+    List<Post> posts;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -78,6 +80,20 @@ public class AddPostActivity extends AppCompatActivity {
         setCategoryToSpinner();
         setForumToSpinner();
         getAllAccount();
+        // check tiêu đề đã tồn tại
+//        spnForum.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Forum forum1 = (Forum) adapterView.getItemAtPosition(i);
+//                getAllPost(forum1.getForumId());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+       getAllPost();
     }
 
     private void init() {
@@ -88,6 +104,7 @@ public class AddPostActivity extends AppCompatActivity {
         tbAddPost = findViewById(R.id.tbAddPost);
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
         accounts = new ArrayList<>();
+        posts = new ArrayList<>();
 
         forum = (Forum) getIntent().getSerializableExtra("forum");
     }
@@ -154,6 +171,25 @@ public class AddPostActivity extends AppCompatActivity {
                 });
     }
 
+    private void getAllPost() {
+        FirebaseDatabase.getInstance().getReference(OBJ_POST)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        posts.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Post post = dataSnapshot.getValue(Post.class);
+                           //thêm trong hàm long forumId if (Objects.requireNonNull(post).getForumId() == forumId)
+                            posts.add(post);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+    }
+
     //Thêm bài viết mới
     public void addPost() {
         String message = "";
@@ -167,6 +203,7 @@ public class AddPostActivity extends AppCompatActivity {
         post.setContent(edtContentPost.getText().toString().trim());
         post.setCreatedDate(new Date().getTime());
         post.setView(0);
+
         if (sharedPreferences.getString("role", "").equals(ROLE_ADMIN)) {
             message = "Thêm bài viết thành công";
             post.setStatus(STATUS_ENABLE);
@@ -203,10 +240,23 @@ public class AddPostActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mnuSavePost) {
-            if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty())
+            if (edtTitlePost.getText().toString().isEmpty() || edtContentPost.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
-            else
-                addPost();
+                return false;
+            }
+            //check tiêu đề đã tồn tại,khquas 20 kí tự
+//            if (edtTitlePost.length() >= 20) {
+//                Toast.makeText(this, "Tiêu đề không vượt quá 20 ký tự", Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//            for (Post post : posts) {
+//                if (edtTitlePost.getText().toString().trim().equals(post.getTitle())) {
+//                    Toast.makeText(this, "Tiêu đề đã tồn tại", Toast.LENGTH_SHORT).show();
+//                    return false;
+//                }
+//            }
+
+            addPost();
         }
         return super.onOptionsItemSelected(item);
     }
