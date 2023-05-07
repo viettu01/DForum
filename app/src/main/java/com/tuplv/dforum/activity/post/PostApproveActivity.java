@@ -236,9 +236,11 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                     for (Post post : posts) {
                         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                                 .updateChildren(updateView);
+                        sendNotifyToAuthor(post, TYPE_NOTIFY_APPROVE_POST,null);
                     }
                     Toast.makeText(PostApproveActivity.this, "Tất cả bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                     getAllPostApprove();
+
                 }
             });
             builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
