@@ -105,7 +105,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
+        //sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
     }
 
     @SuppressLint("SetTextI18n")
@@ -135,7 +135,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     }
                 });
 
-        sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
+      //  sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
     }
 
     // Lấy danh sách tài khoản và lấy thông tin tài khoản đang đăng nhập

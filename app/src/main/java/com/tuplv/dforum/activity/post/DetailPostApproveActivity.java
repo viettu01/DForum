@@ -3,14 +3,19 @@ package com.tuplv.dforum.activity.post;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
-import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_APPROVE_POST;
+import static com.tuplv.dforum.until.Constant.STATUS_NO_APPROVE_POST;
 import static com.tuplv.dforum.until.Until.sendNotifyToAuthor;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +29,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -120,7 +124,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                 updateView.put("approveDate", new Date().getTime());
                 FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                         .updateChildren(updateView);
-                sendNotifyToAuthor(post, TYPE_NOTIFY_APPROVE_POST,null);
+                //sendNotifyToAuthor(post, TYPE_NOTIFY_APPROVE_POST,null);
                 Toast.makeText(DetailPostApproveActivity.this, "Bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -141,20 +145,20 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()));
-                databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(DetailPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
-                            finish();
+                FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).removeValue()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(DetailPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
+                                    finish();
 
-                        } else {
-                            Toast.makeText(DetailPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                                } else {
+                                    Toast.makeText(DetailPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -166,6 +170,48 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         builder.show();
     }
 
+    private void dialogNoApprove(Post post) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_approve_post);
+
+        // Không cho thoát khi bấm ra ngoài màn hình
+        dialog.setCanceledOnTouchOutside(false);
+
+        //ánh xạ
+        Button btnConfirm = dialog.findViewById(R.id.btnConfirm);
+        Button btnCancel = dialog.findViewById(R.id.btnCancel);
+        EditText edtReason = dialog.findViewById(R.id.edtReason);
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String reason = edtReason.getText().toString().trim();
+                if (reason.isEmpty())
+                    Toast.makeText(DetailPostApproveActivity.this, "Vui lòng nhập lý do", Toast.LENGTH_SHORT).show();
+                else {
+                    HashMap<String, Object> updateView = new HashMap<>();
+                    updateView.put("status", STATUS_NO_APPROVE_POST);
+                    updateView.put("approveDate", new Date().getTime());
+                    FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
+                            .updateChildren(updateView);
+                    Toast.makeText(DetailPostApproveActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
+                    finish();
+                    sendNotifyToAuthor(post, " (Admin) không duyệt bài viết của bạn vì lý do: " + reason, null);
+                    dialog.dismiss();
+                }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -175,6 +221,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                 break;
             case R.id.btnNoPostApprove:
                 noApprovePost();
+//                dialogNoApprove(post);
                 break;
         }
     }

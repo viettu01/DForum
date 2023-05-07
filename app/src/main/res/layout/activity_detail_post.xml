@@ -82,7 +82,8 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/notifications_off_24" />
+                        android:src="@drawable/notifications_off_24"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <TextView

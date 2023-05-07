@@ -165,7 +165,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void register() {
         getText();
         if (checkEmptyRegister()) {
-            if (checkEmail() && checkPasswordStrength() && checkConfirmPassword()) {
+           // if (checkEmail() && checkPasswordStrength() && checkConfirmPassword()) {
+            if (checkEmail() && checkConfirmPassword()) {
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -218,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             checkEmail();
         }
         if (charSequence == edtRegisterPassword.getText()) {
-            checkPasswordStrength();
+            //checkPasswordStrength();
             if (!confirmPassword.isEmpty())
                 checkConfirmPassword();
         }

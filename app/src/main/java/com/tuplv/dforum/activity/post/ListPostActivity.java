@@ -199,28 +199,8 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
 
                         Collections.reverse(posts);
+                        sortPosts();
 
-                        if (sort != null) {
-                            if (sort.equals(SORT_INCREASE_VIEWS)) // Sắp xếp bài viết có lượt xem tăng dần
-                                posts.sort((p1, p2) -> Math.toIntExact(p1.getView() - p2.getView()));
-
-                            if (sort.equals(SORT_DECREASE_VIEWS)) // Sắp xếp bài viết có lượt xem giảm dần
-                                posts.sort((p1, p2) -> Math.toIntExact(p2.getView() - p1.getView()));
-
-                            if (sort.equals(SORT_OLDEST)) // Bài viết cũ nhất đầu tiên
-                                posts.sort((p1, p2) -> Math.toIntExact(p1.getPostId() - p2.getPostId()));
-
-                            if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
-                                posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
-
-                            if (sort.equals(SORT_TITLE_AZ))
-                                posts.sort((p1, p2) -> collator.compare(p1.getTitle(), p2.getTitle()));
-//                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
-
-                            if (sort.equals(SORT_TITLE_ZA))
-                                posts.sort((p1, p2) -> collator.compare(p2.getTitle(), p1.getTitle()));
-//                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
-                        }
 
                         postAdapter.notifyDataSetChanged();
                     }
@@ -257,27 +237,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
                         Collections.reverse(posts);
 
-                        if (sort != null) {
-                            if (sort.equals(SORT_INCREASE_VIEWS)) // Sắp xếp bài viết có lượt xem tăng dần
-                                posts.sort((p1, p2) -> Math.toIntExact(p1.getView() - p2.getView()));
-
-                            if (sort.equals(SORT_DECREASE_VIEWS)) // Sắp xếp bài viết có lượt xem giảm dần
-                                posts.sort((p1, p2) -> Math.toIntExact(p2.getView() - p1.getView()));
-
-                            if (sort.equals(SORT_OLDEST)) // Bài viết cũ nhất đầu tiên
-                                posts.sort((p1, p2) -> Math.toIntExact(p1.getPostId() - p2.getPostId()));
-
-                            if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
-                                posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
-
-                            if (sort.equals(SORT_TITLE_AZ))
-                                posts.sort((p1, p2) -> collator.compare(p1.getTitle(), p2.getTitle()));
-//                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
-
-                            if (sort.equals(SORT_TITLE_ZA))
-                                posts.sort((p1, p2) -> collator.compare(p2.getTitle(), p1.getTitle()));
-//                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
-                        }
+                        sortPosts();
 
                         postAdapter.notifyDataSetChanged();
                     }
@@ -382,6 +342,30 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         });
 
         menuPopupHelper.show();
+    }
+
+    private void sortPosts() {
+        if (sort != null) {
+            if (sort.equals(SORT_INCREASE_VIEWS)) // Sắp xếp bài viết có lượt xem tăng dần
+                posts.sort((p1, p2) -> Math.toIntExact(p1.getView() - p2.getView()));
+
+            if (sort.equals(SORT_DECREASE_VIEWS)) // Sắp xếp bài viết có lượt xem giảm dần
+                posts.sort((p1, p2) -> Math.toIntExact(p2.getView() - p1.getView()));
+
+            if (sort.equals(SORT_OLDEST)) // Bài viết cũ nhất đầu tiên
+                posts.sort((p1, p2) -> Math.toIntExact(p1.getPostId() - p2.getPostId()));
+
+            if (sort.equals(SORT_EARLIEST)) // Bài viết mới nhất đầu tiên
+                posts.sort((p1, p2) -> Math.toIntExact(p2.getPostId() - p1.getPostId()));
+
+            if (sort.equals(SORT_TITLE_AZ))
+                posts.sort((p1, p2) -> collator.compare(p1.getTitle(), p2.getTitle()));
+//                                posts.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
+
+            if (sort.equals(SORT_TITLE_ZA))
+                posts.sort((p1, p2) -> collator.compare(p2.getTitle(), p1.getTitle()));
+//                                posts.sort((p1, p2) -> p2.getTitle().compareToIgnoreCase(p1.getTitle()));
+        }
     }
 
     @SuppressLint("RestrictedApi, NonConstantResourceId")

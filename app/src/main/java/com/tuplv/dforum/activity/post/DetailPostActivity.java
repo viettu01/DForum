@@ -155,9 +155,10 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         tvNameAuthor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailPostActivity.this, ProfileUserActivity.class);
-                intent.putExtra("userId", post.getAccountId());
-                startActivity(intent);
+                // bấm tên ra trang cá nhân
+//                Intent intent = new Intent(DetailPostActivity.this, ProfileUserActivity.class);
+//                intent.putExtra("userId", post.getAccountId());
+                //startActivity(intent);
             }
         });
     }

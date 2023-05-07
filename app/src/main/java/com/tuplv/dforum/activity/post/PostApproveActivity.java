@@ -29,6 +29,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -148,34 +150,34 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
 
     @Override
     public void noApprovePost(Post post) {
-//        builder.setTitle("Cảnh báo!");
-//        builder.setIcon(R.drawable.ic_round_warning_yellow_24);
-//        builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
-//        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                    FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).removeValue()
-//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(PostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
-//                                        getAllPostApprove();
-//                                    } else
-//                                        Toast.makeText(PostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//            }
-//        });
-//        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//        builder.show();
+        builder.setTitle("Cảnh báo!");
+        builder.setIcon(R.drawable.ic_round_warning_yellow_24);
+        builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                    FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).removeValue()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(PostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
+                                        getAllPostApprove();
+                                    } else
+                                        Toast.makeText(PostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-        dialogNoApprove(post);
+            }
+        });
+        builder.show();
+
+//        dialogNoApprove(post);
     }
 
     // dialog no approve post
@@ -240,7 +242,6 @@ public class PostApproveActivity extends AppCompatActivity implements OnPostAppr
                     }
                     Toast.makeText(PostApproveActivity.this, "Tất cả bài viết đã được phê duyệt", Toast.LENGTH_SHORT).show();
                     getAllPostApprove();
-
                 }
             });
             builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

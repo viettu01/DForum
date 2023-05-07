@@ -125,11 +125,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             progressDialog.dismiss();
             return;
         }
-        if (isLogin.equals(IS_LOGIN_TRUE)) {
-            alertNotify("Tài khoản đang đăng nhập ở nơi khác !");
-            progressDialog.dismiss();
-            return;
-        }
+        // Kiểm tra đang đăng nhập nơi khác
+//        if (isLogin.equals(IS_LOGIN_TRUE)) {
+//            alertNotify("Tài khoản đang đăng nhập ở nơi khác !");
+//            progressDialog.dismiss();
+//            return;
+//        }
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -148,18 +149,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (exception instanceof FirebaseAuthException) {
                                 String errorCode = ((FirebaseAuthException) exception).getErrorCode();
                                 if (errorCode.equals("ERROR_WRONG_PASSWORD")) {
-                                    lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
+                                    //lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
                                     alertNotify(message);
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Đã xảy ra lỗi không xác định thử lại sau !", Toast.LENGTH_SHORT).show();
                                 }
                             } else if (exception instanceof FirebaseTooManyRequestsException) {
                                 if (countDown) {
-                                    countDownOneMinute(countLoginFail, accountId, role);
+                                    //countDownOneMinute(countLoginFail, accountId, role);
                                     countDown = false;
                                     return;
                                 } else {
-                                    lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
+                                   // lockAndUnLockAccount(countLoginFail, accountId, STATUS_DISABLE, new Date().getTime());
                                     alertNotify(message);
                                 }
 
@@ -363,9 +364,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.ic_back_arrow_login:
                 startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
                 break;
-            case R.id.app_logo:
-                countDown = true;
-                break;
+//            case R.id.app_logo:
+//                countDown = true;
+//                break;
             case R.id.btnLogin:
                 closeKeyBoard();
                 progressDialog.show();

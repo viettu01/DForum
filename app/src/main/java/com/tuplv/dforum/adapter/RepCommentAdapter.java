@@ -138,9 +138,9 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
         holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ProfileUserActivity.class);
-                intent.putExtra("userId", comment.getAccountId());
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ProfileUserActivity.class);
+//                intent.putExtra("userId", comment.getAccountId());
+//                context.startActivity(intent);
             }
         });
     }

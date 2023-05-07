@@ -110,6 +110,7 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(UpdateNameActivity.this, "Vui lòng nhập tên mới của bạn !", Toast.LENGTH_SHORT).show();
             return;
         }
+        // kiểm tra tên trùng
 //        if (name.equals(newName)) {
 //            Toast.makeText(UpdateNameActivity.this, "Tên bạn nhập trùng với tên hiện tại !", Toast.LENGTH_SHORT).show();
 //            return;
