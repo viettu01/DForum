@@ -1,6 +1,7 @@
 package com.tuplv.dforum.activity.account;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
 
 import android.annotation.SuppressLint;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -27,13 +29,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.model.Account;
+import com.tuplv.dforum.model.Post;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -44,6 +52,7 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
     EditText edtNickName;
     Toolbar tbUpdateName;
     Button btnUpdateName, btnCancel;
+    String name;
 
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -80,7 +89,7 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
         tbUpdateName = findViewById(R.id.tbUpdateProfile);
         setSupportActionBar(tbUpdateName);
 
-        String name = getIntent().getStringExtra("name");
+        name = getIntent().getStringExtra("name");
         edtNickName.setText(name);
     }
 
@@ -92,7 +101,39 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
         updateName.put("nickName", nickName);
         reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updateName);
         Toast.makeText(this, "Cập nhật tên thành công !", Toast.LENGTH_SHORT).show();
+        finish();
     }
+
+    private void checkSameName() {
+        final String newName = edtNickName.getText().toString().trim();
+        if (TextUtils.isEmpty(newName)) {
+            Toast.makeText(UpdateNameActivity.this, "Vui lòng nhập tên mới của bạn !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        if (name.equals(newName)) {
+//            Toast.makeText(UpdateNameActivity.this, "Tên bạn nhập trùng với tên hiện tại !", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT);
+        Query query = databaseRef.orderByChild("nickName").equalTo(newName);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(UpdateNameActivity.this, "Tên này đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                } else {
+                    updateName(newName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -102,7 +143,17 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.btnUpdateName:
-                updateName(edtNickName.getText().toString().trim());
+                String newName = edtNickName.getText().toString().trim();
+                if (TextUtils.isEmpty(newName)) {
+                    Toast.makeText(this, "Vui lòng nhập tên mới của bạn !", Toast.LENGTH_SHORT).show();
+                }
+//                else if (name.equals(newName)) {
+//                    Toast.makeText(this, "Tên bạn nhập trùng với tên hiện tại !", Toast.LENGTH_SHORT).show();
+//                }
+                else {
+                    updateName(newName);
+                }
+                //checkSameName();
                 break;
         }
     }
