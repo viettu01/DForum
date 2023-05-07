@@ -2,10 +2,10 @@ package com.tuplv.dforum.fragment;
 
 import static android.app.Activity.RESULT_OK;
 import static com.tuplv.dforum.until.Constant.IS_LOGIN_FALSE;
-import static com.tuplv.dforum.until.Constant.IS_LOGIN_TRUE;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
+import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
 import static com.tuplv.dforum.until.Constant.PICK_IMAGE_REQUEST;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,14 +30,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -316,22 +311,29 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
     }
 
     private void getTotalComment() {
-        List<Comment> comments = new ArrayList<>();
         DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference(OBJ_POST);
         postsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                comments.clear();
+                int commentCount = 0;
+                int repCommentCount = 0;
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot commentSnapshot : postSnapshot.child(OBJ_COMMENT).getChildren()) {
                         Comment comment = commentSnapshot.getValue(Comment.class);
                         assert comment != null;
                         if (String.valueOf(comment.getAccountId()).equals(user.getUid())) {
-                            comments.add(comment);
+                            commentCount++;
+                            for (DataSnapshot repCommentSnapshot : commentSnapshot.child(OBJ_REP_COMMENT).getChildren()) {
+                                Comment repComment = repCommentSnapshot.getValue(Comment.class);
+                                assert repComment != null;
+                                if (String.valueOf(repComment.getAccountId()).equals(user.getUid())) {
+                                    repCommentCount++;
+                                }
+                            }
                         }
                     }
-                    tvTotalComment.setText(String.valueOf(comments.size()));
                 }
+                tvTotalComment.setText(String.valueOf(commentCount + repCommentCount));
             }
 
             @Override
@@ -339,8 +341,9 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
                 // xử lý khi có lỗi xảy ra
             }
         });
-
     }
+
+
 
     private void getMyPost() {
         myPost = new ArrayList<>();
@@ -362,7 +365,7 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
                         tvTotalPost.setText(String.valueOf(myPost.size()));
                         myPostAdapter.notifyDataSetChanged();
 
-                        if(myPost.size()==0)
+                        if (myPost.size() == 0)
                             tvNoPost.setVisibility(View.VISIBLE);
                         else
                             tvNoPost.setVisibility(View.GONE);
