@@ -4,14 +4,9 @@ import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.OBJ_REP_COMMENT;
-import static com.tuplv.dforum.until.Constant.SORT_DECREASE_VIEWS;
-import static com.tuplv.dforum.until.Constant.SORT_EARLIEST;
-import static com.tuplv.dforum.until.Constant.SORT_INCREASE_VIEWS;
-import static com.tuplv.dforum.until.Constant.SORT_OLDEST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_ADD_COMMENT;
-import static com.tuplv.dforum.until.Constant.TYPE_NOTIFY_REPLY_COMMENT;
 import static com.tuplv.dforum.until.Constant.TYPE_UPDATE_COMMENT;
 import static com.tuplv.dforum.until.Until.sendNotifyToAuthor;
 
@@ -21,7 +16,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -68,7 +62,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
 
     Toolbar tbDetailPost;
     TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPost, tvNameAuthorRepComment, tvCancelRepComment;
-    LinearLayout llRepComment;
+    LinearLayout llRepComment, llComment;
     RecyclerView rvComment;
     EditText edtComment;
     ImageView imvAvatar, imvSendComment, imvNotify;
@@ -90,6 +84,17 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
 
         getAuthorPost();
         getAllComment();
+
+
+        edtComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (edtComment.getFocusable() == View.FOCUSABLE)
+                    llComment.setVisibility(View.VISIBLE);
+                else
+                    llComment.setVisibility(View.GONE);
+            }
+        });
 
         tbDetailPost.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +182,8 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         imvSendComment = findViewById(R.id.imvSendComment);
 
         llRepComment = findViewById(R.id.llRepComment);
+        llComment = findViewById(R.id.llComment);
+
         tvNameAuthorRepComment = findViewById(R.id.tvNameAuthorRepComment);
         tvCancelRepComment = findViewById(R.id.tvCancelRepComment);
 

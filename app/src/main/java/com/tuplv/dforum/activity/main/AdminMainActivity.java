@@ -86,15 +86,19 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
             public void onPageSelected(int position) {
                 switch (position) {
                     case 1:
+                        tbMain.setVisibility(View.GONE);
                         bottomNavigationView.getMenu().findItem(R.id.mnuForum).setChecked(true);
                         break;
                     case 2:
+                        tbMain.setVisibility(View.GONE);
                         bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
                         break;
                     case 3:
+                        tbMain.setVisibility(View.GONE);
                         bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
                         break;
                     default:
+                        tbMain.setVisibility(View.VISIBLE);
                         bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
                         break;
                 }
@@ -222,15 +226,19 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mnuHome:
+                tbMain.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(0);
                 break;
             case R.id.mnuForum:
+                tbMain.setVisibility(View.GONE);
                 viewPager.setCurrentItem(1);
                 break;
             case R.id.mnuProfile:
+                tbMain.setVisibility(View.GONE);
                 viewPager.setCurrentItem(2);
                 break;
             case R.id.mnuAdmin:
+                tbMain.setVisibility(View.GONE);
                 viewPager.setCurrentItem(3);
                 break;
         }

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,7 +46,7 @@ import java.util.Objects;
 public class ForumFragment extends Fragment implements OnForumClickListener {
 
     RecyclerView rvListForum;
-    FloatingActionButton fabAddForum;
+    RelativeLayout rlAddForum;
     SharedPreferences sharedPreferences;
     ForumAdapter forumAdapter;
     List<Forum> forums;
@@ -56,9 +57,9 @@ public class ForumFragment extends Fragment implements OnForumClickListener {
         init (view);
 
         if (!sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
-            fabAddForum.setVisibility(View.GONE);
+            rlAddForum.setVisibility(View.GONE);
 
-        fabAddForum.setOnClickListener(new View.OnClickListener() {
+        rlAddForum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), AddAndUpdateForumActivity.class));
@@ -69,7 +70,7 @@ public class ForumFragment extends Fragment implements OnForumClickListener {
 
     private void init(View view) {
         rvListForum = view.findViewById(R.id.rvListForum);
-        fabAddForum = view.findViewById(R.id.fabAddForum);
+        rlAddForum = view.findViewById(R.id.rlAddForum);
         sharedPreferences = requireContext().getSharedPreferences("account", MODE_PRIVATE);
     }
 

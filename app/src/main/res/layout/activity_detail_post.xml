@@ -179,22 +179,50 @@
                 <EditText
                     android:id="@+id/edtComment"
                     android:layout_width="0dp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_weight="1"
                     android:background="@drawable/background_comment_radius"
                     android:hint="@string/viet_binh_luan"
-                    android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_5sdp"
-                    android:paddingEnd="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_5sdp"
                     tools:ignore="RtlSymmetry" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llComment"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp">
+
                 <ImageView
-                    android:id="@+id/imvSendComment"
-                    android:layout_width="@dimen/_30sdp"
+                    android:layout_width="@dimen/_24sdp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_send_main_color_24" />
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:src="@drawable/outline_photo_camera_24" />
+                <ImageView
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/outline_photo_24" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp">
+
+                    <ImageView
+                        android:id="@+id/imvSendComment"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/round_send_24" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
