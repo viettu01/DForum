@@ -85,14 +85,10 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         getAuthorPost();
         getAllComment();
 
-
-        edtComment.setOnClickListener(new View.OnClickListener() {
+        edtComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (edtComment.getFocusable() == View.FOCUSABLE)
-                    llComment.setVisibility(View.VISIBLE);
-                else
-                    llComment.setVisibility(View.GONE);
+            public void onFocusChange(View view, boolean b) {
+                llComment.setVisibility(View.VISIBLE);
             }
         });
 
@@ -148,8 +144,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                 if (post.getStatusNotify().equals(STATUS_ENABLE)) {
                     post.setStatusNotify(STATUS_DISABLE);
                     imvNotify.setImageResource(R.drawable.notifications_active_24);
-                }
-                else {
+                } else {
                     post.setStatusNotify(STATUS_ENABLE);
                     imvNotify.setImageResource(R.drawable.notifications_off_24);
                 }
@@ -190,7 +185,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         imvNotify = findViewById(R.id.imvNotify);
 
         post = (Post) getIntent().getSerializableExtra("post");
-        if (post.getStatusNotify() == null){
+        if (post.getStatusNotify() == null) {
             updateStatusNotifyPost(STATUS_ENABLE);
             post.setStatusNotify(STATUS_ENABLE);
         }
