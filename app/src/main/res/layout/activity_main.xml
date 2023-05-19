@@ -17,11 +17,12 @@
             android:id="@+id/tbMain"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/main_color"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="DForum"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/main_color" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -30,6 +31,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchPost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchComment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"

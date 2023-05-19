@@ -48,7 +48,7 @@ import java.util.Objects;
 
 public class UpdateNameActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    TextView tvLengthNickName;
+    TextView tvLengthNickName, tvErrorName;
     EditText edtNickName;
     Toolbar tbUpdateName;
     Button btnUpdateName, btnCancel;
@@ -81,6 +81,8 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
         btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(this);
 
+        tvErrorName = findViewById(R.id.tvErrorName);
+
         tvLengthNickName = findViewById(R.id.tvLengthNickName);
 
         edtNickName = findViewById(R.id.edtNickName);
@@ -111,10 +113,11 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
             return;
         }
         // kiểm tra tên trùng
-//        if (name.equals(newName)) {
-//            Toast.makeText(UpdateNameActivity.this, "Tên bạn nhập trùng với tên hiện tại !", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (name.equals(newName)) {
+            Toast.makeText(this, "Cập nhật tên thành công !", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT);
         Query query = databaseRef.orderByChild("nickName").equalTo(newName);
@@ -122,9 +125,10 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Toast.makeText(UpdateNameActivity.this, "Tên này đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                    tvErrorName.setVisibility(View.VISIBLE);
                 } else {
                     updateName(newName);
+                    tvErrorName.setVisibility(View.GONE);
                 }
             }
 
@@ -144,17 +148,7 @@ public class UpdateNameActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.btnUpdateName:
-                String newName = edtNickName.getText().toString().trim();
-                if (TextUtils.isEmpty(newName)) {
-                    Toast.makeText(this, "Vui lòng nhập tên mới của bạn !", Toast.LENGTH_SHORT).show();
-                }
-//                else if (name.equals(newName)) {
-//                    Toast.makeText(this, "Tên bạn nhập trùng với tên hiện tại !", Toast.LENGTH_SHORT).show();
-//                }
-                else {
-                    updateName(newName);
-                }
-                //checkSameName();
+                checkSameName();
                 break;
         }
     }

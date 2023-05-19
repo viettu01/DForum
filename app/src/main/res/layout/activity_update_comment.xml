@@ -8,12 +8,13 @@
         android:id="@+id/tbUpdateComment"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
+        android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Chỉnh sửa bình luận"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
 
     <ScrollView
         android:layout_width="match_parent"

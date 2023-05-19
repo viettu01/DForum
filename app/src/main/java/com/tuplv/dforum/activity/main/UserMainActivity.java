@@ -79,10 +79,13 @@ public class UserMainActivity extends AppCompatActivity implements NavigationVie
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                    case 2:
+                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
                         break;
                     case 1:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuForum).setChecked(true);
+                        break;
+                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
                         break;
                 }
@@ -207,8 +210,11 @@ public class UserMainActivity extends AppCompatActivity implements NavigationVie
             case R.id.mnuHome:
                 viewPager.setCurrentItem(0);
                 break;
-            case R.id.mnuProfile:
+            case R.id.mnuForum:
                 viewPager.setCurrentItem(1);
+                break;
+            case R.id.mnuProfile:
+                viewPager.setCurrentItem(2);
                 break;
         }
         return true;

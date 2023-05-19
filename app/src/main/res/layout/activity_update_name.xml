@@ -11,12 +11,13 @@
         android:id="@+id/tbUpdateProfile"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
+        android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/edit_name"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,6 +68,18 @@
                 android:maxLength="25"
                 android:textColorHint="@color/gray_color"
                 tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:id="@+id/tvErrorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/same_name"
+                android:visibility="gone"
+                android:textColor="@color/error_color"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
     tools:context=".activity.account.LoginActivity">
 
     <ImageView
@@ -12,45 +11,44 @@
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        app:srcCompat="@drawable/ic_arrow_back_white_24" />
-
-    <ImageView
-        android:id="@+id/app_logo"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_below="@+id/ic_back_arrow_login"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/logo_white" />
-
-    <TextView
-        android:id="@+id/app_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/app_logo"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:text="Đăng nhập DForum"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold" />
+        app:srcCompat="@drawable/round_arrow_back_black_24" />
 
     <LinearLayout
         android:id="@+id/linear_login"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/app_name"
-        android:background="@drawable/layout_radius"
-        android:orientation="vertical"
-        android:padding="@dimen/_16sdp">
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingEnd="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_below="@id/ic_back_arrow_login"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/_25sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:text="Vui lòng đăng nhập để tiếp tục"
+            android:textColor="@color/gray_color_icon_profile"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/_12sdp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
+            app:startIconDrawable="@drawable/outline_email_24"
             app:endIconMode="clear_text">
 
             <EditText
@@ -69,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/password"
+            app:startIconDrawable="@drawable/outline_lock_24"
             app:passwordToggleEnabled="true">
 
             <EditText
@@ -102,15 +101,26 @@
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn chưa có tài khoản?"
+            android:textSize="@dimen/_13sdp" />
         <TextView
             android:id="@+id/tvRegister"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Tạo tài khoản mới"
-            android:textAlignment="center"
+            android:text=" Đăng ký"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
             android:textSize="@dimen/_13sdp" />
-
     </LinearLayout>
-
 </RelativeLayout>

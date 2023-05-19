@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tuplv.dforum.activity.main.UserMainActivity;
 import com.tuplv.dforum.fragment.AdminFragment;
+import com.tuplv.dforum.fragment.ForumFragment;
 import com.tuplv.dforum.fragment.HomeFragment;
 import com.tuplv.dforum.fragment.NotLoggedInFragment;
 import com.tuplv.dforum.fragment.ProfileFragment;
@@ -30,11 +31,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 1:
+                return new ForumFragment();
+            case 2:
                 if (user != null)
                     return new ProfileFragment();
                 else
                     return new NotLoggedInFragment();
-            case 2:
+            case 3:
+                return new AdminFragment();
+            case 4:
                 if (context instanceof UserMainActivity)
                     return new HomeFragment();
                 else
@@ -47,9 +52,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         if (context instanceof UserMainActivity) {
-            return 2;
+            return 3;
         }
 
-        return 3;
+        return 4;
     }
 }

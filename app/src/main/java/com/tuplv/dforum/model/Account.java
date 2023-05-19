@@ -10,20 +10,10 @@ public class Account implements Serializable {
     private String role;
     private String status;
     private long createdDate;
-
-    private String isLogin;
     private long countLoginFail;
     private long lockedDate;
 
     public Account() {
-    }
-
-    public String getIsLogin() {
-        return isLogin;
-    }
-
-    public void setIsLogin(String isLogin) {
-        this.isLogin = isLogin;
     }
 
     public long getCountLoginFail() {
@@ -42,7 +32,7 @@ public class Account implements Serializable {
         this.lockedDate = lockedDate;
     }
 
-    public Account(String accountId, String nickName, String avatarUri, String email, String role, String status, long createdDate, String isLogin, long countLoginFail, long lockedDate) {
+    public Account(String accountId, String nickName, String avatarUri, String email, String role, String status, long createdDate, long countLoginFail, long lockedDate) {
         this.accountId = accountId;
         this.nickName = nickName;
         this.avatarUri = avatarUri;
@@ -50,7 +40,6 @@ public class Account implements Serializable {
         this.role = role;
         this.status = status;
         this.createdDate = createdDate;
-        this.isLogin = isLogin;
         this.countLoginFail = countLoginFail;
         this.lockedDate = lockedDate;
     }

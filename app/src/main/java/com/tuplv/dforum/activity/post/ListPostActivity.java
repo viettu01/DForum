@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.adapter.PostAdapter;
@@ -60,6 +63,7 @@ import java.util.Objects;
 public class ListPostActivity extends AppCompatActivity implements View.OnClickListener, OnPostClickListener {
 
     Toolbar tbListPost;
+    LinearLayout llFilterDate;
     TextView tvNameForum, tvDesForum, tvNoPost, tvFilterPost, tvSortPost, tvStartDate, tvEndDate;
     ImageView imvFilterPost, imvSortPost;
     RecyclerView rvListPost;
@@ -132,12 +136,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
-        if (forum != null && forum.getForumId() != 0)
-            getPostByForumId(null, null);
-        else if (forum != null && forum.getForumId() == 0)
-            getAllPost(filter, sort);
-        else
-            getAllPost(filter, sort);
+        getPosts(filter, forum.getForumId());
     }
 
     private void init() {
@@ -156,6 +155,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         btnFilterDate = findViewById(R.id.btnFilterDate);
         tvStartDate = findViewById(R.id.tvStartDate);
         tvEndDate = findViewById(R.id.tvEndDate);
+        llFilterDate = findViewById(R.id.llFilterDate);
 
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(this, R.layout.item_post, posts, this);
@@ -175,78 +175,54 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         tvEndDate.setOnClickListener(this);
     }
 
-    private void getAllPost(String filter, String sort) {
-        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
-                .addValueEventListener(new ValueEventListener() {
-                    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        posts.clear();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Post post = dataSnapshot.getValue(Post.class);
-                            if (filter == null || Objects.requireNonNull(post).getCategoryName().equals(filter))
-                                posts.add(post);
-                            else if (filter.equals("filterDate") && checkDate(startDate.getTimeInMillis(), post.getApproveDate(), endDate.getTimeInMillis()))
-                                posts.add(post);
-                        }
-                        if (posts.size() > 0) {
-                            tvNoPost.setVisibility(View.GONE);
-                            rvListPost.setVisibility(View.VISIBLE);
-                        } else {
-                            tvNoPost.setVisibility(View.VISIBLE);
-                            rvListPost.setVisibility(View.GONE);
-                        }
-                        tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
+    private void getPosts(String filter, long forumId) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(OBJ_POST);
+        Query query;
 
-                        Collections.reverse(posts);
-                        sortPosts();
+        if (forumId != 0) {
+            query = databaseReference.orderByChild("forumId").equalTo(forumId);
+        } else {
+            query = databaseReference.orderByChild("status").equalTo(STATUS_ENABLE);
+        }
 
+        query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                posts.clear();
 
-                        postAdapter.notifyDataSetChanged();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    boolean isPostValid = Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE);
+
+                    if (isPostValid && (filter == null || post.getCategoryName().equals(filter))) {
+                        posts.add(post);
+                    } else if (filter != null && filter.equals("filterDate") && isPostValid &&
+                            checkDate(startDate.getTimeInMillis(), post.getCreatedDate(), endDate.getTimeInMillis())) {
+                        posts.add(post);
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
-    }
+                if (posts.size() > 0) {
+                    tvNoPost.setVisibility(View.GONE);
+                    rvListPost.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoPost.setVisibility(View.VISIBLE);
+                    rvListPost.setVisibility(View.GONE);
+                }
 
-    private void getPostByForumId(String filter, String sort) {
-        FirebaseDatabase.getInstance().getReference(OBJ_POST)
-                .orderByChild("forumId").equalTo(Objects.requireNonNull(forum).getForumId())
-                .addValueEventListener(new ValueEventListener() {
-                    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dsPost) {
-                        posts.clear();
-                        for (DataSnapshot dataSnapshot : dsPost.getChildren()) {
-                            Post post = dataSnapshot.getValue(Post.class);
-                            if (Objects.requireNonNull(post).getStatus().equals(STATUS_ENABLE))
-                                if (filter == null || post.getCategoryName().equals(filter))
-                                    posts.add(post);
-                                else if (filter.equals("filterDate") && checkDate(startDate.getTimeInMillis(), post.getCreatedDate(), endDate.getTimeInMillis()))
-                                    posts.add(post);
-                        }
-                        if (posts.size() > 0) {
-                            tvNoPost.setVisibility(View.GONE);
-                            rvListPost.setVisibility(View.VISIBLE);
-                        } else {
-                            tvNoPost.setVisibility(View.VISIBLE);
-                            rvListPost.setVisibility(View.GONE);
-                        }
-                        tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
-                        Collections.reverse(posts);
+                tvNameForum.setText(forum.getName() + " (" + posts.size() + ")");
 
-                        sortPosts();
+                Collections.reverse(posts);
+                sortPosts();
 
-                        postAdapter.notifyDataSetChanged();
-                    }
+                postAdapter.notifyDataSetChanged();
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -273,10 +249,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(ListPostActivity.this, "Vui lòng nhập ngày bắt đầu hoặc ngày kết thúc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (forum.getForumId() == 0)
-                    getAllPost(filter, sort);
-                else
-                    getPostByForumId(filter, sort);
+                getPosts(filter, forum.getForumId());
                 break;
             case R.id.fabAddPost:
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -318,6 +291,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         filter = null;
                         tvStartDate.setText("Ngày bắt đầu");
                         tvEndDate.setText("Ngày kết thúc");
+                        llFilterDate.setVisibility(View.GONE);
                         break;
                     case R.id.mnuFilterQA:
                         filter = HOI_DAP;
@@ -325,13 +299,13 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                     case R.id.mnuFilterShareKnowledge:
                         filter = CHIA_SE_KIEN_THUC;
                         break;
+                    case R.id.mnuFilterDate:
+                        filter = null;
+                        llFilterDate.setVisibility(View.VISIBLE);
+                        break;
                 }
                 tvFilterPost.setText(filter);
-                if (forum.getForumId() == 0)
-                    getAllPost(filter, sort);
-                else
-                    getPostByForumId(filter, sort);
-
+                getPosts(filter, forum.getForumId());
                 return false;
             }
 
@@ -403,11 +377,7 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
                         break;
                 }
                 tvSortPost.setText(sort);
-                if (forum.getForumId() == 0)
-                    getAllPost(filter, sort);
-                else
-                    getPostByForumId(filter, sort);
-
+                getPosts(filter, forum.getForumId());
                 return false;
             }
 
@@ -419,18 +389,3 @@ public class ListPostActivity extends AppCompatActivity implements View.OnClickL
         menuPopupHelper.show();
     }
 }
-
-//    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//try {
-//        Date d1 = sdf.parse(date1);
-//        Date d2 = sdf.parse(date2);
-//        if (d1.compareTo(d2) < 0) {
-//        // date1 < date2
-//        } else if (d1.compareTo(d2) > 0) {
-//        // date1 > date2
-//        } else {
-//        // date1 == date2
-//        }
-//        } catch (ParseException e) {
-//        e.printStackTrace();
-//        }

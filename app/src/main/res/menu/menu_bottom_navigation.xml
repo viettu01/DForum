@@ -2,16 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mnuHome"
-        android:icon="@drawable/ic_house_solid_24"
+        android:icon="@drawable/round_home_24"
         android:title="@string/trang_chu" />
 
     <item
+        android:id="@+id/mnuForum"
+        android:icon="@drawable/round_forum_24"
+        android:title="@string/forum" />
+
+    <item
         android:id="@+id/mnuProfile"
-        android:icon="@drawable/ic_user_solid_24"
+        android:icon="@drawable/baseline_person_pin_24"
         android:title="@string/trang_ca_nhan" />
 
     <item
         android:id="@+id/mnuAdmin"
-        android:icon="@drawable/ic_screwdriver_wrench_solid_24"
+        android:icon="@drawable/outline_admin_panel_settings_24"
         android:title="@string/admin" />
 </menu>

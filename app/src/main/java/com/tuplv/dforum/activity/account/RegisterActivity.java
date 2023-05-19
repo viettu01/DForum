@@ -1,7 +1,5 @@
 package com.tuplv.dforum.activity.account;
 
-import static com.tuplv.dforum.until.Constant.IS_LOGIN_FALSE;
-import static com.tuplv.dforum.until.Constant.IS_LOGIN_TRUE;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
@@ -24,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -178,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     assert user != null;
                                     long createdDate = new Date().getTime();
                                     //khởi tạo một đối tượng account
-                                    Account account = new Account(user.getUid(), "user" + createdDate, "null", email, ROLE_USER, STATUS_ENABLE, createdDate, IS_LOGIN_FALSE, 0, 0);
+                                    Account account = new Account(user.getUid(), "user" + createdDate, "null", email, ROLE_USER, STATUS_ENABLE, createdDate, 0, 0);
 
                                     // gọi hàm thêm dữ liệu vào firebase
                                     reference.child(OBJ_ACCOUNT).child(user.getUid()).setValue(account);
@@ -219,7 +218,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             checkEmail();
         }
         if (charSequence == edtRegisterPassword.getText()) {
-            //checkPasswordStrength();
+            checkPasswordStrength();
             if (!confirmPassword.isEmpty())
                 checkConfirmPassword();
         }

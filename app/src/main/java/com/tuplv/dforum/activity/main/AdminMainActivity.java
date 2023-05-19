@@ -1,6 +1,7 @@
 package com.tuplv.dforum.activity.main;
 
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
+import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_NOTIFY;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
@@ -35,25 +36,32 @@ import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.notify.ListNotifyActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.adapter.CommentAdapter;
 import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.adapter.ViewPagerAdapter;
+import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.interf.OnPostClickListener;
+import com.tuplv.dforum.model.Comment;
 import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdminMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener {
+public class AdminMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener, OnCommentClickListener {
 
     ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
     Toolbar tbMain;
     TextView tvCardBadge;
     RecyclerView rvSearchPost;
+    RecyclerView rvSearchComment;
     PostAdapter postAdapter;
+    CommentAdapter commentsAdapter;
     List<Post> postsSearch;
+    List<Comment> commentsSearch;
     List<Post> posts;
+    List<Comment> comments;
     private long outApp;
     SharedPreferences sharedPreferences;
     int countNotify = 0;
@@ -78,9 +86,12 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
             public void onPageSelected(int position) {
                 switch (position) {
                     case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mnuForum).setChecked(true);
                         break;
                     case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
+                        break;
+                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
                         break;
                     default:
@@ -102,10 +113,13 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
         viewPager = findViewById(R.id.viewPager);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         rvSearchPost = findViewById(R.id.rvSearchPost);
+        rvSearchComment = findViewById(R.id.rvSearchComment);
         sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
 
         posts = new ArrayList<>();
+        comments = new ArrayList<>();
         postsSearch = new ArrayList<>();
+        commentsSearch = new ArrayList<>();
     }
 
     @Override
@@ -152,10 +166,12 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
         switch (item.getItemId()) {
             case R.id.mnuSearch:
                 rvSearchPost.setVisibility(View.VISIBLE);
+                rvSearchComment.setVisibility(View.VISIBLE);
                 viewPager.setVisibility(View.GONE);
                 bottomNavigationView.setVisibility(View.GONE);
 
                 getAllPost();
+                getAllComment();
 
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setQueryHint("Tìm kiếm ...");
@@ -171,6 +187,9 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                     public boolean onQueryTextChange(String newText) {
                         postsSearch.clear();
                         searchPost(newText);
+
+                        commentsSearch.clear();
+                        searchComment(newText);
                         return true;
                     }
                 });
@@ -184,6 +203,7 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                     @Override
                     public boolean onMenuItemActionCollapse(@NonNull MenuItem menuItem) {
                         rvSearchPost.setVisibility(View.GONE);
+                        rvSearchComment.setVisibility(View.GONE);
                         viewPager.setVisibility(View.VISIBLE);
                         bottomNavigationView.setVisibility(View.VISIBLE);
                         return true;
@@ -204,11 +224,14 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
             case R.id.mnuHome:
                 viewPager.setCurrentItem(0);
                 break;
-            case R.id.mnuProfile:
+            case R.id.mnuForum:
                 viewPager.setCurrentItem(1);
                 break;
-            case R.id.mnuAdmin:
+            case R.id.mnuProfile:
                 viewPager.setCurrentItem(2);
+                break;
+            case R.id.mnuAdmin:
+                viewPager.setCurrentItem(3);
                 break;
         }
         return true;
@@ -244,6 +267,44 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
 
                     }
                 });
+    }
+
+    private void getAllComment() {
+        FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        comments.clear();
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            for (DataSnapshot commentSnapshot : postSnapshot.child(OBJ_COMMENT).getChildren()) {
+                                Comment comment = commentSnapshot.getValue(Comment.class);
+                                if (comment != null)
+                                    comments.add(comment);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void searchComment(String search) {
+        commentsAdapter = new CommentAdapter(this, R.layout.item_comment, commentsSearch, this);
+        rvSearchComment.setAdapter(commentsAdapter);
+        rvSearchComment.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        if (!search.isBlank()) {
+            for (Comment comment : comments) {
+                if (comment.getContent().toLowerCase().contains(search.toLowerCase())) {
+                    commentsSearch.add(comment);
+                }
+            }
+        }
+        commentsAdapter.notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -295,5 +356,20 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                         }
                     });
         }
+    }
+
+    @Override
+    public void goToActivityUpdate(Comment comment) {
+
+    }
+
+    @Override
+    public void onDeleteClick(Comment comment) {
+
+    }
+
+    @Override
+    public void goToActivityComment(Comment comment, String nameAuthorRepComment) {
+
     }
 }

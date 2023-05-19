@@ -1,7 +1,6 @@
 package com.tuplv.dforum.fragment;
 
 import static android.app.Activity.RESULT_OK;
-import static com.tuplv.dforum.until.Constant.IS_LOGIN_FALSE;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
@@ -125,7 +124,6 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
         tvNoPost = view.findViewById(R.id.tvNoPost);
 
         progressDialog = new ProgressDialog(getContext());
-        //progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressDialog.setMessage("Đang tải ảnh lên");
     }
 
@@ -176,7 +174,6 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
         LinearLayout llRemoveAvatar = bottomSheetDialog.findViewById(R.id.llRemoveAvatar);
         LinearLayout llRemoveAccount = bottomSheetDialog.findViewById(R.id.llRemoveAccount);
         LinearLayout llUpdateName = bottomSheetDialog.findViewById(R.id.llUpdateName);
-        LinearLayout llLockAccount = bottomSheetDialog.findViewById(R.id.llLockAccount);
         LinearLayout llUpdatePassword = bottomSheetDialog.findViewById(R.id.llUpdatePassword);
         LinearLayout llLogout = bottomSheetDialog.findViewById(R.id.llLogout);
 
@@ -237,7 +234,6 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
         Objects.requireNonNull(llLogout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateIsLoginFalse();
                 mAuth.signOut();
                 requireContext().deleteSharedPreferences("account");
                 requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
@@ -389,12 +385,5 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
         intent.putExtra("post", post);
 
         startActivity(intent);
-    }
-
-    // cập nhật trạng thái đã đăng xuất
-    private void updateIsLoginFalse() {
-        HashMap<String, Object> updateIsLoginFalse = new HashMap<>();
-        updateIsLoginFalse.put("isLogin", IS_LOGIN_FALSE);
-        reference.child(OBJ_ACCOUNT).child(user.getUid()).updateChildren(updateIsLoginFalse);
     }
 }

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">DForum</string>
     <string name="trang_chu">Trang chủ</string>
     <string name="them_bai_viet">Thêm bài viết</string>
@@ -74,7 +74,8 @@
     <string name="oldPassword">Mật khẩu cũ</string>
     <string name="noPost">Bạn chưa có bài viết nào trên diên đàn</string>
     <string name="login">Đăng nhập</string>
-    <string name="register">Đăng ký tài khoản</string>
+    <string name="register_account">Đăng ký tài khoản</string>
+    <string name="register">Đăng ký</string>
     <string name="cac_dien_dan_noi_bat">Các diễn đàn nổi bật</string>
     <string name="noi_quy_dien_dan">Nội quy diễn đàn</string>
     <string name="admin_dien_dan">Admin diễn đàn</string>
@@ -93,4 +94,10 @@
     <string name="luot_xem_giam_dan">Lượt xem giảm dần</string>
     <string name="tieu_de_az">Tiêu đề từ A-Z</string>
     <string name="tieu_de_za">Tiêu đề từ Z-A</string>
+    <string name="forgot_password">Quên mật khẩu ?</string>
+    <string name="same_name">Tên này đã có người sử dụng !</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter_date">Khoảng ngày</string>
+    <string name="forum">Diễn đàn</string>
 </resources>

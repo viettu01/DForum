@@ -40,8 +40,10 @@ import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.account.ProfileUserActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
+import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
+import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     Account[] account = new Account[1];
     List<Comment> comments, repComments;
     long countRepComment;
+
+    public CommentAdapter(Context context, int layout, List<Comment> comments, OnCommentClickListener onCommentClickListener) {
+        this.context = context;
+        this.layout = layout;
+        this.comments = comments;
+        this.listener = onCommentClickListener;
+    }
 
     public CommentAdapter(Context context, int layout, OnCommentClickListener listener, List<Comment> comments, long postId) {
         this.context = context;
@@ -160,9 +169,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, ProfileUserActivity.class);
-//                intent.putExtra("userId", comment.getAccountId());
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, ProfileUserActivity.class);
+                intent.putExtra("userId", comment.getAccountId());
+                context.startActivity(intent);
             }
         });
     }
@@ -297,20 +306,5 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 });
     }
 
-//    public void continuousLoading() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (true) {
-//
-//                    try {
-//                        Thread.sleep(1000); // Dừng 1 giây trước khi thực hiện lại
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
-//    }
 
 }

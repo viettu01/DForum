@@ -11,18 +11,14 @@
         android:title="@string/cu_nhat" />
     <item
         android:id="@+id/mnuSortIncreaseViews"
-        android:title="@string/luot_xem_tang_dan"
-        android:visible="false"/>
+        android:title="@string/luot_xem_tang_dan" />
     <item
         android:id="@+id/mnuSortDecreaseViews"
-        android:title="@string/luot_xem_giam_dan"
-        android:visible="false"/>
+        android:title="@string/luot_xem_giam_dan" />
     <item
         android:id="@+id/mnuSortTitleAZ"
-        android:title="@string/tieu_de_az"
-        android:visible="false"/>
+        android:title="@string/tieu_de_az" />
     <item
         android:id="@+id/mnuSortTitleZA"
-        android:title="@string/tieu_de_za"
-        android:visible="false"/>
+        android:title="@string/tieu_de_za" />
 </menu>

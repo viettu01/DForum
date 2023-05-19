@@ -138,38 +138,6 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         builder.show();
     }
 
-    private void noApprovePost() {
-        builder.setTitle("Cảnh báo!");
-        builder.setIcon(R.drawable.ic_round_warning_yellow_24);
-        builder.setMessage("Bạn có chắc chắn không phê duyệt bài viết này?");
-        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId())).removeValue()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(DetailPostApproveActivity.this, "Bài viết không được phê duyệt", Toast.LENGTH_SHORT).show();
-                                    finish();
-
-                                } else {
-                                    Toast.makeText(DetailPostApproveActivity.this, "Lỗi, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        });
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.show();
-    }
-
     private void dialogNoApprove(Post post) {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -220,8 +188,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                 approvePost();
                 break;
             case R.id.btnNoPostApprove:
-                noApprovePost();
-//                dialogNoApprove(post);
+                dialogNoApprove(post);
                 break;
         }
     }

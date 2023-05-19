@@ -12,6 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnPostApproveClickListener;
 import com.tuplv.dforum.interf.OnPostClickListener;
@@ -102,7 +106,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitlePost, tvView, tvApprovalDate, tvCreateDate, tvCategoryName;
+        TextView tvTitlePost, tvView, tvApprovalDate, tvCreateDate, tvCategoryName, tvTrangThai;
         LinearLayout llItemListPost, llItemListPostApprove;
         ImageView imvPostApprove, imvNoPostApprove;
 

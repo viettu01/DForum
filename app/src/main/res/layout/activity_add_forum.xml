@@ -10,13 +10,14 @@
         android:id="@+id/tbAddNewForum"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationContentDescription="@string/quay_lai"
-        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        android:elevation="@dimen/_5sdp"
+        app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/tao_dien_dan_moi"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -86,6 +87,7 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/button_radius_10"
             android:text="@string/tao_dien_dan"
+            android:letterSpacing="0.02"
             android:textAllCaps="false"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>

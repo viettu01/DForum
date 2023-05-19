@@ -11,20 +11,21 @@
         android:id="@+id/tbListPost"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
+        android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationContentDescription="@string/quay_lai"
-        app:navigationIcon="@drawable/ic_arrow_back_white_24"
+        app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/bai_viet"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tbListPost"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginVertical="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="vertical">
 
         <TextView
@@ -96,22 +97,21 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llFilterDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Từ: "/>
 
-<!--            <CalendarView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"/>-->
-
             <TextView
                 android:id="@+id/tvStartDate"
                 android:layout_width="wrap_content"
+                android:background="@drawable/background_radius_border_gray_15"
+                android:padding="@dimen/_6sdp"
                 android:layout_height="wrap_content"
                 android:text="Ngày bắt đầu"
                 android:layout_marginEnd="@dimen/_5sdp" />
@@ -126,6 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ngày kết thúc"
+                android:background="@drawable/background_radius_border_gray_15"
+                android:padding="@dimen/_6sdp"
                 android:layout_marginEnd="@dimen/_5sdp" />
 
             <Button

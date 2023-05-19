@@ -156,9 +156,9 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             @Override
             public void onClick(View view) {
                 // bấm tên ra trang cá nhân
-//                Intent intent = new Intent(DetailPostActivity.this, ProfileUserActivity.class);
-//                intent.putExtra("userId", post.getAccountId());
-                //startActivity(intent);
+                Intent intent = new Intent(DetailPostActivity.this, ProfileUserActivity.class);
+                intent.putExtra("userId", post.getAccountId());
+                startActivity(intent);
             }
         });
     }
@@ -383,7 +383,6 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                         }
                     });
             sendNotifyToAuthor(post, TYPE_NOTIFY_ADD_COMMENT, accountIdComment);
-            //sendNotifyToAuthor();
         }
     }
 

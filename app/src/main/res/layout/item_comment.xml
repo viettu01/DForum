@@ -69,8 +69,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:textStyle="bold"
                 android:textColor="@color/gray_color_icon_profile"
-                android:text="@string/rep"
-                android:visibility="gone"/>
+                android:text="@string/rep" />
 
             <TextView
                 android:id="@+id/tvShowRepComment"
@@ -78,10 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:text="Xem các phản hồi"
                 android:textStyle="bold"
-                android:textColor="@color/gray_color_icon_profile"
-                android:visibility="gone"/>
+                android:textColor="@color/gray_color_icon_profile" />
         </LinearLayout>
 
 <!--        <TextView-->

@@ -5,9 +5,6 @@ public class Constant {
     public static final String STATUS_DISABLE = "DISABLE";
     public static final String STATUS_NO_APPROVE_POST = "NO_APPROVE_POST";
 
-    public static final String IS_LOGIN_TRUE = "TRUE";
-    public static final String IS_LOGIN_FALSE = "FALSE";
-
     public static final String OBJ_ACCOUNT = "ACCOUNTS";
     public static final String OBJ_FORUM = "FORUMS";
     public static final String OBJ_POST = "POSTS";
@@ -27,12 +24,11 @@ public class Constant {
     public static final String SORT_TITLE_AZ = "Tiêu đề từ A-Z";
     public static final String SORT_TITLE_ZA = "Tiêu đề từ Z-A";
     public static final int PICK_IMAGE_REQUEST = 111;
-    public static final int ONE_MINUTE = 65000;
     public static final int TYPE_START_DATE = 0;
     public static final int TYPE_END_DATE = 1;
 
-    public static final int MAX_LOGIN_ATTEMPTS = 6;
-    public static final long LOCK_DURATION_MS = 70 * 1000; // 70 giây
+    public static final int MAX_LOGIN_ATTEMPTS = 5;
+    public static final long LOCK_DURATION_MS = 5 * 60 * 1000; // 5 phút
 
     public static final String TYPE_NOTIFY_ADMIN_ADD_POST = "ADMIN_ADD_POST"; // Admin thêm bài viết mới
     public static final String TYPE_NOTIFY_ADD_COMMENT = "ADD_COMMENT"; // khi bình luận

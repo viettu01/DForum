@@ -135,13 +135,13 @@ public class AddPostActivity extends AppCompatActivity {
                 }
                 forumSpinnerAdapter.notifyDataSetChanged();
 
-//                if (forum != null) {
-//                    for (int i = 0; i < spnForum.getCount(); i++) {
-//                        Forum f = (Forum) spnForum.getItemAtPosition(i);
-//                        if (f.getName().equals(forum.getName()))
-//                            spnForum.setSelection(i);
-//                    }
-//                }
+                if (forum != null) {
+                    for (int i = 0; i < spnForum.getCount(); i++) {
+                        Forum f = (Forum) spnForum.getItemAtPosition(i);
+                        if (f.getName().equals(forum.getName()))
+                            spnForum.setSelection(i);
+                    }
+                }
             }
 
             @Override
@@ -244,18 +244,13 @@ public class AddPostActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng nhập tiêu đề và nội dung bài viết", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            //check tiêu đề đã tồn tại,khquas 20 kí tự
-//            if (edtTitlePost.length() >= 20) {
-//                Toast.makeText(this, "Tiêu đề không vượt quá 20 ký tự", Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//            for (Post post : posts) {
-//                if (edtTitlePost.getText().toString().trim().equals(post.getTitle())) {
-//                    Toast.makeText(this, "Tiêu đề đã tồn tại", Toast.LENGTH_SHORT).show();
-//                    return false;
-//                }
-//            }
-
+            //check tiêu đề đã tồn tại
+            for (Post post : posts) {
+                if (edtTitlePost.getText().toString().trim().equals(post.getTitle())) {
+                    Toast.makeText(this, "Tiêu đề đã tồn tại", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
             addPost();
         }
         return super.onOptionsItemSelected(item);

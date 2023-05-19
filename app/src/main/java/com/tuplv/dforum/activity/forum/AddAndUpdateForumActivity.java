@@ -6,7 +6,6 @@ import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
 import static com.tuplv.dforum.until.Until.sendNotifyAllAccount;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -105,7 +104,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     }
                 });
 
-        //sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
+        sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã thêm diễn đàn mới \"" + forum.getName() + "\"");
     }
 
     @SuppressLint("SetTextI18n")
@@ -135,7 +134,7 @@ public class AddAndUpdateForumActivity extends AppCompatActivity {
                     }
                 });
 
-      //  sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
+        sendNotifyAllAccount(ROLE_ADMIN, forum, null, accounts, " (Admin) đã đổi tên diễn đàn từ \"" + oldName + "\" thành \"" + forum.getName() + "\"");
     }
 
     // Lấy danh sách tài khoản và lấy thông tin tài khoản đang đăng nhập

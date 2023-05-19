@@ -9,5 +9,8 @@
     <item
         android:id="@+id/mnuFilterShareKnowledge"
         android:title="@string/chia_se_kien_thuc" />
+    <item
+        android:id="@+id/mnuFilterDate"
+        android:title="@string/filter_date" />
 
 </menu>
