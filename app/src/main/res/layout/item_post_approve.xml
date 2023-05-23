@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:singleLine="true"
             android:text="10:10 10/10/1010"
-            android:textColor="@color/gray_color_icon_profile"
+            android:textColor="@color/gray_max"
             android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 

@@ -9,6 +9,7 @@ import static com.tuplv.dforum.until.Until.sendNotifyToAuthor;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -25,14 +26,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
+import com.tuplv.dforum.activity.account.ProfileActivity;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Post;
 
@@ -189,6 +189,12 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                 break;
             case R.id.btnNoPostApprove:
                 dialogNoApprove(post);
+                break;
+            case R.id.tvNameAuthor:
+                // bấm tên ra trang cá nhân
+                Intent intent = new Intent(DetailPostApproveActivity.this, ProfileActivity.class);
+                intent.putExtra("userId", post.getAccountId());
+                startActivity(intent);
                 break;
         }
     }

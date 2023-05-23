@@ -59,7 +59,7 @@
 
                         <TextView
                             android:id="@+id/tvNameAuthor"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_weight="1"
@@ -69,21 +69,27 @@
 
                         <TextView
                             android:id="@+id/tvDatePost"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="17/03/2023 16:54" />
+                            android:textColor="@color/gray_max" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/imvNotify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:src="@drawable/notifications_off_24" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imvNotify"
+                            android:layout_marginTop="@dimen/_1sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:src="@drawable/notifications_off_24" />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <TextView
@@ -164,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/huy"
-                    android:textColor="@color/gray_color_icon_profile"
+                    android:textColor="@color/gray_max"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -187,16 +193,18 @@
                     android:hint="@string/viet_binh_luan"
                     android:paddingTop="@dimen/_5sdp"
                     android:paddingBottom="@dimen/_5sdp"
+                    android:maxLines="5"
+                    android:inputType="textMultiLine|textCapSentences"
                     tools:ignore="RtlSymmetry" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llComment"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:paddingStart="@dimen/_10sdp"

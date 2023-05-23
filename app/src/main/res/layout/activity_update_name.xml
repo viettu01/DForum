@@ -74,20 +74,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/same_name"
-                android:visibility="gone"
                 android:textColor="@color/error_color"
-                />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="end"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="end"
                 android:orientation="horizontal"
-                android:paddingEnd="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_15sdp"
                 tools:ignore="RtlSymmetry">
 
                 <Button

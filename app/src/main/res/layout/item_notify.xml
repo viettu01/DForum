@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:text="12/12/1212"
-            android:textColor="@color/gray_color_icon_profile"
+            android:textColor="@color/gray_max"
             android:textStyle="bold" />
     </LinearLayout>
 

@@ -7,18 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.tuplv.dforum.activity.main.UserMainActivity;
-import com.tuplv.dforum.fragment.AdminFragment;
+import com.tuplv.dforum.fragment.AccountFragment;
 import com.tuplv.dforum.fragment.ForumFragment;
 import com.tuplv.dforum.fragment.HomeFragment;
-import com.tuplv.dforum.fragment.NotLoggedInFragment;
-import com.tuplv.dforum.fragment.ProfileFragment;
+import com.tuplv.dforum.fragment.SearchFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Context context;
 
     public ViewPagerAdapter(@NonNull FragmentManager fm, Context context) {
@@ -31,19 +25,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 1:
-                return new ForumFragment();
+                return new SearchFragment();
             case 2:
-                if (user != null)
-                    return new ProfileFragment();
-                else
-                    return new NotLoggedInFragment();
+                return new ForumFragment();
             case 3:
-                return new AdminFragment();
-            case 4:
-                if (context instanceof UserMainActivity)
-                    return new HomeFragment();
-                else
-                    return new AdminFragment();
+                return new AccountFragment();
+            case 0:
             default:
                 return new HomeFragment();
         }
@@ -51,10 +38,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        if (context instanceof UserMainActivity) {
-            return 3;
-        }
-
         return 4;
     }
 }

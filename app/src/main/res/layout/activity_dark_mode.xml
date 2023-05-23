@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.account.UpdateNameActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbDarkMode"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="@dimen/_5sdp"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/round_arrow_back_black_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/dark_mode"
+        app:titleTextColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:orientation="vertical">
+
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp">
+
+            <RadioButton
+                android:id="@+id/android_virtual_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_16sdp"
+                android:text="@string/turn_off"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/android_virtual_diplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_16sdp"
+                android:text="@string/turn_on"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/android_virtual_dsplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_16sdp"
+                android:text="@string/system"
+                android:textSize="@dimen/_14sdp"
+                android:checked="true"
+                tools:ignore="RtlSymmetry" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"
+            android:text="@string/detail_dark_mode"
+            android:textColor="@color/gray_max" />
+    </LinearLayout>
+</LinearLayout>

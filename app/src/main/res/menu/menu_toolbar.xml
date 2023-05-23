@@ -6,6 +6,7 @@
         android:id="@+id/mnuSearch"
         android:icon="@drawable/ic_search_white_30"
         android:title="@string/tim_kiem"
+        android:visible="false"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 

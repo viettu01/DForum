@@ -201,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 register();
                 break;
             case R.id.ic_back_arrow_register:
-                this.finish();
+                finish();
                 break;
         }
     }

@@ -25,6 +25,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tbListPost"
         android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:orientation="vertical">
 
@@ -74,7 +75,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:gravity="center_vertical|end"
-                android:textColor="@color/gray_color_icon_profile" />
+                android:textColor="@color/gray_max" />
 
             <ImageView
                 android:id="@+id/imvSortPost"
@@ -93,7 +94,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:gravity="center_vertical|end"
-                android:textColor="@color/gray_color_icon_profile" />
+                android:textColor="@color/gray_max" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,10 +103,6 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Từ: "/>
 
             <TextView
                 android:id="@+id/tvStartDate"
@@ -113,28 +110,33 @@
                 android:background="@drawable/background_radius_border_gray_15"
                 android:padding="@dimen/_6sdp"
                 android:layout_height="wrap_content"
-                android:text="Ngày bắt đầu"
+                android:text="@string/start_date"
+                android:textColor="@color/gray_max"
+                android:textSize="@dimen/_11sdp"
                 android:layout_marginEnd="@dimen/_5sdp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đến: "/>
+                android:textStyle="bold"
+                android:text="-  "/>
 
             <TextView
                 android:id="@+id/tvEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ngày kết thúc"
+                android:textColor="@color/gray_max"
+                android:text="@string/end_date"
                 android:background="@drawable/background_radius_border_gray_15"
                 android:padding="@dimen/_6sdp"
+                android:textSize="@dimen/_11sdp"
                 android:layout_marginEnd="@dimen/_5sdp" />
 
             <Button
                 android:id="@+id/btnFilterDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lọc"
+                android:text="@string/filter"
                 android:textAllCaps="false"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -152,7 +154,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="@string/dien_dan_chua_co_bai_viet_nao"
-            android:textColor="@color/gray_color_icon_profile"
+            android:textColor="@color/gray_max"
             android:visibility="gone" />
     </LinearLayout>
 

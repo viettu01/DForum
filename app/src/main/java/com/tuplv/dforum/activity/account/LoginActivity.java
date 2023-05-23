@@ -3,8 +3,6 @@ package com.tuplv.dforum.activity.account;
 import static com.tuplv.dforum.until.Constant.LOCK_DURATION_MS;
 import static com.tuplv.dforum.until.Constant.MAX_LOGIN_ATTEMPTS;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
-import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
-import static com.tuplv.dforum.until.Constant.ROLE_USER;
 import static com.tuplv.dforum.until.Constant.STATUS_DISABLE;
 import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 
@@ -43,8 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.main.AdminMainActivity;
-import com.tuplv.dforum.activity.main.UserMainActivity;
+import com.tuplv.dforum.activity.main.MainActivity;
 import com.tuplv.dforum.model.Account;
 
 import java.text.SimpleDateFormat;
@@ -121,7 +118,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null && user.isEmailVerified()) {
-                                checkRole(role);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("role", role);
+                                editor.apply();
+
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
+
                                 updateCountLoginFailAndLockedDate("countLoginFail", accountId, 0);
                             } else {
                                 Toast.makeText(LoginActivity.this, "Xác minh email của bạn trước !", Toast.LENGTH_SHORT).show();
@@ -210,7 +213,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         builder.setTitle("Cảnh báo!");
         builder.setIcon(R.drawable.ic_round_warning_yellow_24);
         builder.setMessage(message);
-        builder.setNegativeButton("Đóng", (dialog, which) -> {});
+        builder.setNegativeButton("Đóng", (dialog, which) -> {
+        });
         builder.show();
     }
 
@@ -257,19 +261,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         dialog.show();
     }
 
-    // Lấy quyền và trạng thái tài khoản muốn đăng nhập để kiểm tra
-    private void checkRole(String role) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("role", role);
-        editor.apply();
-
-        if (role.equals(ROLE_ADMIN))
-            startActivity(new Intent(LoginActivity.this, AdminMainActivity.class));
-        if (role.equals(ROLE_USER))
-            startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
-        finish();
-    }
-
     // Đóng bàn phím
     private void closeKeyBoard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -305,7 +296,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialogForgotPassword();
                 break;
             case R.id.ic_back_arrow_login:
-                startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+                finish();
                 break;
             case R.id.btnLogin:
                 closeKeyBoard();

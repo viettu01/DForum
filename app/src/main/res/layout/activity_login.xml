@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_15sdp"
             android:text="Vui lòng đăng nhập để tiếp tục"
-            android:textColor="@color/gray_color_icon_profile"
+            android:textColor="@color/gray_max"
             android:textAlignment="textStart"
             android:textSize="@dimen/_12sdp" />
 

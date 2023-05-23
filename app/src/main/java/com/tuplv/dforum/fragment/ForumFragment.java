@@ -55,6 +55,7 @@ public class ForumFragment extends Fragment implements OnForumClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum, container, false);
         init (view);
+        getAllForum();
 
         if (!sharedPreferences.getString("role", "").equals(ROLE_ADMIN))
             rlAddForum.setVisibility(View.GONE);
@@ -72,12 +73,6 @@ public class ForumFragment extends Fragment implements OnForumClickListener {
         rvListForum = view.findViewById(R.id.rvListForum);
         rlAddForum = view.findViewById(R.id.rlAddForum);
         sharedPreferences = requireContext().getSharedPreferences("account", MODE_PRIVATE);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getAllForum();
     }
 
     @Override

@@ -5,4 +5,7 @@
         android:width="@dimen/_100sdp"
         android:height="@dimen/_100sdp" />
     <solid android:color="#e5e6eb" />
+    <stroke
+        android:width="2dp"
+        android:color="@color/white" /> <!-- Màu và độ rộng của border -->
 </shape>

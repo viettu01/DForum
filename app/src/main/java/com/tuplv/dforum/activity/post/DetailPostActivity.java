@@ -43,7 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.account.ProfileUserActivity;
+import com.tuplv.dforum.activity.account.ProfileActivity;
 import com.tuplv.dforum.adapter.CommentAdapter;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
@@ -58,7 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class DetailPostActivity extends AppCompatActivity implements OnCommentClickListener {
+public class DetailPostActivity extends AppCompatActivity implements OnCommentClickListener, View.OnClickListener {
 
     Toolbar tbDetailPost;
     TextView tvNameAuthor, tvDatePost, tvTitlePost, tvContentPost, tvNameAuthorRepComment, tvCancelRepComment;
@@ -99,34 +99,6 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             }
         });
 
-        // Kiểm tra xem người dùng đang bình luận hay trả lời bình luận
-        imvSendComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeKeyBoard();
-                edtComment.clearFocus();
-                if (user == null)
-                    Toast.makeText(DetailPostActivity.this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
-                else {
-                    if (llRepComment.getVisibility() == View.VISIBLE) {
-                        addRepComment(commentId);
-                        llRepComment.setVisibility(View.GONE);
-                    } else if (llRepComment.getVisibility() == View.GONE)
-                        addComment();
-                }
-            }
-        });
-
-        // Tắt chế độ trả lời comment
-        tvCancelRepComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeKeyBoard();
-                edtComment.clearFocus();
-                llRepComment.setVisibility(View.GONE);
-            }
-        });
-
         // Copy tiêu đề và nội dung bài viết vào bộ nhớ tạm
         View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
             @Override
@@ -137,30 +109,16 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         };
         tvContentPost.setOnLongClickListener(onLongClickListener);
         tvTitlePost.setOnLongClickListener(onLongClickListener);
+    }
 
-        imvNotify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (post.getStatusNotify().equals(STATUS_ENABLE)) {
-                    post.setStatusNotify(STATUS_DISABLE);
-                    imvNotify.setImageResource(R.drawable.notifications_active_24);
-                } else {
-                    post.setStatusNotify(STATUS_ENABLE);
-                    imvNotify.setImageResource(R.drawable.notifications_off_24);
-                }
-                updateStatusNotifyPost(post.getStatusNotify());
-            }
-        });
-
-        tvNameAuthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // bấm tên ra trang cá nhân
-                Intent intent = new Intent(DetailPostActivity.this, ProfileUserActivity.class);
-                intent.putExtra("userId", post.getAccountId());
-                startActivity(intent);
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        if (edtComment.hasFocus()) {
+            edtComment.clearFocus();
+            llComment.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void init() {
@@ -213,6 +171,11 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
 
         if (!user.getUid().equals(post.getAccountId()))
             imvNotify.setVisibility(View.GONE);
+
+        tvNameAuthor.setOnClickListener(this);
+        imvNotify.setOnClickListener(this);
+        imvSendComment.setOnClickListener(this);
+        tvCancelRepComment.setOnClickListener(this);
     }
 
     // Lấy thông tin chi tiết bài viết
@@ -403,5 +366,49 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         HashMap<String, Object> updateStatusNotifyPost = new HashMap<>();
         updateStatusNotifyPost.put("statusNotify", statusNotify);
         reference.child(OBJ_POST).child(String.valueOf(post.getPostId())).updateChildren(updateStatusNotifyPost);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imvSendComment:
+                // Kiểm tra xem người dùng đang bình luận hay trả lời bình luận
+                closeKeyBoard();
+                edtComment.clearFocus();
+                if (user == null)
+                    Toast.makeText(DetailPostActivity.this, "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
+                else {
+                    if (llRepComment.getVisibility() == View.VISIBLE) {
+                        addRepComment(commentId);
+                        llRepComment.setVisibility(View.GONE);
+                    } else if (llRepComment.getVisibility() == View.GONE)
+                        addComment();
+                }
+                break;
+            case R.id.tvCancelRepComment:
+                // Tắt chế độ trả lời comment
+                closeKeyBoard();
+                edtComment.clearFocus();
+                llComment.setVisibility(View.GONE);
+                llRepComment.setVisibility(View.GONE);
+                break;
+            case R.id.imvNotify:
+                if (post.getStatusNotify().equals(STATUS_ENABLE)) {
+                    post.setStatusNotify(STATUS_DISABLE);
+                    imvNotify.setImageResource(R.drawable.notifications_active_24);
+                } else {
+                    post.setStatusNotify(STATUS_ENABLE);
+                    imvNotify.setImageResource(R.drawable.notifications_off_24);
+                }
+                updateStatusNotifyPost(post.getStatusNotify());
+                break;
+            case R.id.tvNameAuthor:
+                // bấm tên ra trang cá nhân
+                Intent intent = new Intent(DetailPostActivity.this, ProfileActivity.class);
+                intent.putExtra("userId", post.getAccountId());
+                startActivity(intent);
+                break;
+        }
     }
 }

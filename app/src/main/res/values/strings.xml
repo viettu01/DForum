@@ -47,7 +47,7 @@
     <string name="Choose_avatar">Chọn ảnh đại diện</string>
     <string name="view_avatar">Xem ảnh đại diện</string>
     <string name="remove_avatar">Gỡ ảnh đại diện</string>
-    <string name="posts">Bài viết công khai</string>
+    <string name="posts">Bài viết của tôi</string>
     <string name="kiem_duyet_toan_bo">Kiểm duyệt toàn bộ</string>
     <string name="duyet_bai_dang">Duyệt bài</string>
     <string name="khong_duyet_bai_dang">Không duyệt</string>
@@ -100,4 +100,19 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="filter_date">Khoảng ngày</string>
     <string name="forum">Diễn đàn</string>
+    <string name="detail">Xem chi tiết</string>
+    <string name="dark_mode">Chế độ tối</string>
+    <string name="system">Hệ thống</string>
+    <string name="account">Tài khoản</string>
+    <string name="chinh_sach"><![CDATA[Pháp lý & chính sách]]></string>
+    <string name="help">Trợ giúp</string>
+    <string name="report_problem">Báo cáo sự cố kỹ thuật</string>
+    <string name="filter">Lọc</string>
+    <string name="start_date">Ngày bắt đầu</string>
+    <string name="end_date">Ngày kết thúc</string>
+    <string name="detail_dark_mode">Nếu bạn chọn hệ thống, DForum sẽ tự động điều chỉnh giao diện theo các cài đặt hệ thống trên thiết bị.</string>
+    <string name="turn_off">Tắt</string>
+    <string name="turn_on">Bật</string>
+    <string name="hot_forum">Diễn đàn nổi bật</string>
+    <string name="search">Tìm kiếm...</string>
 </resources>

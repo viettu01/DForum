@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".fragment.ProfileFragment">
+    tools:context=".activity.account.ProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbProfileUser"
@@ -52,8 +52,8 @@
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/imvAvatar"
-                            android:layout_width="@dimen/_95sdp"
-                            android:layout_height="@dimen/_95sdp"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
                             android:src="@drawable/no_avatar"
                             app:civ_border_color="@color/gray_color"
                             app:civ_border_width="2dp"
@@ -62,6 +62,24 @@
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <RelativeLayout
+                            android:id="@+id/rlAvatar"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_alignEnd="@id/imvAvatar"
+                            android:layout_alignBottom="@id/imvAvatar"
+                            android:background="@drawable/background_circle_profile"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints">
+
+                            <ImageView
+                                android:layout_width="@dimen/_16sdp"
+                                android:layout_height="@dimen/_16sdp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/round_photo_camera_24" />
+                        </RelativeLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -142,6 +160,13 @@
                         android:textAlignment="textStart"
                         android:textSize="@dimen/_18sdp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imvUpdateName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_edit_24" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -218,7 +243,7 @@
                 android:layout_marginStart="@dimen/_17sdp"
                 android:layout_marginEnd="@dimen/_17sdp"
                 android:visibility="gone"
-                android:textColor="@color/gray_color_icon_profile"
+                android:textColor="@color/gray_max"
                 android:text="@string/noPost"/>
 
             <androidx.recyclerview.widget.RecyclerView

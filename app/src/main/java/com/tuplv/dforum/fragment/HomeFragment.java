@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
     FloatingActionButton fabAddPost;
     ForumAdapter forumAdapter;
     List<Forum> forums;
-//    List<Integer> forumIds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -138,7 +137,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
                 if (FirebaseAuth.getInstance().getCurrentUser() != null)
                     startActivity(new Intent(getActivity(), AddPostActivity.class));
                 else
-                    Toast.makeText(getActivity(), "Bạn cần đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.rlShowListForum:
             case R.id.imvShowMoreForum:

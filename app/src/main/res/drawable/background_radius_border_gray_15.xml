@@ -5,7 +5,7 @@
             <corners android:radius="5dp" />
             <solid android:color="@color/white" />
             <stroke
-                android:color="@color/gray_color_icon_profile"
+                android:color="@color/gray_max"
                 android:width="1dp" />
         </shape>
     </item>

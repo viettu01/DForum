@@ -6,6 +6,11 @@
         android:title="@string/trang_chu" />
 
     <item
+        android:id="@+id/mnuSearch"
+        android:icon="@drawable/round_search_24"
+        android:title="@string/tim_kiem" />
+
+    <item
         android:id="@+id/mnuForum"
         android:icon="@drawable/round_forum_24"
         android:title="@string/forum" />
@@ -14,9 +19,4 @@
         android:id="@+id/mnuProfile"
         android:icon="@drawable/baseline_person_pin_24"
         android:title="@string/trang_ca_nhan" />
-
-    <item
-        android:id="@+id/mnuAdmin"
-        android:icon="@drawable/outline_admin_panel_settings_24"
-        android:title="@string/admin" />
 </menu>

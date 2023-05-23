@@ -29,7 +29,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/danh_sach_dien_dan"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:text="@string/hot_forum"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
@@ -55,6 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:paddingStart="@dimen/_5sdp"
                 android:text="@string/noi_quy_dien_dan"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
@@ -64,14 +66,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="@dimen/_3sdp"
+                android:paddingStart="@dimen/_5sdp"
                 android:text="1. Tôn trọng các thành viên: Điều này bao gồm việc không sử dụng ngôn ngữ thô tục hoặc xúc phạm bất kỳ thành viên nào trong diễn đàn. \n2. Không spam: Không được quảng cáo hay chia sẻ các nội dung không liên quan đến lập trình trên diễn đàn. Nếu bạn muốn quảng cáo sản phẩm hay dịch vụ của mình, hãy liên hệ với quản trị viên diễn đàn để biết thêm chi tiết."
-                android:textColor="@color/gray_color_icon_profile"
+                android:textColor="@color/gray_max"
                 android:textSize="@dimen/_13sdp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:paddingStart="@dimen/_5sdp"
                 android:text="@string/admin_dien_dan"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
@@ -82,8 +86,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:lineSpacingExtra="@dimen/_3sdp"
+                android:paddingStart="@dimen/_5sdp"
                 android:text="Nguyễn Văn Mạnh - manhnv291201@gmail.com \nNguyễn Thị Lê - nguyenthile050801@gmail.com \nPhạm Lê Việt Tú - tupham1120@gmail.com"
-                android:textColor="@color/gray_color_icon_profile"
+                android:textColor="@color/gray_max"
                 android:textSize="@dimen/_12sdp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

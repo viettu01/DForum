@@ -27,15 +27,17 @@
 
         <RelativeLayout
             android:id="@+id/rlAddForum"
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:background="@drawable/background_circle">
 
             <ImageView
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_plus_solid_24" />
+                android:src="@drawable/ic_add_black_24" />
         </RelativeLayout>
     </LinearLayout>
 

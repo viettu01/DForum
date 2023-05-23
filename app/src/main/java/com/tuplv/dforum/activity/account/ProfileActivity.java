@@ -1,6 +1,5 @@
-package com.tuplv.dforum.fragment;
+package com.tuplv.dforum.activity.account;
 
-import static android.app.Activity.RESULT_OK;
 import static com.tuplv.dforum.until.Constant.OBJ_ACCOUNT;
 import static com.tuplv.dforum.until.Constant.OBJ_COMMENT;
 import static com.tuplv.dforum.until.Constant.OBJ_POST;
@@ -12,26 +11,28 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,10 +46,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.account.LoginActivity;
-import com.tuplv.dforum.activity.account.ShowAvatarActivity;
-import com.tuplv.dforum.activity.account.UpdateNameActivity;
-import com.tuplv.dforum.activity.account.UpdatePasswordActivity;
 import com.tuplv.dforum.activity.post.DetailPostActivity;
 import com.tuplv.dforum.adapter.PostAdapter;
 import com.tuplv.dforum.interf.OnPostClickListener;
@@ -63,31 +60,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements OnPostClickListener {
+public class ProfileActivity extends AppCompatActivity implements OnPostClickListener {
+
     TextView tvNickName, tvEmail, tvCreatedDate, tvTotalPost, tvTotalComment, tvNoPost;
-    ImageView imvAvatar, imvUpdateName, imvSetting;
+    ImageView imvAvatar, imvUpdateName;
+    RelativeLayout rlAvatar;
     ProgressDialog progressDialog;
     RecyclerView rvMyPost;
+    Toolbar tbProfileUser;
     List<Post> myPost;
     PostAdapter myPostAdapter;
     //firebase authentication
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseUser user = mAuth.getCurrentUser();
     Account account;
+    String userId;
     //firebase
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
-        init(view);
+        init();
 
-        if (user != null)
+        if (userId != null) {
             getProfile();
-        getMyPost();
-        getTotalComment();
+            getMyPost();
+            getTotalComment();
+        } else
+            Toast.makeText(this, "Có lỗi xảy ra thử lại sau !", Toast.LENGTH_SHORT).show();
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -96,40 +99,50 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
             }
         };
         imvAvatar.setOnClickListener(listener);
-        imvSetting.setOnClickListener(listener);
+        rlAvatar.setOnClickListener(listener);
 
         imvUpdateName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UpdateNameActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, UpdateNameActivity.class);
                 intent.putExtra("name", account.getNickName());
                 startActivity(intent);
             }
         });
 
-        return view;
+        tbProfileUser.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
-    private void init(View view) {
-        tvEmail = view.findViewById(R.id.tvEmail);
-        tvCreatedDate = view.findViewById(R.id.tvCreatedDate);
-        imvUpdateName = view.findViewById(R.id.imvUpdateName);
-        tvNickName = view.findViewById(R.id.tvNickName);
-        imvAvatar = view.findViewById(R.id.imvAvatar);
-        imvSetting = view.findViewById(R.id.imvSetting);
+    private void init() {
+        tvEmail = findViewById(R.id.tvEmail);
+        tvCreatedDate = findViewById(R.id.tvCreatedDate);
+        imvUpdateName = findViewById(R.id.imvUpdateName);
+        tvNickName = findViewById(R.id.tvNickName);
+        imvAvatar = findViewById(R.id.imvAvatar);
+        rlAvatar = findViewById(R.id.rlAvatar);
 
-        rvMyPost = view.findViewById(R.id.rvMyPost);
-        tvTotalPost = view.findViewById(R.id.tvTotalPost);
-        tvTotalComment = view.findViewById(R.id.tvTotalComment);
-        tvNoPost = view.findViewById(R.id.tvNoPost);
+        rvMyPost = findViewById(R.id.rvMyPost);
+        tvTotalPost = findViewById(R.id.tvTotalPost);
+        tvTotalComment = findViewById(R.id.tvTotalComment);
+        tvNoPost = findViewById(R.id.tvNoPost);
 
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(ProfileActivity.this);
         progressDialog.setMessage("Đang tải ảnh lên");
+
+        tbProfileUser = findViewById(R.id.tbProfileUser);
+
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
     }
 
     @SuppressLint("SimpleDateFormat")
     private void getProfile() {
-        reference.child(OBJ_ACCOUNT).child(user.getUid())
+        reference.child(OBJ_ACCOUNT).child(userId)
                 .addValueEventListener(new ValueEventListener() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -158,24 +171,21 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(), "Có lỗi xảy ra, thử lại sau", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Có lỗi xảy ra, thử lại sau", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     @SuppressLint("InflateParams")
     private void showBottomSheetDialogAvatar() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bottom_sheet_avatar, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet_avatar, null);
         bottomSheetDialog.setContentView(bottomSheetView);
+
 
         LinearLayout llChooseAvatar = bottomSheetDialog.findViewById(R.id.llChooseAvatar);
         LinearLayout llShowAvatar = bottomSheetDialog.findViewById(R.id.llShowAvatar);
         LinearLayout llRemoveAvatar = bottomSheetDialog.findViewById(R.id.llRemoveAvatar);
-        LinearLayout llRemoveAccount = bottomSheetDialog.findViewById(R.id.llRemoveAccount);
-        LinearLayout llUpdateName = bottomSheetDialog.findViewById(R.id.llUpdateName);
-        LinearLayout llUpdatePassword = bottomSheetDialog.findViewById(R.id.llUpdatePassword);
-        LinearLayout llLogout = bottomSheetDialog.findViewById(R.id.llLogout);
 
         Objects.requireNonNull(llChooseAvatar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +199,7 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
             @Override
             public void onClick(View view) {
                 getProfile();
-                Intent intent = new Intent(getActivity(), ShowAvatarActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, ShowAvatarActivity.class);
                 intent.putExtra("avatarUri", account.getAvatarUri());
                 startActivity(intent);
                 bottomSheetDialog.dismiss();
@@ -202,45 +212,11 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
                 FirebaseUser user = mAuth.getCurrentUser();
                 assert user != null;
                 reference.child(OBJ_ACCOUNT).child(user.getUid()).child("avatarUri").setValue("null");
-                Toast.makeText(getContext(), "Cập nhật ảnh dại diện thành công !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Cập nhật ảnh dại diện thành công !", Toast.LENGTH_SHORT).show();
                 bottomSheetDialog.dismiss();
             }
         });
-
-        //
-        Objects.requireNonNull(llRemoveAccount).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                bottomSheetDialog.dismiss();
-            }
-        });
-        Objects.requireNonNull(llUpdateName).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UpdateNameActivity.class);
-                intent.putExtra("name", account.getNickName());
-                startActivity(intent);
-                bottomSheetDialog.dismiss();
-            }
-        });
-        Objects.requireNonNull(llUpdatePassword).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), UpdatePasswordActivity.class));
-                bottomSheetDialog.dismiss();
-            }
-        });
-        Objects.requireNonNull(llLogout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.signOut();
-                requireContext().deleteSharedPreferences("account");
-                requireContext().startActivity(new Intent(getContext(), LoginActivity.class));
-                bottomSheetDialog.dismiss();
-            }
-        });
-        bottomSheetDialog.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
+        //bottomSheetDialog.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetDialog.show();
     }
 
@@ -258,7 +234,7 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
     }
 
     private String getFileNameExtension(Uri uri) {
-        ContentResolver contentResolver = requireContext().getContentResolver();
+        ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
 
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
@@ -295,12 +271,12 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Picasso.get().load(uri).into(imvAvatar);
                     progressDialog.dismiss();
-                    Toast.makeText(getContext(), "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Tải ảnh lên thành công", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(getContext(), "Tải ảnh lên không thành công, thử lại sau", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Tải ảnh lên không thành công, thử lại sau", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -317,12 +293,12 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
                     for (DataSnapshot commentSnapshot : postSnapshot.child(OBJ_COMMENT).getChildren()) {
                         Comment comment = commentSnapshot.getValue(Comment.class);
                         assert comment != null;
-                        if (String.valueOf(comment.getAccountId()).equals(user.getUid())) {
+                        if (String.valueOf(comment.getAccountId()).equals(userId)) {
                             commentCount++;
                             for (DataSnapshot repCommentSnapshot : commentSnapshot.child(OBJ_REP_COMMENT).getChildren()) {
                                 Comment repComment = repCommentSnapshot.getValue(Comment.class);
                                 assert repComment != null;
-                                if (String.valueOf(repComment.getAccountId()).equals(user.getUid())) {
+                                if (String.valueOf(repComment.getAccountId()).equals(userId)) {
                                     repCommentCount++;
                                 }
                             }
@@ -340,10 +316,9 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
     }
 
 
-
     private void getMyPost() {
         myPost = new ArrayList<>();
-        myPostAdapter = new PostAdapter(getActivity(), R.layout.item_post, myPost, this);
+        myPostAdapter = new PostAdapter(this, R.layout.item_post, myPost, this);
         rvMyPost.setAdapter(myPostAdapter);
         rvMyPost.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         FirebaseDatabase.getInstance().getReference(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE)
@@ -354,7 +329,7 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
                         myPost.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Post post = dataSnapshot.getValue(Post.class);
-                            if (Objects.requireNonNull(post).getAccountId().equals(user.getUid())) {
+                            if (Objects.requireNonNull(post).getAccountId().equals(userId)) {
                                 myPost.add(post);
                             }
                         }
@@ -369,7 +344,7 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -381,7 +356,7 @@ public class ProfileFragment extends Fragment implements OnPostClickListener {
         FirebaseDatabase.getInstance().getReference(OBJ_POST).child(String.valueOf(post.getPostId()))
                 .updateChildren(updateView);
 
-        Intent intent = new Intent(getActivity(), DetailPostActivity.class);
+        Intent intent = new Intent(ProfileActivity.this, DetailPostActivity.class);
         intent.putExtra("post", post);
 
         startActivity(intent);

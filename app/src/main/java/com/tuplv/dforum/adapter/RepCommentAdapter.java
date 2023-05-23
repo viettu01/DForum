@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,8 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.account.ProfileUserActivity;
-import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.activity.account.ProfileActivity;
 import com.tuplv.dforum.activity.post.UpdateCommentActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
 import com.tuplv.dforum.model.Account;
@@ -138,7 +136,7 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
         holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ProfileUserActivity.class);
+                Intent intent = new Intent(context, ProfileActivity.class);
                 intent.putExtra("userId", comment.getAccountId());
                 context.startActivity(intent);
             }

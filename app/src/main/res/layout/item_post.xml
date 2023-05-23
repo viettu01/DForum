@@ -8,15 +8,34 @@
     android:layout_marginEnd="@dimen/_1sdp"
     android:layout_marginBottom="@dimen/_5sdp"
     android:background="@drawable/custom_background_item_posts"
-    android:elevation="@dimen/_2sdp"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="@dimen/_10sdp">
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:background="@drawable/background_circle_post">
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_sent_20_gray" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <TextView
@@ -25,7 +44,7 @@
             android:layout_height="match_parent"
             android:singleLine="true"
             android:text="@string/tieu_de"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_14sdp"
             android:textStyle="bold" />
 
         <TextView
@@ -42,24 +61,31 @@
             android:layout_height="match_parent"
             android:singleLine="true"
             android:text="10:10 10/10/1010"
-            android:textColor="@color/gray_color_icon_profile"
+            android:textColor="@color/gray_max"
             android:textSize="@dimen/_10sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:contentDescription="@string/luot_xem"
+                android:src="@drawable/outline_visibility_24" />
+
+            <TextView
+                android:id="@+id/tvView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="100"
+                android:textColor="@color/gray_max"
+                android:textSize="@dimen/_10sdp"
+                android:gravity="center_vertical" />
+        </LinearLayout>
     </LinearLayout>
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:contentDescription="@string/luot_xem"
-        android:src="@drawable/ic_eye_black_24" />
-
-    <TextView
-        android:id="@+id/tvView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100"
-        android:textSize="@dimen/_14sdp" />
 </LinearLayout>

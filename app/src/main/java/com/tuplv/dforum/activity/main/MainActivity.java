@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdminMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener, OnCommentClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnPostClickListener, OnCommentClickListener {
 
     ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
@@ -87,16 +87,17 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                 switch (position) {
                     case 1:
                         tbMain.setVisibility(View.GONE);
-                        bottomNavigationView.getMenu().findItem(R.id.mnuForum).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mnuSearch).setChecked(true);
                         break;
                     case 2:
                         tbMain.setVisibility(View.GONE);
-                        bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mnuForum).setChecked(true);
                         break;
                     case 3:
                         tbMain.setVisibility(View.GONE);
-                        bottomNavigationView.getMenu().findItem(R.id.mnuAdmin).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mnuProfile).setChecked(true);
                         break;
+                    case 0:
                     default:
                         tbMain.setVisibility(View.VISIBLE);
                         bottomNavigationView.getMenu().findItem(R.id.mnuHome).setChecked(true);
@@ -128,7 +129,7 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public void onBackPressed() {
-        Toast outToast = Toast.makeText(AdminMainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
+        Toast outToast = Toast.makeText(MainActivity.this, "CLICK 1 lần nữa để thoát !", Toast.LENGTH_SHORT);
         if (outApp + 2000 > System.currentTimeMillis()) {
             outToast.cancel();
             super.onBackPressed();
@@ -215,7 +216,10 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                 });
                 break;
             case R.id.mnuNotify:
-                startActivity(new Intent(AdminMainActivity.this, ListNotifyActivity.class));
+                if (FirebaseAuth.getInstance().getCurrentUser() == null)
+                    Toast.makeText(this, "Đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
+                else
+                    startActivity(new Intent(MainActivity.this, ListNotifyActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -229,15 +233,15 @@ public class AdminMainActivity extends AppCompatActivity implements NavigationVi
                 tbMain.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(0);
                 break;
-            case R.id.mnuForum:
-                tbMain.setVisibility(View.GONE);
+            case R.id.mnuSearch:
+                tbMain.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(1);
                 break;
-            case R.id.mnuProfile:
+            case R.id.mnuForum:
                 tbMain.setVisibility(View.GONE);
                 viewPager.setCurrentItem(2);
                 break;
-            case R.id.mnuAdmin:
+            case R.id.mnuProfile:
                 tbMain.setVisibility(View.GONE);
                 viewPager.setCurrentItem(3);
                 break;

@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Comment implements Serializable {
     private long commentId;
-    private String accountId;
+    private String accountId; // ID của người đang rep comment
     private String content;
 
     public Comment() {

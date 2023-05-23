@@ -13,7 +13,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,13 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tuplv.dforum.R;
-import com.tuplv.dforum.activity.account.ProfileUserActivity;
-import com.tuplv.dforum.activity.post.DetailPostActivity;
+import com.tuplv.dforum.activity.account.ProfileActivity;
 import com.tuplv.dforum.interf.OnCommentClickListener;
-import com.tuplv.dforum.interf.OnPostClickListener;
 import com.tuplv.dforum.model.Account;
 import com.tuplv.dforum.model.Comment;
-import com.tuplv.dforum.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +165,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ProfileUserActivity.class);
+                Intent intent = new Intent(context, ProfileActivity.class);
                 intent.putExtra("userId", comment.getAccountId());
                 context.startActivity(intent);
             }
@@ -288,6 +284,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         reference.child(OBJ_POST).child(String.valueOf(postId))
                 .child(OBJ_COMMENT).child(String.valueOf(commentId))
                 .child(OBJ_REP_COMMENT).addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         countRepComment = dataSnapshot.getChildrenCount();
