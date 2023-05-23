@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingHorizontal="@dimen/_15sdp"
     tools:context=".fragment.SearchFragment">
 
     <EditText
@@ -11,15 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         android:background="@drawable/background_comment_radius"
         android:drawableStart="@drawable/round_search_24"
         android:drawablePadding="@dimen/_10sdp"
         android:hint="@string/search"
+        android:inputType="text"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
-        android:inputType="text"
         tools:ignore="Autofill" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchPost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -169,7 +169,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
         else
             imvNotify.setImageResource(R.drawable.notifications_off_24);
 
-        if (!user.getUid().equals(post.getAccountId()))
+        if (user == null || !user.getUid().equals(post.getAccountId()))
             imvNotify.setVisibility(View.GONE);
 
         tvNameAuthor.setOnClickListener(this);
