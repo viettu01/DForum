@@ -22,8 +22,23 @@
         android:paddingEnd="@dimen/_10sdp"
         tools:ignore="Autofill" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchPost"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchPost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvNoSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Nhập tiêu đề hoặc nội dung \n vào thanh tìm kiếm để tìm kiếm bài viết"
+            android:textAlignment="center"
+            android:textColor="@color/gray_max" />
+    </RelativeLayout>
 </LinearLayout>

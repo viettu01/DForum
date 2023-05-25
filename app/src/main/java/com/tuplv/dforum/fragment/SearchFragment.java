@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -35,6 +36,7 @@ import java.util.List;
 public class SearchFragment extends Fragment implements OnPostClickListener {
 
     EditText edtSearch;
+    TextView tvNoSearch;
     RecyclerView rvSearchPost;
     List<Post> allPosts, searchPosts;
     PostAdapter postAdapter;
@@ -54,6 +56,14 @@ public class SearchFragment extends Fragment implements OnPostClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().isBlank()) {
+                    tvNoSearch.setVisibility(View.VISIBLE);
+                    tvNoSearch.setText("Nhập tiêu đề hoặc nội dung \n vào thanh tìm kiếm để tìm kiếm bài viết");
+                    rvSearchPost.setVisibility(View.GONE);
+                    return;
+                }
+                tvNoSearch.setVisibility(View.GONE);
+                rvSearchPost.setVisibility(View.VISIBLE);
                 searchPosts.clear();
                 searchPost(charSequence.toString());
             }
@@ -69,6 +79,7 @@ public class SearchFragment extends Fragment implements OnPostClickListener {
 
     private void init(View view) {
         edtSearch = view.findViewById(R.id.edtSearch);
+        tvNoSearch = view.findViewById(R.id.tvNoSearch);
         rvSearchPost = view.findViewById(R.id.rvSearchPost);
 
         allPosts = new ArrayList<>();
@@ -111,6 +122,11 @@ public class SearchFragment extends Fragment implements OnPostClickListener {
             }
         }
         searchPosts.sort((p1, p2) -> Math.toIntExact(p2.getView() - p1.getView()));
+        if (searchPosts.size() == 0) {
+            tvNoSearch.setVisibility(View.VISIBLE);
+            tvNoSearch.setText("Không có bài viết nào");
+            rvSearchPost.setVisibility(View.GONE);
+        }
         postAdapter.notifyDataSetChanged();
     }
 
