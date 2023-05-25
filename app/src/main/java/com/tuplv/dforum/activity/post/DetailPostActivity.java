@@ -173,6 +173,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
             imvNotify.setVisibility(View.GONE);
 
         tvNameAuthor.setOnClickListener(this);
+        imvAvatar.setOnClickListener(this);
         imvNotify.setOnClickListener(this);
         imvSendComment.setOnClickListener(this);
         tvCancelRepComment.setOnClickListener(this);
@@ -404,6 +405,7 @@ public class DetailPostActivity extends AppCompatActivity implements OnCommentCl
                 updateStatusNotifyPost(post.getStatusNotify());
                 break;
             case R.id.tvNameAuthor:
+            case R.id.imvAvatar:
                 // bấm tên ra trang cá nhân
                 Intent intent = new Intent(DetailPostActivity.this, ProfileActivity.class);
                 intent.putExtra("userId", post.getAccountId());

@@ -15,12 +15,12 @@
             android:id="@+id/tbMain"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
+            android:background="?attr/colorPrimaryVariant"
             android:elevation="@dimen/_5sdp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="DForum"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
-            app:titleTextColor="@color/main_color" />
+            app:titleTextColor="?attr/colorSecondaryVariant" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout

@@ -38,6 +38,8 @@ import com.tuplv.dforum.activity.main.StartActivity;
 import com.tuplv.dforum.activity.post.PostApproveActivity;
 import com.tuplv.dforum.model.Account;
 
+import java.util.Objects;
+
 public class AccountFragment extends Fragment implements View.OnClickListener {
     Button btnCallLogin, btnCallRegister;
     TextView tvNickName;
@@ -142,6 +144,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 mAuth.signOut();
                 requireContext().deleteSharedPreferences("account");
                 requireContext().startActivity(new Intent(getContext(), StartActivity.class));
+                requireActivity().finish();
                 break;
             case R.id.imvAvatar:
             case R.id.llProfile:

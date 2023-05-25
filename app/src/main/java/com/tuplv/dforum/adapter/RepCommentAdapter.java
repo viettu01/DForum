@@ -133,14 +133,17 @@ public class RepCommentAdapter extends RecyclerView.Adapter<RepCommentAdapter.Vi
         holder.itemView.setOnLongClickListener(onLongClickListener);
         holder.tvContentComment.setOnLongClickListener(onLongClickListener);
 
-        holder.tvNameCommentator.setOnClickListener(new View.OnClickListener() {
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfileActivity.class);
                 intent.putExtra("userId", comment.getAccountId());
                 context.startActivity(intent);
             }
-        });
+        };
+        holder.tvNameCommentator.setOnClickListener(onClickListener);
+        holder.imvAvatar.setOnClickListener(onClickListener);
     }
 
     @Override

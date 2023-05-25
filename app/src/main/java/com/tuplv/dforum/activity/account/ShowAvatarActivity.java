@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.tuplv.dforum.R;
@@ -27,7 +28,8 @@ import java.io.OutputStream;
 
 public class ShowAvatarActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView imvBack, imvDownload, imvAvatarFullSize;
+    ImageView imvBack, imvDownload;
+    PhotoView imvAvatarFullSize;
     RelativeLayout rlShowMenu;
     boolean show = false;
 

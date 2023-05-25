@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.forum.AddAndUpdateForumActivity;
-import com.tuplv.dforum.activity.forum.ListForumActivity;
 import com.tuplv.dforum.activity.post.ListPostActivity;
 import com.tuplv.dforum.adapter.ForumAdapter;
 import com.tuplv.dforum.interf.OnForumClickListener;
@@ -41,7 +39,6 @@ import com.tuplv.dforum.model.Forum;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ForumFragment extends Fragment implements OnForumClickListener {
 

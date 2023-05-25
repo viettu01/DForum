@@ -47,7 +47,7 @@
     <string name="Choose_avatar">Chọn ảnh đại diện</string>
     <string name="view_avatar">Xem ảnh đại diện</string>
     <string name="remove_avatar">Gỡ ảnh đại diện</string>
-    <string name="posts">Bài viết của tôi</string>
+    <string name="posts">Bài viết trên diễn đàn</string>
     <string name="kiem_duyet_toan_bo">Kiểm duyệt toàn bộ</string>
     <string name="duyet_bai_dang">Duyệt bài</string>
     <string name="khong_duyet_bai_dang">Không duyệt</string>
@@ -72,7 +72,7 @@
     <string name="confirmNewPassword">Nhập lại mật khẩu mới</string>
     <string name="newPassword">Mật khẩu mới</string>
     <string name="oldPassword">Mật khẩu cũ</string>
-    <string name="noPost">Bạn chưa có bài viết nào trên diên đàn</string>
+    <string name="noPost">Bạn chưa có bài viết nào trên diễn đàn</string>
     <string name="login">Đăng nhập</string>
     <string name="register_account">Đăng ký tài khoản</string>
     <string name="register">Đăng ký</string>
@@ -115,4 +115,5 @@
     <string name="turn_on">Bật</string>
     <string name="hot_forum">Diễn đàn nổi bật</string>
     <string name="search">Tìm kiếm...</string>
+    <string name="noi_quy">1. Tôn trọng và lịch sự: Đảm bảo bạn luôn tôn trọng và lịch sự trong giao tiếp với các thành viên khác trên diễn đàn. Tránh sử dụng ngôn ngữ xúc phạm, công kích hoặc gây hiểu lầm. \n2. Tránh spam và quảng cáo: Không đăng bài viết trùng lặp hoặc spam trên diễn đàn. Nếu bạn muốn chia sẻ thông tin hay sản phẩm, hãy đảm bảo nó có liên quan đến chủ đề và có giá trị cho cộng đồng. \n3. Đăng bài đúng chuyên mục: Trước khi đăng bài viết mới, hãy đảm bảo rằng bài viết của bạn đúng chủ đề và được đăng trong chuyên mục phù hợp. Điều này giúp các thành viên khác dễ dàng tìm kiếm thông tin và tương tác với bạn. \n4. Đặt tiêu đề rõ ràng và mô tả bài viết: Khi đăng bài mới, hãy sử dụng tiêu đề rõ ràng và mô tả ngắn gọn nội dung bài viết của bạn. Điều này giúp người đọc hiểu được vấn đề bạn đang gặp phải hoặc kiến thức bạn muốn chia sẻ. \n5. Không vi phạm bản quyền: Đảm bảo rằng bạn không vi phạm bản quyền khi đăng bài viết, chia sẻ mã nguồn hoặc tài liệu khác. Nếu bạn sử dụng mã nguồn từ nguồn khác, hãy tuân thủ theo các quy định và yêu cầu của tác giả.</string>
 </resources>

@@ -3,12 +3,20 @@
     <style name="Theme.DForum" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/main_color</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/main_color</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondaryVariant">@color/main_color</item>
         <item name="colorOnSecondary">@color/black</item>
+
+        <item name="colorAccent">@color/black_opacity</item>
+        <item name="colorOnSurface">@color/gray_max</item>
+
+        <!--        màu icon và nền-->
+        <item name="colorOnSurfaceVariant">@color/white</item>
+        <item name="colorBackgroundFloating">@color/main_color</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>

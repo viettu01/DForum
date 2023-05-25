@@ -54,16 +54,16 @@ public class Until {
             return "Vừa xong";
         } else if (secondsAgo < 3600) {
             long minutesAgo = TimeUnit.MINUTES.convert(diffInMillis, TimeUnit.MILLISECONDS);
-            return minutesAgo + " phút";
+            return minutesAgo + " phút trước";
         } else if (secondsAgo < 86400) {
             long hoursAgo = TimeUnit.HOURS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-            return hoursAgo + " giờ";
+            return hoursAgo + " giờ trước";
         } else if (secondsAgo < 604800) {
             long daysAgo = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-            return daysAgo + " ngày";
+            return daysAgo + " ngày trước";
         } else if (secondsAgo < 31536000) {
             long diffInWeeks = diffInMillis / (7 * 24 * 60 * 60 * 1000);
-            return diffInWeeks + " tuần";
+            return diffInWeeks + " tuần trước";
         } else {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(commentDate);
@@ -78,7 +78,7 @@ public class Until {
             if (currentMonth < commentMonth || (currentMonth == commentMonth && currentDate < commentDate2)) {
                 diffInYears--;
             }
-            return diffInYears + " năm";
+            return diffInYears + " năm trước";
         }
     }
 

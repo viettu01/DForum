@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imvAvatarFullSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

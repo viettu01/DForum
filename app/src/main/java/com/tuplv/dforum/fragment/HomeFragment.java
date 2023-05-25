@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.activity.forum.AddAndUpdateForumActivity;
-import com.tuplv.dforum.activity.forum.ListForumActivity;
 import com.tuplv.dforum.activity.post.AddPostActivity;
 import com.tuplv.dforum.activity.post.ListPostActivity;
 import com.tuplv.dforum.adapter.ForumAdapter;
@@ -45,9 +43,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, OnForumClickListener {
 
-    RelativeLayout rlShowListForum;
     RecyclerView rvListForumFeatured;
-    ImageView imvShowMoreForum;
     FloatingActionButton fabAddPost;
     ForumAdapter forumAdapter;
     List<Forum> forums;
@@ -63,19 +59,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
     }
 
     private void init(View view) {
-        rlShowListForum = view.findViewById(R.id.rlShowListForum);
         rvListForumFeatured = view.findViewById(R.id.rvListForumFeatured);
-        imvShowMoreForum = view.findViewById(R.id.imvShowMoreForum);
         fabAddPost = view.findViewById(R.id.fabAddPost);
 
-        rlShowListForum.setOnClickListener(this);
-        imvShowMoreForum.setOnClickListener(this);
         fabAddPost.setOnClickListener(this);
 
         forums = new ArrayList<>();
-//        forumIds = new ArrayList<>();
-//        forumIds = forumIds;
-//        Toast.makeText(getActivity(), "" + forumIds.size(), Toast.LENGTH_SHORT).show();
     }
 
     // Hiển thị 5 danh sách diễn đàn mới nhất
@@ -104,45 +93,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnFo
                 });
     }
 
-    private void getListForumById() {
-        forumAdapter = new ForumAdapter(requireActivity(), R.layout.item_forum, forums, this);
-        rvListForumFeatured.setAdapter(forumAdapter);
-        rvListForumFeatured.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
-
-        forums.clear();
-        for (long forumId : forumIds) {
-            FirebaseDatabase.getInstance().getReference(OBJ_FORUM).child(String.valueOf(forumId))
-                    .addValueEventListener(new ValueEventListener() {
-                        @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Forum forum = snapshot.getValue(Forum.class);
-                            forums.add(forum);
-                            forumAdapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
-        }
-    }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fabAddPost:
-                if (FirebaseAuth.getInstance().getCurrentUser() != null)
-                    startActivity(new Intent(getActivity(), AddPostActivity.class));
-                else
-                    Toast.makeText(getActivity(), "Đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.rlShowListForum:
-            case R.id.imvShowMoreForum:
-                startActivity(new Intent(getActivity(), ListForumActivity.class));
-                break;
+        if (view.getId() == R.id.fabAddPost) {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                startActivity(new Intent(getActivity(), AddPostActivity.class));
+            else
+                Toast.makeText(getActivity(), "Đăng nhập để sử dụng chức năng này!", Toast.LENGTH_SHORT).show();
         }
     }
 

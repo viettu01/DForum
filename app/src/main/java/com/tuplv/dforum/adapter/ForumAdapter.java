@@ -1,7 +1,10 @@
 package com.tuplv.dforum.adapter;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.tuplv.dforum.until.Constant.OBJ_POST;
 import static com.tuplv.dforum.until.Constant.ROLE_ADMIN;
+import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
+import static com.tuplv.dforum.until.Until.formatNumber;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,9 +23,16 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tuplv.dforum.R;
 import com.tuplv.dforum.interf.OnForumClickListener;
 import com.tuplv.dforum.model.Forum;
+import com.tuplv.dforum.model.Post;
 
 import java.util.List;
 
@@ -56,6 +66,33 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
 
         holder.tvTitle.setText(forum.getName());
 
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Query query = mDatabase.child(OBJ_POST).orderByChild("status").equalTo(STATUS_ENABLE);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long postCount = 0;
+                long postAllCount = 0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    if (post != null && post.getForumId() == forum.getForumId()) {
+                        postCount++;
+                    }
+                    postAllCount++;
+                }
+                if (forum.getForumId() == 0)
+                    holder.tvTotalPost.setText(formatNumber(postAllCount) + " bài viết");
+                else
+                    holder.tvTotalPost.setText(formatNumber(postCount) + " bài viết");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,13 +122,14 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout llItemListForum;
-        TextView tvTitle;
+        TextView tvTitle, tvTotalPost;
         ImageView imgShowForum;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             llItemListForum = itemView.findViewById(R.id.llItemListForum);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvTotalPost = itemView.findViewById(R.id.tvTotalPost);
             imgShowForum = itemView.findViewById(R.id.imvShowForum);
         }
     }

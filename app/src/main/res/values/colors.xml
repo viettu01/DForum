@@ -19,6 +19,7 @@
 
     <!-- màu xám-->
     <color name="gray_color">#D6D6D6</color>
+    <color name="gray_color_opacity">#B3D6D6D6</color>
     <color name="gray_color_more">#B6B5B5</color>
     <color name="gray_max">#66676b</color>
     <color name="gray_max_opacity_70">#B366676B</color>
@@ -33,5 +34,8 @@
     <color name="bg_notify">#e7f3ff</color>
 
     <color name="green">#00CF09</color>
+
+    <!--    background darkmode-->
+    <color name="bg_dark">#242527</color>
 
 </resources>

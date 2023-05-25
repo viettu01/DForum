@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 viewPager.setCurrentItem(0);
                 break;
             case R.id.mnuSearch:
-                tbMain.setVisibility(View.VISIBLE);
+                tbMain.setVisibility(View.GONE);
                 viewPager.setCurrentItem(1);
                 break;
             case R.id.mnuForum:

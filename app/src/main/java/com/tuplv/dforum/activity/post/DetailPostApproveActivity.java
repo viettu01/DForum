@@ -78,6 +78,8 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
         post = (Post) getIntent().getSerializableExtra("post");
 
         btnPostApprove.setOnClickListener(this);
+        imvAvatar.setOnClickListener(this);
+        tvNameAuthor.setOnClickListener(this);
         btnNoPostApprove.setOnClickListener(this);
     }
 
@@ -191,6 +193,7 @@ public class DetailPostApproveActivity extends AppCompatActivity implements View
                 dialogNoApprove(post);
                 break;
             case R.id.tvNameAuthor:
+            case R.id.imvAvatar:
                 // bấm tên ra trang cá nhân
                 Intent intent = new Intent(DetailPostApproveActivity.this, ProfileActivity.class);
                 intent.putExtra("userId", post.getAccountId());

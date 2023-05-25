@@ -9,20 +9,37 @@
     android:orientation="horizontal"
     android:padding="@dimen/_10sdp">
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:text="@string/tieu_de"
-        android:textSize="@dimen/_14sdp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/tieu_de"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/tvTotalPost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="?attr/colorOnSurface"
+            android:text="@string/tieu_de"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imvShowForum"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/_10sdp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"

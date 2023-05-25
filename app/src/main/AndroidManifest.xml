@@ -95,11 +95,6 @@
             tools:ignore="LockedOrientationActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.forum.ListForumActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.forum.AddAndUpdateForumActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"
