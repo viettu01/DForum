@@ -11,18 +11,17 @@
         android:id="@+id/tbDetailPost"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryVariant"
         android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Chi tiết bài viết"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="?attr/colorOnSecondary" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:paddingBottom="@dimen/_5sdp">
 
         <androidx.core.widget.NestedScrollView
@@ -72,7 +71,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textColor="@color/gray_max" />
+                            android:textColor="?attr/colorOnSurface" />
                     </LinearLayout>
 
                     <RelativeLayout
@@ -133,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="?attr/colorOnPrimary"
             android:orientation="vertical">
 
             <View
@@ -144,6 +143,7 @@
 
             <LinearLayout
                 android:id="@+id/llRepComment"
+                android:background="?attr/colorOnPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -170,15 +170,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/huy"
-                    android:textColor="@color/gray_max"
+                    android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="@dimen/_30sdp"
                 android:orientation="horizontal"
+                android:background="?attr/colorOnPrimary"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp">
 
@@ -204,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:background="?attr/colorOnPrimary"
                 android:visibility="gone"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"

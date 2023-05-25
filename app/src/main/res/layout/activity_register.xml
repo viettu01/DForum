@@ -21,7 +21,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_50sdp"
         android:layout_below="@+id/ic_back_arrow_register"
-        android:background="@drawable/layout_radius"
         android:orientation="vertical"
         android:paddingStart="@dimen/_20sdp"
         android:paddingEnd="@dimen/_20sdp">
@@ -125,6 +124,7 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/button_radius_10"
             android:text="@string/register"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:letterSpacing="0.02"
             android:textAllCaps="false"

@@ -11,14 +11,14 @@
         android:id="@+id/tbAddPost"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryVariant"
         android:contentDescription="@string/dang_bai"
         android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/dang_bai"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="?attr/colorOnSecondary" />
 
     <LinearLayout
         android:id="@+id/llAddPost"

@@ -14,8 +14,11 @@
         <item name="colorOnSurface">@color/gray_max</item>
 
         <!--        màu icon và nền-->
-        <item name="colorOnSurfaceVariant">@color/white</item>
-        <item name="colorBackgroundFloating">@color/main_color</item>
+        <item name="colorOnSurfaceVariant">@color/black</item>
+        <item name="colorBackgroundFloating">@color/white</item>
+
+        <item name="colorContainer">@color/gray</item>
+        <item name="colorOnBackground">@color/bg_notify</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>

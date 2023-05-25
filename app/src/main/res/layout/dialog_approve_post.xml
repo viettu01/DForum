@@ -16,8 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="Lý do không duyệt"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:textAlignment="center"
-            android:textColor="@color/main_color"
+            android:textColor="?attr/colorSecondaryVariant"
             android:textSize="@dimen/_17sdp"
             android:textStyle="bold" />
 
@@ -73,6 +74,7 @@
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_weight="1"
                 android:elevation="@dimen/_10sdp"
+                android:textColor="@color/white"
                 android:letterSpacing="0.02"
                 android:text="Xác nhận"
                 android:textAllCaps="false"

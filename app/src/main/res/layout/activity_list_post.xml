@@ -11,14 +11,14 @@
         android:id="@+id/tbListPost"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryVariant"
         android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationContentDescription="@string/quay_lai"
         app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/bai_viet"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="?attr/colorOnSecondary" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -137,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textStyle="bold"/>
         </LinearLayout>

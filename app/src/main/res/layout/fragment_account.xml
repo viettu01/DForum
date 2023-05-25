@@ -19,11 +19,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:elevation="@dimen/_5sdp"
-                android:orientation="horizontal">
+                android:background="?attr/colorPrimaryVariant"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="horizontal"
+                tools:ignore="RtlSymmetry">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -108,7 +111,7 @@
                         android:layout_weight="2"
                         android:gravity="top"
                         android:text="@string/detail"
-                        android:textColor="@color/gray_max"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
 
@@ -137,13 +140,6 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@color/gray" />
-
             <LinearLayout
                 android:id="@+id/llAdmin"
                 android:visibility="gone"
@@ -159,7 +155,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:text="@string/admin"
-                    android:textColor="@color/gray_max_opacity_70"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -235,7 +231,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/account"
-                android:textColor="@color/gray_max_opacity_70"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
@@ -279,7 +275,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/system"
-                        android:textColor="@color/gray_max"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
 

@@ -11,13 +11,13 @@
         android:id="@+id/tbUpdateProfile"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryVariant"
         android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/edit_name"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="?attr/colorOnSecondary" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout
@@ -41,6 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_weight="1"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:text="@string/nick_name"
                     android:textSize="@dimen/_16sdp"
                     android:textStyle="bold" />
@@ -51,8 +51,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_weight="1"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:text="@string/length_nickname"
-                    android:textAlignment="textEnd"
+                    android:gravity="center_vertical|end"
                     android:textColor="@color/gray_color_more"
                     android:textSize="@dimen/_14sdp" />
             </LinearLayout>
@@ -111,6 +112,7 @@
                     android:layout_marginStart="@dimen/_4sdp"
                     android:elevation="@dimen/_10sdp"
                     android:letterSpacing="0.02"
+                    android:textColor="@color/white"
                     android:text="@string/update"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_14sdp"

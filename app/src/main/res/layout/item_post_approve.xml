@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
-    android:background="@drawable/custom_background_item_posts"
+    android:background="@drawable/background_radius_border_white_10"
     android:elevation="@dimen/_2sdp"
     android:gravity="center"
     android:orientation="horizontal"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:singleLine="true"
             android:text="10:10 10/10/1010"
-            android:textColor="@color/gray_max"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 

@@ -3,11 +3,10 @@
     android:id="@+id/llItemListPost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_1sdp"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:layout_marginEnd="@dimen/_1sdp"
-    android:layout_marginBottom="@dimen/_5sdp"
-    android:background="@drawable/custom_background_item_posts"
+    android:paddingStart="@dimen/_1sdp"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingEnd="@dimen/_1sdp"
+    android:paddingBottom="@dimen/_5sdp"
     android:gravity="center"
     android:orientation="horizontal">
 
@@ -61,7 +60,7 @@
             android:layout_height="match_parent"
             android:singleLine="true"
             android:text="10:10 10/10/1010"
-            android:textColor="@color/gray_max"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/_10sdp" />
 
         <LinearLayout
@@ -82,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="100"
-                android:textColor="@color/gray_max"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/_10sdp"
                 android:gravity="center_vertical" />
         </LinearLayout>

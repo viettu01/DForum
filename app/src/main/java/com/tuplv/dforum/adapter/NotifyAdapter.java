@@ -67,7 +67,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notify notify = notifies.get(position);
         if (notify.getStatus().equals(STATUS_ENABLE))
-            holder.llItemListNotify.setBackgroundColor(Color.WHITE);
+            holder.llItemListNotify.setBackgroundColor(android.R.attr.colorPrimary);
 
         FirebaseDatabase.getInstance().getReference(OBJ_ACCOUNT).child(notify.getAccountId())
                 .addValueEventListener(new ValueEventListener() {

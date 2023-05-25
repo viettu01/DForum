@@ -3,7 +3,7 @@
     android:id="@+id/llItemListNotify"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_notify"
+    android:background="?attr/colorOnBackground"
     android:orientation="horizontal"
     android:padding="@dimen/_10sdp">
 
@@ -32,8 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
-            android:text="12/12/1212"
-            android:textColor="@color/gray_max"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold" />
     </LinearLayout>
 

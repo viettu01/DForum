@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".activity.account.ProfileActivity">
 
@@ -12,13 +11,13 @@
         android:id="@+id/tbProfileUser"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryVariant"
         android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Trang cá nhân"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="?attr/colorOnSecondary" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -33,7 +32,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -112,6 +110,7 @@
                                 android:singleLine="true"
                                 android:text="Bài viết"
                                 android:textAlignment="center"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="@dimen/_14sdp" />
                         </LinearLayout>
 
@@ -136,6 +135,7 @@
                                 android:singleLine="true"
                                 android:text="Bình luận"
                                 android:textAlignment="center"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="@dimen/_14sdp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -173,9 +173,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -191,6 +191,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
 
@@ -215,14 +217,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_height="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@color/gray" />
 
                 <TextView
@@ -231,7 +235,8 @@
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_17sdp"
                     android:text="@string/posts"
-                    android:textColor="@color/gray_max"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -243,9 +248,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_17sdp"
-                android:visibility="gone"
-                android:textColor="@color/gray_max"
-                android:text="@string/noPost"/>
+                android:text="@string/noPost"
+                android:textColor="?attr/colorOnSurface"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMyPost"

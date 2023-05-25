@@ -11,13 +11,13 @@
         android:id="@+id/tbDarkMode"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryVariant"
         android:elevation="@dimen/_5sdp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/round_arrow_back_black_24"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/dark_mode"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextColor="?attr/colorOnSecondary" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,6 +69,6 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:textSize="@dimen/_10sdp"
             android:text="@string/detail_dark_mode"
-            android:textColor="@color/gray_max" />
+            android:textColor="?attr/colorOnSurface" />
     </LinearLayout>
 </LinearLayout>

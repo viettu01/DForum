@@ -8,14 +8,17 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/white</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
 
-        <item name="colorAccent">@color/gray</item>
+        <item name="colorAccent">@color/gray_color_opacity</item>
         <item name="colorOnSurface">@color/gray_color_opacity</item>
 
         <!--        màu icon và nền-->
         <item name="colorOnSurfaceVariant">#e4e5ea</item>
         <item name="colorBackgroundFloating">#393a3c</item>
+
+        <item name="colorContainer">#393a3c</item>
+        <item name="colorOnBackground">#242e3a</item>
 
         <item name="android:textColor">@color/gray</item>
 

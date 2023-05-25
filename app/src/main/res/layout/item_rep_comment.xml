@@ -59,7 +59,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:textStyle="bold"
-                android:textColor="@color/gray_max"
+                android:textColor="?attr/colorOnSurface"
                 android:text="@string/datetime" />
             <TextView
                 android:id="@+id/tvRepComment"
@@ -69,7 +69,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:textStyle="bold"
-                android:textColor="@color/gray_max"
+                android:textColor="?attr/colorOnSurface"
                 android:text="@string/rep" />
         </LinearLayout>
     </LinearLayout>
