@@ -6,7 +6,9 @@ import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,12 +33,25 @@ public class StartActivity extends AppCompatActivity {
 
     private static final int SPLASH_TIME_OUT = 2000;
     SharedPreferences sharedPreferences;
+    ImageView logo;
     public static List<Long> forumIds;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        logo = findViewById(R.id.logo);
+
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            logo.setImageResource(R.drawable.logo_white);
+        } else {
+            logo.setImageResource(R.drawable.applogoblue);
+        }
+
+
         forumIds = new ArrayList<>();
         getListIdForum();
         startApplication();

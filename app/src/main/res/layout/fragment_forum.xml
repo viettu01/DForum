@@ -10,11 +10,13 @@
         android:id="@+id/llForum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:orientation="horizontal">
+        android:background="?attr/colorPrimaryVariant"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
 
         <TextView
             android:layout_width="0dp"
@@ -43,6 +45,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListForum"
+        android:paddingTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_width="match_parent"

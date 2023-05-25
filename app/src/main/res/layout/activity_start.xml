@@ -8,6 +8,7 @@
     tools:context=".activity.main.StartActivity">
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="0dp"
         android:layout_height="@dimen/_120sdp"
         android:src="@drawable/applogoblue"
