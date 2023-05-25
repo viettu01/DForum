@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -40,11 +43,26 @@ public class ShowAvatarActivity extends AppCompatActivity implements View.OnClic
 
         init();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String avatarUri = String.valueOf(getIntent().getSerializableExtra("avatarUri"));
+
         if (avatarUri.equals("null")) {
             imvAvatarFullSize.setImageResource(R.drawable.no_avatar);
-        } else
-            Picasso.get().load(avatarUri).into(imvAvatarFullSize);
+        } else {
+            Glide.with(this)
+                    .load(avatarUri)
+                    .apply(new RequestOptions()
+                            .placeholder(R.drawable.no_avatar) // Ảnh hiển thị mặc định trong quá trình tải
+                            .error(R.drawable.no_avatar)) // Ảnh hiển thị khi xảy ra lỗi
+                    .into(imvAvatarFullSize);
+//            Picasso.get().load(avatarUri).into(imvAvatarFullSize);
+        }
+
     }
 
     private void init() {

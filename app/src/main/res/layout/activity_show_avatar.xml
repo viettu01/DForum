@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:contentDescription="@string/view_avatar"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/no_avatar" />
 
     <RelativeLayout
         android:id="@+id/rlShowMenu"

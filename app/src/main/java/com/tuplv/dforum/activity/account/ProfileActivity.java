@@ -10,13 +10,11 @@ import static com.tuplv.dforum.until.Constant.STATUS_ENABLE;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -29,7 +27,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -99,12 +96,11 @@ public class ProfileActivity extends AppCompatActivity implements OnPostClickLis
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userId != null && !userId.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
+                if (userId != null && !userId.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
                     Intent intent = new Intent(ProfileActivity.this, ShowAvatarActivity.class);
                     intent.putExtra("avatarUri", account.getAvatarUri());
                     startActivity(intent);
-                }
-                else if (userId != null && userId.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()))
+                } else if (userId != null && userId.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()))
                     showBottomSheetDialogAvatar();
             }
         };
@@ -149,7 +145,7 @@ public class ProfileActivity extends AppCompatActivity implements OnPostClickLis
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
 
-        if (userId != null && !userId.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
+        if (userId != null && !userId.equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
             rlAvatar.setVisibility(View.GONE);
             imvUpdateName.setVisibility(View.GONE);
         }
@@ -169,6 +165,7 @@ public class ProfileActivity extends AppCompatActivity implements OnPostClickLis
                                     imvAvatar.setImageResource(R.drawable.no_avatar);
                                 else
                                     Picasso.get().load(account.getAvatarUri()).into(imvAvatar);
+                                Log.d("aaa", account.getAvatarUri());
                                 tvNickName.setText(account.getNickName());
 
                                 tvEmail.setText(account.getEmail());
@@ -215,6 +212,7 @@ public class ProfileActivity extends AppCompatActivity implements OnPostClickLis
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileActivity.this, ShowAvatarActivity.class);
                 intent.putExtra("avatarUri", account.getAvatarUri());
+                Log.d("aaaStartIntent", account.getAvatarUri());
                 startActivity(intent);
                 bottomSheetDialog.dismiss();
             }
