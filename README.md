@@ -1,4 +1,5 @@
-# DForum
+# DForum - Diễn đàn trao đổi kiến thức lập trình trên thiết bị di động
+
 DForum là một ứng dụng Android phục vụ như một diễn đàn trao đổi kiến thức lập trình. Nó cho phép người dùng tham gia vào các cuộc thảo luận, đặt câu hỏi và chia sẻ chuyên môn của họ về các chủ đề lập trình khác nhau. Ứng dụng sử dụng Firebase làm cơ sở dữ liệu phụ trợ và được xây dựng bằng Android Studio.
 
 ![Ảnh chụp màn hình DForum](ảnh chụp màn hình.png)
@@ -15,7 +16,6 @@ DForum là một ứng dụng Android phục vụ như một diễn đàn trao �
 ## Cài đặt
 
 1. Sao chép kho lưu trữ vào máy cục bộ của bạn:
-
 
 2. Mở dự án trong Android Studio.
 
@@ -39,20 +39,22 @@ Các phụ thuộc sau đây được sử dụng trong dự án này:
 
 Để biết danh sách đầy đủ các phụ thuộc và phiên bản của chúng, vui lòng tham khảo tệp `build.gradle`.
 
-## Đóng góp
+## Môi trường phát triển
 
-Đóng góp cho DForum đều được chào đón! Nếu bạn có bất kỳ ý tưởng, đề xuất hoặc báo cáo lỗi nào, vui lòng mở một vấn đề hoặc gửi yêu cầu kéo. Đảm bảo tuân theo [quy tắc ứng xử](CODE_OF_CONDUCT.md) khi đóng góp.
+Android Studio: IDE chính để phát triển ứng dụng di động Android.
+Java Development Kit (JDK): Cung cấp các công cụ phát triển Java cần thiết.
+Android SDK: Bộ công cụ phát triển Android.
+Firebase Account: Đăng ký tài khoản Firebase để cấu hình dịch vụ Firebase cho ứng dụng.
 
-## Giấy phép
-
-Dự án này được cấp phép theo [Giấy phép MIT](LICENSE).
-
-## Sự nhìn nhận
-
-DForum được phát triển bởi [Your Name](https://github.com/your-username). Chúng tôi muốn cảm ơn các nguồn sau đây cho những đóng góp của họ:
+## Tài liệu tham khảo
 
 - [Tài liệu dành cho nhà phát triển Android](https://developer.android.com/docs)
 - [Tài liệu Firebase](https://firebase.google.com/docs)
 - [Tràn ngăn xếp](https://stackoverflow.com/)
 
-Nếu bạn thấy dự án này hữu ích hoặc có bất kỳ câu hỏi nào, vui lòng liên hệ hoặc thể hiện sự ủng hộ của bạn bằng cách cho nó một ngôi sao!
+## Nhà phát triển DForum
+
+DForum được phát triển bởi:
+- [Nguyễn Văn Mạnh](https://github.com/manhnv01)
+- [Phạm Lê Việt Tú](https://github.com/manhnv01)
+- [Nguyễn Thị Lê](https://github.com/manhnv01)
