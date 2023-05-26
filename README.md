@@ -41,20 +41,20 @@ Các phụ thuộc sau đây được sử dụng trong dự án này:
 
 ## Môi trường phát triển
 
-Android Studio: IDE chính để phát triển ứng dụng di động Android.
-Java Development Kit (JDK): Cung cấp các công cụ phát triển Java cần thiết.
-Android SDK: Bộ công cụ phát triển Android.
-Firebase Account: Đăng ký tài khoản Firebase để cấu hình dịch vụ Firebase cho ứng dụng.
+- Android Studio: IDE chính để phát triển ứng dụng di động Android.
+- Java Development Kit (JDK): Cung cấp các công cụ phát triển Java cần thiết.
+- Android SDK: Bộ công cụ phát triển Android.
+- Firebase Account: Đăng ký tài khoản Firebase để cấu hình dịch vụ Firebase cho ứng dụng.
 
 ## Tài liệu tham khảo
 
 - [Tài liệu dành cho nhà phát triển Android](https://developer.android.com/docs)
 - [Tài liệu Firebase](https://firebase.google.com/docs)
-- [Tràn ngăn xếp](https://stackoverflow.com/)
+- [Stackoverflow.com](https://stackoverflow.com/)
 
 ## Nhà phát triển DForum
 
 DForum được phát triển bởi:
-- [Nguyễn Văn Mạnh](https://github.com/manhnv01)
-- [Phạm Lê Việt Tú](https://github.com/manhnv01)
-- [Nguyễn Thị Lê](https://github.com/manhnv01)
+- [Nguyễn Văn Mạnh](https://github.com/manhnv01/)
+- [Phạm Lê Việt Tú](https://github.com/viettu01/)
+- [Nguyễn Thị Lê](https://github.com/NguyenLe0508/)
