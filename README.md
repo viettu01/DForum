@@ -1,40 +1,47 @@
 # DForum - Diễn đàn trao đổi kiến thức lập trình trên thiết bị di động
 
-DForum là một ứng dụng Android phục vụ như một diễn đàn trao đổi kiến thức lập trình. Nó cho phép người dùng tham gia vào các cuộc thảo luận, đặt câu hỏi và chia sẻ chuyên môn của họ về các chủ đề lập trình khác nhau. Ứng dụng sử dụng Firebase làm cơ sở dữ liệu phụ trợ và được xây dựng bằng Android Studio.
+DForum là một ứng dụng Android phục vụ như một diễn đàn trao đổi kiến thức lập trình. Nó cho phép người dùng tham gia vào các cuộc thảo luận, đặt câu hỏi và chia sẻ chuyên môn của họ về các chủ đề lập trình khác nhau. Ứng dụng sử dụng Firebase Realtime Database làm cơ sở dữ liệu chính và được xây dựng bằng Android Studio.
 
 ![Ảnh chụp màn hình DForum](ảnh chụp màn hình.png)
+![image](https://github.com/viettu01/DForum/assets/88828150/8a894d93-1ede-4dd9-89a9-c50e24fb5d1b)
+![image](https://github.com/viettu01/DForum/assets/88828150/728a1788-7b79-4d80-8df2-f2577b99d32c)
 
-## Đặc trưng
+## Tính năng
 
 - Đăng ký và xác thực người dùng
 - Tạo bài viết mới và trả lời bài viết hiện có
-- Upvote và downvote bài viết và trả lời
-- Tìm kiếm bài viết theo từ khóa hoặc danh mục
-- Duyệt bài viết theo các chủ đề lập trình khác nhau
+- Quản lý thông báo khi có người dùng khác đăng bài, bình luận, trả lời bình luận
+- Tắt thông báo bài viết chính chủ
+- Bình luận và trả lời bình luận bài viết hiện có
+- Tìm kiếm bài viết theo từ khóa hoặc danh mục diễn đàn nhỏ
+- Lọc và sắp xếp bài viết
+- Quản lý kiểm duyệt bài viết của admin
 - Quản lý hồ sơ người dùng
-
-## Cài đặt
-
-1. Sao chép kho lưu trữ vào máy cục bộ của bạn:
-
-2. Mở dự án trong Android Studio.
-
-3. Định cấu hình Firebase:
-
-    - Tạo dự án Firebase mới trên [Bảng điều khiển Firebase](https://console.firebase.google.com/).
-    - Làm theo hướng dẫn để thêm ứng dụng Android của bạn vào dự án và tải xuống tệp `google-services.json`.
-    - Đặt file `google-services.json` vào thư mục `app/` của project.
-
-4. Xây dựng và chạy ứng dụng trên trình giả lập Android hoặc thiết bị vật lý.
+- Quản lý thông tin cá nhân
+- Chế độ Dark Mode
 
 ## Phụ thuộc
 
+Yêu cầu phần mềm
+
+- Hệ điều hành tối thiểu Android 8
+- minSdk 26
+- targetSdk 33
+
+Yêu cầu quyền của ứng dụng
+
+- android.permission.INTERNET
+- android.permission.ACCESS_NETWORK_STATE
+- android.permission.ACCESS_WIFI_STATE
+- android.permission.READ_EXTERNAL_STORAGE
+
 Các phụ thuộc sau đây được sử dụng trong dự án này:
 
-- Xác thực căn cứ hỏa lực
-- Cơ sở dữ liệu thời gian thực Firebase
-- Giao diện người dùng căn cứ hỏa lực
-- Lướt
+- Firebase Authentication
+- Firebase Realtime Database
+- Firebase Storage
+- Glide
+- PhotoView
 - CircleImageView
 
 Để biết danh sách đầy đủ các phụ thuộc và phiên bản của chúng, vui lòng tham khảo tệp `build.gradle`.
