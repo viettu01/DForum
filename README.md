@@ -2,9 +2,17 @@
 
 DForum là một ứng dụng Android phục vụ như một diễn đàn trao đổi kiến thức lập trình. Nó cho phép người dùng tham gia vào các cuộc thảo luận, đặt câu hỏi và chia sẻ chuyên môn của họ về các chủ đề lập trình khác nhau. Ứng dụng sử dụng Firebase Realtime Database làm cơ sở dữ liệu chính và được xây dựng bằng Android Studio.
 
-![Ảnh chụp màn hình DForum](ảnh chụp màn hình.png)
-![image](https://github.com/viettu01/DForum/assets/88828150/8a894d93-1ede-4dd9-89a9-c50e24fb5d1b)
-![image](https://github.com/viettu01/DForum/assets/88828150/728a1788-7b79-4d80-8df2-f2577b99d32c)
+## Ảnh chụp màn hình giao diện khi ở Light Mode
+![image](https://github.com/viettu01/DForum/assets/88828150/1441dff7-9b57-45ed-aa27-94ff3512e14d)
+![image](https://github.com/viettu01/DForum/assets/88828150/f2ebeb35-518d-4fcc-bc87-5aa41851dfd7)
+![image](https://github.com/viettu01/DForum/assets/88828150/88745050-1cad-466c-ab21-b4e2df46ee87)
+
+
+## Ảnh chụp màn hình giao diện khi ở Dark Mode
+![image](https://github.com/viettu01/DForum/assets/88828150/a703012b-891c-47eb-b9cd-5f249d9a5607)
+![image](https://github.com/viettu01/DForum/assets/88828150/57f5b765-b72e-4ee0-8905-4f8cbde6d18a)
+![image](https://github.com/viettu01/DForum/assets/88828150/e60de58a-af89-4a61-a54c-76b848367799)
+
 
 ## Tính năng
 
